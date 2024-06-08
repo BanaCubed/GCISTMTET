@@ -3,7 +3,7 @@ let modInfo = {
 	id: "thisisnottreefromitalysalmon",
 	author: "BanaCubed",
 	pointsName: "grass",
-	modFiles: ["field.js", "tree.js", "city.js"],
+	modFiles: ["field.js", "tree.js", "city.js", "industrial.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.3.withoutAccomplishments",
-	name: "Crystals but without accomplishments",
+	num: "0.0.3",
+	name: "Crystallize",
 }
 
 let changelog = 
@@ -24,8 +24,10 @@ let changelog =
 			- Added <span style="color: #FF69B4">Crystallize</span><br>
 			- Added <span style="color: #BC48A8">Accomplishments</span><br>
 			- Added <span style="color: #FF69B4">Crystal Upgrades</span><br>
-			- Added More <span style="color: #237BEC">Perk Upgrades</span><br>
-			Endgame <span style="color: #237BEC">Level 201</span><br><br>
+			- Added <span style="color: #888888">The Industrial Zone</span><br>
+			- Added <span style="color: #888888">The Control Panel</span><br>
+			- Extended <span style="color: #237BEC">Perk Upgrades</span><br>
+			Endgame <span style="color: #237BEC">Level 241</span><br><br>
 		<h3>v0.0.2</h3><br>
 			- Added <span style="color: #4BDCDC">The City</span><br>
 			- Added <span style="color: #FFC000">Tiers</span><br>
@@ -78,7 +80,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.field.level.gte(201)
+	return player.field.level.gte(241)
 }
 
 

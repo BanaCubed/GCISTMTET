@@ -4,8 +4,8 @@ var layoutInfo = {
 	showTree: true,
 
     treeLayout: [
-        ['blank'],
-        ['city', 'blank', 'field', 'blank']
+        ['misc'],
+        ['city', 'blank', 'field', 'blank', 'indus']
     ]
 
     

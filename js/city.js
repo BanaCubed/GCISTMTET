@@ -7,6 +7,8 @@ addLayer('city', {
 		points: new Decimal(0),
         tier: new Decimal(1),
         tp: new Decimal(0),
+        resetTime: 0,
+        totalGrasses: new Decimal(0),
     }},
     color: "#4BDCDC",
     resource: "prestige points", // Name of prestige currency
@@ -81,6 +83,18 @@ addLayer('city', {
                 "background-color": "#3F1A2D",
                 "border-color": "#FF69B4",
             }
+        },
+        "Accomplishments": {
+            content: [
+                ['layer-proxy', ['accomp', [
+                    'milestones',
+                ]]]
+            ],
+            buttonStyle: {
+                "background-color": "#2F122A",
+                "border-color": "#BC48A8",
+            },
+            unlocked(){return hasMilestone('misc', 2)}
         },
     },
     branches: ['field'],
@@ -229,6 +243,7 @@ addLayer('city', {
         gain = gain.times(tmp.plat.buyables[14].effect)
         gain = gain.times(tmp.crystal.buyables[14].effect)
         gain = gain.times(tmp.perks.buyables[23].effect)
+        gain = gain.times(tmp.accomp.milestones[3].effect)
         return gain
     },
     buyables: {
@@ -358,7 +373,26 @@ addLayer('city', {
         gain = gain.times(tmp.city.buyables[13].effect)
         gain = gain.times(tmp.crystal.buyables[13].effect)
         gain = gain.times(tmp.perks.buyables[22].effect)
+        gain = gain.times(tmp.accomp.milestones[2].effect)
         return gain
+    },
+    doReset(layer) {
+        if(layer === "crystal") {
+            if(player.city.tier.gte(tmp.accomp.milestones[4].goal[0])){player.accomp.crys1 = tmp.accomp.milestones[4].goal[1]}
+            if(player.city.tier.gte(tmp.accomp.milestones[5].goal[0]) && tmp.city.totalUpgrades.lte(10)){player.accomp.crys2 = tmp.accomp.milestones[5].goal[1]}
+            if(player.city.tier.gte(tmp.accomp.milestones[6].goal[0]) && tmp.city.totalUpgrades.lte(0)){player.accomp.crys3 = tmp.accomp.milestones[6].goal[1]}
+            if(player.city.tier.gte(tmp.accomp.milestones[7].goal[0]) && player.city.totalGrasses.add(tmp.field.totalUpgrades).lte(25)){player.accomp.crys4 = tmp.accomp.milestones[7].goal[1]}
+            if(player.city.tier.gte(tmp.accomp.milestones[8].goal[0]) && player.crystal.resetTime<=600){player.accomp.crys5 = tmp.accomp.milestones[8].goal[1]}
+        }
+        layerDataReset('city', [])
+    },
+    totalUpgrades() {
+        let amt = new Decimal(0)
+        amt = amt.add(getBuyableAmount('city', 11))
+        amt = amt.add(getBuyableAmount('city', 12))
+        amt = amt.add(getBuyableAmount('city', 13))
+        amt = amt.add(getBuyableAmount('city', 14))
+        return amt
     },
 })
 
@@ -618,14 +652,14 @@ addLayer('misc', {
     color: "#FCDC1B",
     resource: "prestige points", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    row: 'side', // Row the layer is in on the tree (0 is the first row)
+    row: 1000, // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
     nodeStyle: {
         'background-image': 'url(resources/unlocks-icon.webp)',
         'background-size': 'contain',
     },
     tooltip() {
-        return `<h2>UNLOCKS</h2>`
+        return `<h2>UNLOCKS</h2><br>${formatWhole(player.misc.milestones.length / Object.keys(tmp.misc.milestones).length * 100)}%`
     },
     tabFormat: [
         ['display-text', 'Unlocks here are <u>not reset ever</u>'],
@@ -677,7 +711,71 @@ addLayer('misc', {
             },
             unlocked(){return hasMilestone('misc', 2)},
         },
-    }
+        5: {
+            requirementDescription: "Level 241",
+            effectDescription: "Unlock the Control Panel",
+            done() { return player.field.level.gte(241) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 2)},
+        },
+        6: {
+            requirementDescription: "1 Grasshop",
+            effectDescription: "Unlock prestige upgrade autobuyer upgrades",
+            done() { return player.indus.points.gte(1) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 2)},
+        },
+        7: {
+            requirementDescription: "5 Grasshops",
+            effectDescription: "Unlock crystal upgrade autobuyer upgrades",
+            done() { return player.indus.points.gte(5) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 6)},
+        },
+        8: {
+            requirementDescription: "6 Grasshops",
+            effectDescription: "Unlock perk autobuyer upgrades",
+            done() { return player.indus.points.gte(6) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 7)},
+        },
+        9: {
+            requirementDescription: "8 Grasshops",
+            effectDescription: "Unlock steelie and steelie accomplishments",
+            done() { return player.indus.points.gte(8) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 8)},
+        },
+        10: {
+            requirementDescription: "9 Grasshops",
+            effectDescription: "Unlock factory related perks",
+            done() { return player.indus.points.gte(9) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 9)},
+        },
+        11: {
+            requirementDescription: "11 Grasshops",
+            effectDescription: "Unlock two more generator upgrades related to charge",
+            done() { return player.indus.points.gte(11) },
+            style: {
+                "width": "600px",
+            },
+            unlocked(){return hasMilestone('misc', 10)},
+        },
+    },
+    branches: ['field'],
 })
 
 addLayer('crystal', {
@@ -687,16 +785,13 @@ addLayer('crystal', {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
+        resetTime: 0,
     }},
     color: "#FF69B4",
     resource: "crystals", // Name of prestige currency
     type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     row: 2, // Row the layer is in on the tree (0 is the first row)
     layerShown(){return false},
-    nodeStyle: {
-        'background-image': 'url(resources/city-icon.webp)',
-        'background-size': 'contain',
-    },
     baseResource: 'levels',
     baseAmount() {return player.field.level},
     requires: new Decimal(31),
@@ -716,6 +811,8 @@ addLayer('crystal', {
         gain = gain.times(tmp.plat.buyables[21].effect)
         gain = gain.times(tmp.city.buyables[14].effect)
         gain = gain.times(tmp.perks.buyables[24].effect)
+        gain = gain.times(tmp.accomp.milestones[5].effect)
+        gain = gain.times(tmp.accomp.milestones[8].effect)
         return gain
     },
     buyables: {
@@ -870,5 +967,252 @@ addLayer('crystal', {
     },
     update(diff) {
         player.crystal.points = player.crystal.points.add(this.getResetGain().times(tmp.auto.buyables[24].effect).times(diff))
+    },
+})
+
+addLayer('accomp', {
+    name: "grass", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+        pres1: new Decimal(0),
+        pres2: new Decimal(0),
+        pres3: new Decimal(0),
+        pres4: new Decimal(0),
+        crys1: new Decimal(0),
+        crys2: new Decimal(0),
+        crys3: new Decimal(0),
+        crys4: new Decimal(0),
+        crys5: new Decimal(0),
+        steel1: new Decimal(0),
+        steel2: new Decimal(0),
+        steel3: new Decimal(0),
+        steel4: new Decimal(0),
+        anon1: new Decimal(0),
+        anon2: new Decimal(0),
+        impossible: new Decimal(0),
+    }},
+    color: "#BC48A8",
+    resource: "nuh uhs", // Name of prestige currency
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    row: 9, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return false},
+    milestones: {
+        0: {
+            requirementDescription: "Just Prestige",
+            effectDescription() {return `Just prestige at the goal | Multiplies grass gain<br>Goal: Level ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | Effect: x${formatWhole(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.pres1)}/8 times`},
+            done() { return player.accomp.pres1.gte(8) },
+            effect() { return player.accomp.pres1.pow_base(3) },
+            goal() {
+                const num = player.accomp.pres1
+                if(num.lt(1)){return [new Decimal(101), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(141), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(181), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(221), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(261), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(301), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(361), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(441), new Decimal(8)]}
+                else return [new Decimal(541), new Decimal(8)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.pres1.gte(8)?'4BDCDC':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.pres1.gte(8)?'BC48A8':''}`
+                }
+            },
+        },
+        1: {
+            requirementDescription: "Less Grass",
+            effectDescription() {return `Prestige with 100 or less grass upgrades | Multiplies experience gain<br>Goal: Level ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(tmp.field.totalUpgrades)}/100 Upgrades | Effect: x${formatWhole(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.pres2)}/8 times`},
+            done() { return player.accomp.pres2.gte(8) },
+            effect() { return player.accomp.pres2.pow_base(2) },
+            goal() {
+                const num = player.accomp.pres2
+                if(num.lt(1)){return [new Decimal(51), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(91), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(131), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(171), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(231), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(291), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(351), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(411), new Decimal(8)]}
+                else return [new Decimal(471), new Decimal(8)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.pres2.gte(8)?'4BDCDC':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.pres2.gte(8)?'BC48A8':''}`
+                }
+            },
+        },
+        2: {
+            requirementDescription: "Grassless",
+            effectDescription() {return `Prestige without any grass upgrades | Multiplies TP gain<br>Goal: Level ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(tmp.field.totalUpgrades)}/0 Upgrades | Effect: x${formatWhole(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.pres3)}/8 times`},
+            done() { return player.accomp.pres3.gte(8) },
+            effect() { return player.accomp.pres3.pow_base(2) },
+            goal() {
+                const num = player.accomp.pres3
+                if(num.lt(1)){return [new Decimal(51), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(71), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(91), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(121), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(161), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(221), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(281), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(341), new Decimal(8)]}
+                else return [new Decimal(401), new Decimal(8)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.pres3.gte(8)?'4BDCDC':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.pres3.gte(8)?'BC48A8':''}`
+                }
+            },
+        },
+        3: {
+            requirementDescription: "Prestige Speedrun",
+            effectDescription() {return `Prestige in under a minute | Multiplies PP gain<br>Goal: Level ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(player.city.resetTime)}/60s | Effect: x${format(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.pres4)}/8 times`},
+            done() { return player.accomp.pres4.gte(8) },
+            effect() { return player.accomp.pres4.pow_base(1.5) },
+            goal() {
+                const num = player.accomp.pres4
+                if(num.lt(1)){return [new Decimal(51), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(91), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(131), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(171), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(211), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(271), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(331), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(361), new Decimal(8)]}
+                else return [new Decimal(401), new Decimal(8)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.pres4.gte(8)?'4BDCDC':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.pres4.gte(8)?'BC48A8':''}`
+                }
+            },
+        },
+        4: {
+            requirementDescription: "Just Crystallize",
+            effectDescription() {return `Just crystallize at the goal | Adds perk gain per level<br>Goal: Tier ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | Effect: +${formatWhole(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.crys1)}/9 times`},
+            done() { return player.accomp.crys1.gte(9) },
+            effect() { return player.accomp.crys1 },
+            goal() {
+                const num = player.accomp.crys1
+                if(num.lt(1)){return [new Decimal(9), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(13), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(15), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(17), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(19), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(21), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(23), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(25), new Decimal(8)]}
+                if(num.lt(9)){return [new Decimal(27), new Decimal(9)]}
+                else return [new Decimal(29), new Decimal(9)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.crys1.gte(9)?'FF69B4':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.crys1.gte(9)?'BC48A8':''}`
+                }
+            },
+        },
+        5: {
+            requirementDescription: "Less Prestige",
+            effectDescription() {return `Crystallize with 10 or less prestige upgrades | Multiplies crystal gain<br>Goal: Tier ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(tmp.city.totalUpgrades)}/10 Upgrades | Effect: x${format(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.crys2)}/5 times`},
+            done() { return player.accomp.crys2.gte(5) },
+            effect() { return player.accomp.crys2.pow_base(1.2) },
+            goal() {
+                const num = player.accomp.crys2
+                if(num.lt(1)){return [new Decimal(9), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(11), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(13), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(15), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(17), new Decimal(5)]}
+                else return [new Decimal(19), new Decimal(5)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.crys2.gte(5)?'FF69B4':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.crys2.gte(5)?'BC48A8':''}`
+                }
+            },
+        },
+        6: {
+            requirementDescription: "Prestigeless",
+            effectDescription() {return `Crystallize without any prestige upgrades | Multiplies grass gain<br>Goal: Tier ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(tmp.city.totalUpgrades)}/0 Upgrades | Effect: x${format(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.crys3)}/5 times`},
+            done() { return player.accomp.crys3.gte(5) },
+            effect() { return player.accomp.crys3.pow_base(1.4) },
+            goal() {
+                const num = player.accomp.crys3
+                if(num.lt(1)){return [new Decimal(9), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(11), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(13), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(15), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(17), new Decimal(5)]}
+                else return [new Decimal(19), new Decimal(5)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.crys3.gte(5)?'FF69B4':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.crys3.gte(5)?'BC48A8':''}`
+                }
+            },
+        },
+        7: {
+            requirementDescription: "Less Grass II",
+            effectDescription() {return `Crystallize with 25 or less grass upgrades total | Increases platinum spawn chance<br>Goal: Tier ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${formatWhole(player.city.totalGrasses.add(tmp.field.totalUpgrades))}/25 Upgrades | Effect: +${format(tmp.accomp.milestones[this.id].effect * 10)}%<br>Completed ${formatWhole(player.accomp.crys4)}/9 times`},
+            done() { return player.accomp.crys4.gte(9) },
+            effect() { return player.accomp.crys4.div(1000).toNumber() },
+            goal() {
+                const num = player.accomp.crys4
+                if(num.lt(1)){return [new Decimal(9), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(15), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(18), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(21), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(24), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(26), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(27), new Decimal(7)]}
+                if(num.lt(8)){return [new Decimal(28), new Decimal(8)]}
+                if(num.lt(9)){return [new Decimal(29), new Decimal(9)]}
+                else return [new Decimal(30), new Decimal(9)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.crys4.gte(9)?'FF69B4':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.crys4.gte(9)?'BC48A8':''}`
+                }
+            },
+        },
+        8: {
+            requirementDescription: "Crystallize Speedrun",
+            effectDescription() {return `Crystallize within 10 minutes | Multiplies crystal gain<br>Goal: Tier ${formatWhole(tmp.accomp.milestones[this.id].goal[0])} | ${format(player.crystal.resetTime)}/600s | Effect: x${format(tmp.accomp.milestones[this.id].effect)}<br>Completed ${formatWhole(player.accomp.crys5)}/7 times`},
+            done() { return player.accomp.crys5.gte(7) },
+            effect() { return player.accomp.crys5.pow_base(1.2) },
+            goal() {
+                const num = player.accomp.crys5
+                if(num.lt(1)){return [new Decimal(9), new Decimal(1)]}
+                if(num.lt(2)){return [new Decimal(11), new Decimal(2)]}
+                if(num.lt(3)){return [new Decimal(13), new Decimal(3)]}
+                if(num.lt(4)){return [new Decimal(15), new Decimal(4)]}
+                if(num.lt(5)){return [new Decimal(17), new Decimal(5)]}
+                if(num.lt(6)){return [new Decimal(19), new Decimal(6)]}
+                if(num.lt(7)){return [new Decimal(21), new Decimal(7)]}
+                else return [new Decimal(23), new Decimal(7)]
+            },
+            style() {
+                return {
+                    "background-color": `#${player.accomp.crys5.gte(9)?'FF69B4':''}`,
+                    "box-shadow": `0 0 10px #${player.accomp.crys5.gte(9)?'BC48A8':''}`
+                }
+            },
+        },
+    },
+    update(diff) {
+        if(hasMilestone('misc', 2)){player.accomp.unlocked = true}
     }
 })

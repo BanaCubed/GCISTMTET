@@ -36,19 +36,19 @@ addLayer("field", {
         if(hasMilestone('misc', 0)) player.city.tp = player.city.tp.add(Decimal.times(tmp.field.autoCutRate, diff).times(tmp.city.grassTP).times(tmp.auto.buyables[12].effect))
         if(player.points.gte(player.field.bestGrass)){player.field.bestGrass = player.points}
         if(hasMilestone('misc', 1)) {
-            player.auto.platinum = player.auto.platinum.add(Decimal.times(diff, 0.004).times(3).times(tmp.auto.buyables[12].effect))
+            player.auto.platinum = player.auto.platinum.add(Decimal.times(diff, tmp.plat.chance).times(3).times(tmp.auto.buyables[12].effect))
         }
     },
     automate() {
-        if(tmp.auto.buyables[13].effect) {
-            if(tmp.field.buyables[11].canAfford){layers.field.buyables[11].buy()}
-            if(tmp.field.buyables[12].canAfford){layers.field.buyables[12].buy()}
-            if(tmp.field.buyables[13].canAfford){layers.field.buyables[13].buy()}
+        if(tmp.auto.buyables[13].effect && getClickableState('indus', 21)!==1) {
+            if(layers.field.buyables[11].canAfford()){layers.field.buyables[11].buy()}
+            if(layers.field.buyables[12].canAfford()){layers.field.buyables[12].buy()}
+            if(layers.field.buyables[13].canAfford()){layers.field.buyables[13].buy()}
         }
-        if(tmp.auto.buyables[14].effect) {
-            if(tmp.field.buyables[14].canAfford){layers.field.buyables[14].buy()}
-            if(tmp.field.buyables[21].canAfford){layers.field.buyables[21].buy()}
-            if(tmp.field.buyables[22].canAfford){layers.field.buyables[22].buy()}
+        if(tmp.auto.buyables[14].effect && getClickableState('indus', 21)!==1) {
+            if(layers.field.buyables[14].canAfford()){layers.field.buyables[14].buy()}
+            if(layers.field.buyables[21].canAfford()){layers.field.buyables[21].buy()}
+            if(layers.field.buyables[22].canAfford()){layers.field.buyables[22].buy()}
         }
     },
     grid: {
@@ -182,7 +182,7 @@ addLayer("field", {
                 ['bar', 'tier'],
                 'blank',
                 ['display-text', function() {
-                    return `You have <h2 style="color: #C5D4E2; text-shadow: #C5D4E2 0px 0px 10px;">${formatWhole(player.auto.platinum)}</h2> platinum<br>Platinum spawns instead of grass 0.40% of the time`
+                    return `You have <h2 style="color: #C5D4E2; text-shadow: #C5D4E2 0px 0px 10px;">${formatWhole(player.auto.platinum)}</h2> platinum<br>Platinum spawns instead of grass ${format(tmp.plat.chance * 100)}% of the time`
                 }],
                 'blank',
                 ['layer-proxy', ['plat', [
@@ -379,7 +379,7 @@ addLayer("field", {
                     tileID = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 20) * 100
                 }
                 let grassType = 1
-                if(hasMilestone('misc', 1) && Math.random() <= 0.004) grassType++
+                if(hasMilestone('misc', 1) && Math.random() <= tmp.plat.chance) grassType++
                 setGridData(this.layer, tileID, grassType)
                 player.field.fieldGrass += 1
             }
@@ -440,19 +440,20 @@ addLayer("field", {
     },
     grassTimer() {
         let time = 1 / ((tmp.field.grassPerSec / tmp.field.grassPerGrow) - tmp.field.autoCutRate)
+        time = time * layers.field.maxGrass(true)
         if(time <= 0) time = 120
         return time
     },
     maxGrass(forCalc = false) {
         if(!forCalc) return Math.min(5 + tmp.field.buyables[12].effect + tmp.perks.buyables[12].effect, 400)
-        else return (5 + tmp.field.buyables[12].effect + tmp.perks.buyables[12].effect) / 400
+        else return Math.max((5 + tmp.field.buyables[12].effect + tmp.perks.buyables[12].effect) / 400, 1)
     },
     nodeStyle: {
         'background-image': 'url(resources/field-icon.webp)',
         'background-size': 'contain',
     },
     tooltip() {
-        let text = `<h2>THE FIELD</h2><br>${formatWhole(player.field.points)} grass,<br>
+        let text = `<h2>THE FIELD</h2><br>${formatWhole(player.points)} grass,<br>
         ${formatWhole(player.perks.points)} perks`
         if(hasMilestone('misc', 1)) {text = text + `,<br>
         ${formatWhole(player.auto.platinum)} platinum`}
@@ -466,6 +467,8 @@ addLayer("field", {
         gain = gain.times(tmp.plat.buyables[13].effect)
         gain = gain.times(tmp.city.buyables[11].effect)
         gain = gain.times(tmp.crystal.buyables[11].effect)
+        gain = gain.times(tmp.accomp.milestones[0].effect)
+        gain = gain.times(tmp.accomp.milestones[6].effect)
         return gain
     },
     grassXP() {
@@ -476,6 +479,7 @@ addLayer("field", {
         gain = gain.times(tmp.plat.buyables[12].effect)
         gain = gain.times(tmp.city.buyables[12].effect)
         gain = gain.times(tmp.crystal.buyables[12].effect)
+        gain = gain.times(tmp.accomp.milestones[1].effect)
         return gain
     },
     range() {
@@ -490,8 +494,30 @@ addLayer("field", {
         return 1 + tmp.perks.buyables[21].effect + tmp.crystal.buyables[21].effect
     },
     autoCutRate() {
-        return (tmp.auto.buyables[11].effect + tmp.plat.buyables[11].effect) * tmp.field.grassPerSec
-    }
+        return getClickableState('indus', 11)!==1?(tmp.auto.buyables[11].effect + tmp.plat.buyables[11].effect) * tmp.field.grassPerSec:0
+    },
+    doReset(layer) {
+        if(layer === 'city') {
+            if(player.field.level.gte(tmp.accomp.milestones[0].goal[0])){player.accomp.pres1 = tmp.accomp.milestones[0].goal[1]}
+            if(player.field.level.gte(tmp.accomp.milestones[1].goal[0]) && tmp.field.totalUpgrades.lte(100)){player.accomp.pres2 = tmp.accomp.milestones[1].goal[1]}
+            if(player.field.level.gte(tmp.accomp.milestones[2].goal[0]) && tmp.field.totalUpgrades.lte(0)){player.accomp.pres3 = tmp.accomp.milestones[2].goal[1]}
+            if(player.field.level.gte(tmp.accomp.milestones[3].goal[0]) && player.city.resetTime<=60){player.accomp.pres4 = tmp.accomp.milestones[3].goal[1]}
+            player.city.totalGrasses = player.city.totalGrasses.add(tmp.field.totalUpgrades)
+        }
+        layerDataReset('field', [])
+    },
+    totalUpgrades() {
+        let amt = new Decimal(0)
+        amt = amt.add(getBuyableAmount('field', 11))
+        amt = amt.add(getBuyableAmount('field', 12))
+        amt = amt.add(getBuyableAmount('field', 13))
+        amt = amt.add(getBuyableAmount('field', 14))
+        amt = amt.add(getBuyableAmount('field', 21))
+        amt = amt.add(getBuyableAmount('field', 22))
+        amt = amt.add(getBuyableAmount('field', 23))
+        amt = amt.add(getBuyableAmount('field', 24))
+        return amt
+    },
 })
 
 addLayer('perks', {
@@ -733,7 +759,7 @@ addLayer('perks', {
         },
     },
     update(diff) {
-        player.perks.total = player.field.level.sub(1).max(player.perks.total)
+        player.perks.total = player.field.level.sub(1).times(tmp.perks.perksPerLevel).max(player.perks.total)
         player.perks.points = player.perks.total.sub(
             getBuyableAmount('perks', 11).add(
                 getBuyableAmount('perks', 12)).add(
@@ -751,8 +777,14 @@ addLayer('perks', {
     doReset(layer) {
         let saved = []
         if(layer === 'city' && tmp.auto.buyables[21].effect) saved.push('buyables', 'total', 'points')
+        if(layer === 'crystal' && tmp.auto.buyables[23].effect) saved.push('buyables', 'total', 'points')
         layerDataReset('perks', saved)
-    }
+    },
+    perksPerLevel() {
+        let gain = new Decimal(1)
+        gain = gain.add(tmp.accomp.milestones[4].effect)
+        return gain
+    },
 })
 
 addLayer('plat', {
@@ -907,4 +939,7 @@ addLayer('plat', {
             purchaseLimit: new Decimal(5),
         },
     },
+    chance() {
+        return 0.004 + tmp.accomp.milestones[7].effect
+    }
 })
