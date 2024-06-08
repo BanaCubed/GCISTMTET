@@ -3,7 +3,10 @@ var layoutInfo = {
     startNavTab: "tree-tab",
 	showTree: true,
 
-    treeLayout: ""
+    treeLayout: [
+        ['blank'],
+        ['city', 'blank', 'field', 'blank']
+    ]
 
     
 }
@@ -17,7 +20,14 @@ addNode("blank", {
 
 
 addLayer("tree-tab", {
-    tabFormat: [["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]],
+    tabFormat: [
+        ['layer-proxy', ['field', [
+            ['bar', 'level'],
+            ['bar', 'tier'],
+        ]]],
+        'blank',
+        ["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]
+    ],
     previousTab: "",
     leftTab: true,
 })
