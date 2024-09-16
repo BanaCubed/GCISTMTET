@@ -9,6 +9,17 @@ function respecBuyables(layer) {
 	document.activeElement.blur()
 }
 
+const obfuscationCharacters = "qwertyuiop[]asdfghjklzxcvbnm,.1234567890-=!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM`~;?"
+function obfuscate(text="", condition = true) {
+	if(!condition) { return text }
+	let text2 = ""
+	while (text.length > 0) {
+		text2 = text2 + obfuscationCharacters[Math.floor(Math.random()*obfuscationCharacters.length)]
+		text = text.substring(0, text.length-1)
+	}
+	return text2
+}
+
 function canAffordUpgrade(layer, id) {
 	let upg = tmp[layer].upgrades[id]
 	if(tmp[layer].deactivated) return false

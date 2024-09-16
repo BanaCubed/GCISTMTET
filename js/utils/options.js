@@ -12,6 +12,7 @@ function getStartOptions() {
 		hideChallenges: false,
 		forceOneTab: true,
 		forceTooltips: true,
+		hideMaxed: false,
 	}
 }
 
