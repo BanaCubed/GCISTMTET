@@ -4,8 +4,7 @@ var layoutInfo = {
 	showTree: true,
 
     treeLayout: [
-        ['misc'],
-        ['city', 'blank', 'field', 'blank', 'indus']
+        ['field',],
     ]
 
     
@@ -21,11 +20,6 @@ addNode("blank", {
 
 addLayer("tree-tab", {
     tabFormat: [
-        ['layer-proxy', ['field', [
-            ['bar', 'level'],
-            ['bar', 'tier'],
-        ]]],
-        'blank',
         ["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]
     ],
     previousTab: "",

@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "Grass Cutting Incremental's Scuffed TMT Evil Twin",
-	id: "thisisnottreefromitalysalmon",
+	id: "gcistmtet",
 	author: "BanaCubed",
 	pointsName: "grass",
 	modFiles: ["field.js", "tree.js", "city.js", "industrial.js"],
@@ -21,34 +21,29 @@ let changelog =
 	`<h1>Changelog:</h1><br><br>
 	<span style="text-align: left; position: absolute; left: 30px;">
 		<h3>v0.0.3</h3><br>
-			- Added <span style="color: #FF69B4">Crystallize</span><br>
-			- Added <span style="color: #BC48A8">Accomplishments</span><br>
-			- Added <span style="color: #FF69B4">Crystal Upgrades</span><br>
-			- Added <span style="color: #888888">The Industrial Zone</span><br>
-			- Added <span style="color: #888888">The Control Panel</span><br>
-			- Extended <span style="color: #237BEC">Perk Upgrades</span><br>
-			Endgame <span style="color: #237BEC">Level 241</span><br><br>
+			- Added <span style="color: var(--crys)">Crystallize</span><br>
+			- Added <span style="color: var(--acomp)">Accomplishments</span><br>
+			- Added <span style="color: var(--ghop)">The Control Panel</span><br>
+			Endgame <span style="color: var(--level)">Level 241</span><br><br>
 		<h3>v0.0.2</h3><br>
-			- Added <span style="color: #4BDCDC">The City</span><br>
-			- Added <span style="color: #FFC000">Tiers</span><br>
-			- Added <span style="color: #C5D4E2">Platinum</span> and <span style="color: #C5D4E2">Platinum Upgrades</span><br>
-			- Added <span style="color: #4BDCDC">Prestige</span> and <span style="color: #4BDCDC">Prestige Points</span><br>
-			- Added <span style="color: #DC4848">Automation</span><br>
-			- Added <span style="color: #4BDCDC">Prestige Upgrades</span><br>
-			Endgame <span style="color: #237BEC">Level 101</span><br><br>
+			- Added <span style="color: var(--pres)">The City</span><br>
+			- Added <span style="color: var(--tier)">Tiers</span><br>
+			- Added <span style="color: var(--plat)">Platinum</span><br>
+			- Added <span style="color: var(--pres)">Prestige</span><br>
+			- Added <span style="color: var(--auto)">Automation</span><br>
+			Endgame <span style="color: var(--level)">Level 101</span><br><br>
 		<h3>v0.0.1</h3><br>
-			- Added <span style="color: #4BDC13">The Field</span><br>
-			- Added <span style="color: #237BEC">Levels</span><br>
-			- Added <span style="color: #237BEC">Perks</span><br>
-			- Added <span style="color: #4BDC13">Grass</span> and <span style="color: #237BEC">Perk</span> Upgrades<br>
-			Endgame <span style="color: #237BEC">Level 31</span>
+			- Added <span style="color: var(--grass)">The Field</span><br>
+			- Added <span style="color: var(--level)">Levels</span><br>
+			- Added <span style="color: var(--level)">Perks</span><br>
+			Endgame <span style="color: var(--level)">Level 31</span>
 	</span>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "addGrass"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -56,7 +51,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return true
+	return false
 }
 
 // Calculate points/sec!
@@ -65,8 +60,6 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
-	gain = tmp.field.grassValue.times(tmp.field.autoCutRate)
-	gain = gain.times(tmp.auto.buyables[12].effect)
 	return gain
 }
 
@@ -80,7 +73,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.field.level.gte(241)
+	return false
 }
 
 

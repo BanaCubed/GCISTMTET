@@ -5,7 +5,7 @@ var systemComponents = {
 			<div class="upgRow">
 				<div v-for="tab in Object.keys(data)">
 					<button v-if="data[tab].unlocked == undefined || data[tab].unlocked" v-bind:class="{tabButton: true, notify: subtabShouldNotify(layer, name, tab), resetNotify: subtabResetNotify(layer, name, tab)}"
-					v-bind:style="[{'border-color': tmp[layer].color}, (subtabShouldNotify(layer, name, tab) ? {'box-shadow': 'var(--hqProperty2a), 0 0 20px '  + (data[tab].glowColor || defaultGlow)} : {}), tmp[layer].componentStyles['tab-button'], data[tab].buttonStyle]"
+					v-bind:style="[{'border-color': tmp[layer].color}, {'background-color': tmp[layer].color}, {'box-shadow': 'inset 0 0 0px 100px #00000088'}, tmp[layer].componentStyles['tab-button'], data[tab].buttonStyle]"
 						v-on:click="function(){player.subtabs[layer][name] = tab; updateTabFormats(); needCanvasUpdate = true;}">{{tab}}</button>
 				</div>
 			</div>
@@ -67,7 +67,7 @@ var systemComponents = {
 	'layer-tab': {
 		props: ['layer', 'back', 'spacing', 'embedded'],
 		template: `<div v-bind:style="[tmp[layer].style ? tmp[layer].style : {}, (tmp[layer].tabFormat && !Array.isArray(tmp[layer].tabFormat)) ? tmp[layer].tabFormat[player.subtabs[layer].mainTabs].style : {}]" class="noBackground">
-		<div v-if="back"><button v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="goBack(layer)">←</button></div>
+		<div v-if="back" style="position: relative;"><button v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="goBack(layer)">←</button></div>
 		<div v-if="!tmp[layer].tabFormat">
 			<div v-if="spacing" v-bind:style="{'height': spacing}" :key="this.$vnode.key + '-spacing'"></div>
 			<infobox v-if="tmp[layer].infoboxes" :layer="layer" :data="Object.keys(tmp[layer].infoboxes)[0]":key="this.$vnode.key + '-info'"></infobox>
@@ -113,10 +113,10 @@ var systemComponents = {
 		</span>
 		<br>
 		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You have </span>
-		<h2  class="overlayThing" id="points" style="color: rgb(75, 220, 19); text-shadow: rgb(75, 220, 19) 0px 0px 10px;">{{format(player.points.max(0))}}</h2>
+		<h2  class="overlayThing" id="points" style="color: var(--grass); text-shadow: var(--grass) 0px 0px 10px;">{{formatWhole(player.field.points.max(0))}}</h2>
 		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
 		<br>
-		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
+		<span v-if="tmp.field.autoCut.gt(0)"  class="overlayThing">({{ format(tmp.field.autoCut.mul(tmp.field.grassOnCut)) }}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 	</div>
 	`
@@ -157,27 +157,21 @@ var systemComponents = {
         <table>
             <tr>
                 <td><button class="opt" onclick="save()">Save</button></td>
-                <td><button class="opt" onclick="toggleOpt('autosave')">Autosave: {{ options.autosave?"ON":"OFF" }}</button></td>
-                <td><button class="opt" onclick="hardReset()">HARD RESET</button></td>
-            </tr>
-            <tr>
                 <td><button class="opt" onclick="exportSave()">Export to clipboard</button></td>
                 <td><button class="opt" onclick="importSave()">Import</button></td>
-                <td><button class="opt" onclick="toggleOpt('offlineProd')">Offline Prod: {{ options.offlineProd?"ON":"OFF" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('autosave')">Autosave: {{ options.autosave?"ON":"OFF" }}</button></td>
+                <td><button class="opt" onclick="hardReset()">HARD RESET</button></td>
             </tr>
             <tr>
                 <td><button class="opt" onclick="switchTheme()">Theme: {{ getThemeName() }}</button></td>
                 <td><button class="opt" onclick="adjustMSDisp()">Show Milestones: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
                 <td><button class="opt" onclick="toggleOpt('hqTree')">High-Quality Tree: {{ options.hqTree?"ON":"OFF" }}</button></td>
-            </tr>
-            <tr>
                 <td><button class="opt" onclick="toggleOpt('hideChallenges')">Completed Challenges: {{ options.hideChallenges?"HIDDEN":"SHOWN" }}</button></td>
-                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">Single-Tab Mode: {{ options.forceOneTab?"ALWAYS":"AUTO" }}</button></td>
-				<td><button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">Shift-Click to Toggle Tooltips: {{ options.forceTooltips?"ON":"OFF" }}</button></td>
-			</tr>
-			<tr>
 				<td><button class="opt" onclick="toggleOpt('tierColors')">Tier Grass Colors: {{ options.tierColors?"ON":"OFF" }}</button></td>
 			</tr>
+            <tr>
+                <td><button class="opt" onclick="toggleOpt('offlineProd')">Offline Prod: {{ options.offlineProd?"ON":"OFF" }}</button></td>
+            </tr>
         </table>`
     },
 
