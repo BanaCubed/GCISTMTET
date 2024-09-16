@@ -12,7 +12,6 @@ function getStartOptions() {
 		hideChallenges: false,
 		forceOneTab: true,
 		forceTooltips: true,
-		tierColors: true,
 	}
 }
 

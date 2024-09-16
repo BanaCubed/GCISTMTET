@@ -3,7 +3,7 @@ let modInfo = {
 	id: "gcistmtet",
 	author: "BanaCubed",
 	pointsName: "grass",
-	modFiles: ["field.js", "tree.js", "city.js", "industrial.js"],
+	modFiles: ["field.js", "tree.js", "city.js", "industrial.js", "cave.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.3",
-	name: "Crystallize",
+	num: "0.1",
+	name: "Grasshoppers",
 }
 
 let changelog = 
@@ -73,7 +73,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return false
+	return tmp.field.level.gte(100)
 }
 
 

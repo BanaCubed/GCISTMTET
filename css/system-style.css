@@ -25,6 +25,7 @@ html, body {
 	--ghop: hsl(0, 0%, 55%);
 	--acomp: hsl(315, 45%, 50%);
 	--crys: hsl(330, 100%, 70%);
+	--flow: hsl(285, 100%, 75%);
 }
 
 td {

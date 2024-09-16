@@ -87,6 +87,7 @@ a {
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: #02f2f2;
 	text-decoration: none;
+	max-width: 50vw;
 }
 
 .link:hover {
