@@ -294,8 +294,10 @@ function loadVue() {
 			start() {
 				if (!this.interval) {
 					this.interval = setInterval((function() {
-						if(this.time >= 5)
+						if(this.time >= 5) {
 							buyMaxBuyable(this.layer, this.data)
+							clearInterval(this.interval)
+							this.interval = false }
 						this.time = this.time+1
 					}).bind(this), 50)}
 			},
@@ -338,9 +340,9 @@ function loadVue() {
 		template: `
 		<button 
 			v-if="tmp[layer].clickables && tmp[layer].clickables[data]!== undefined && tmp[layer].clickables[data].unlocked" 
-			v-bind:class="{ upg: true, tooltipBox: true, can: tmp[layer].clickables[data].canClick, locked: !tmp[layer].clickables[data].canClick}"
+			v-bind:class="{ upg: true, tooltipBox: true, can: tmp[layer].clickables[data].canClick, locked: !tmp[layer].clickables[data].canClick, bought: tmp[layer].clickables[data].bought}"
 			v-bind:style="[tmp[layer].clickables[data].canClick ? {'background-color': tmp[layer].clickables[data].bgCol?tmp[layer].clickables[data].bgCol:tmp[layer].color} : {}, tmp[layer].clickables[data].style]"
-			v-on:click="if(!interval) clickClickable(layer, data)" :id='"clickable-" + layer + "-" + data' @mousedown="start" @mouseleave="stop" @mouseup="stop" @touchstart="start" @touchend="stop" @touchcancel="stop">
+			v-on:click="if(!interval) clickClickable(layer, data)" :id='"clickable-" + layer + "-" + data'>
 			<span v-if= "tmp[layer].clickables[data].title"><h2 v-html="tmp[layer].clickables[data].title"></h2><br></span>
 			<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(layers[layer].clickables[data].display, layers[layer].clickables[data])"></span>
 			<node-mark :layer='layer' :data='tmp[layer].clickables[data].marked'></node-mark>

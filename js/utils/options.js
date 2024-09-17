@@ -13,6 +13,7 @@ function getStartOptions() {
 		forceOneTab: true,
 		forceTooltips: true,
 		hideMaxed: false,
+		science: false,
 	}
 }
 

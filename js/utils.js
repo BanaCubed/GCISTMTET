@@ -9,7 +9,7 @@ function respecBuyables(layer) {
 	document.activeElement.blur()
 }
 
-const obfuscationCharacters = "qwertyuiop[]asdfghjklzxcvbnm,.1234567890-=!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM`~;?"
+const obfuscationCharacters = "qwertyuiopasdfghjklzxcvbnm,.1234567890-=!@#$%^*_+QWERTYUIOPASDFGHJKL:ZXCVBNM~;?"
 function obfuscate(text="", condition = true) {
 	if(!condition) { return text }
 	let text2 = ""
