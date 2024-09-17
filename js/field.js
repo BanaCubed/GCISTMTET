@@ -295,7 +295,7 @@ addLayer('field', {
         let max = new Decimal(5);
         max = max.add(tmp.field.buyables[12].effect);
         max = max.mul(tmp.field.buyables[25].effect);
-        max = max.times(tmp.pres.buyables[12].effect);
+        max = max.mul(tmp.pres.buyables[12].effect);
         return max;
     },
     grassPerGrow() {
@@ -313,24 +313,26 @@ addLayer('field', {
     grassOnCut() {
         let gain = tmp.field.levelEffect;
         gain = gain.mul(tmp.pres.tierEffect);
-        gain = gain.times(tmp.field.buyables[11].effect);
-        gain = gain.times(tmp.pres.buyables[11].effect);
+        gain = gain.mul(tmp.field.buyables[11].effect);
+        gain = gain.mul(tmp.pres.buyables[11].effect);
+        gain = gain.mul(tmp.crys.milestones[0].effect[0]);
         return gain;
     },
     expOnCut() {
         let gain = new Decimal(1);
-        gain = gain.times(tmp.field.buyables[14].effect);
+        gain = gain.mul(tmp.field.buyables[14].effect);
         gain = gain.mul(tmp.pres.tierEffect);
-        gain = gain.times(tmp.pres.buyables[13].effect);
-        gain = gain.times(tmp.crys.buyables[14].effect);
+        gain = gain.mul(tmp.pres.buyables[13].effect);
+        gain = gain.mul(tmp.crys.buyables[14].effect);
+        gain = gain.mul(tmp.crys.milestones[1].effect[1]);
         return gain;
     },
     grassSpeed() {
         let gain = Decimal.dOne;
-        gain = gain.times(tmp.field.buyables[13].effect);
-        gain = gain.times(tmp.field.buyables[23].effect);
-        gain = gain.times(tmp.pres.buyables[12].effect);
-        gain = gain.times(tmp.pres.buyables[25].effect);
+        gain = gain.mul(tmp.field.buyables[13].effect);
+        gain = gain.mul(tmp.field.buyables[23].effect);
+        gain = gain.mul(tmp.pres.buyables[12].effect);
+        gain = gain.mul(tmp.pres.buyables[25].effect);
         return gain;
     },
     unspentPerks() {
@@ -343,7 +345,9 @@ addLayer('field', {
         return perks;
     },
     perksPerLevel() {
-        return Decimal.dOne;
+        let gain = Decimal.dOne;
+        gain = gain.mul(tmp.crys.milestones[1].effect[0]);
+        return gain
     },
     autoCut() {
         let cuts = Decimal.dZero;

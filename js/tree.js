@@ -5,8 +5,7 @@ var layoutInfo = {
 
     treeLayout: [
         ['field'],
-        ['pres'],
-        ['crys'],
+        ['pres', 'crys'],
     ]
 
     

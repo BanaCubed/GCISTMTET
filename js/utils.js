@@ -9,12 +9,12 @@ function respecBuyables(layer) {
 	document.activeElement.blur()
 }
 
-const obfuscationCharacters = "qwertyuiopasdfghjklzxcvbnm,.1234567890-=!@#$%^*_+QWERTYUIOPASDFGHJKL:ZXCVBNM~;?"
+const obfuscationCharacters = "qwertyuiopasdfghjklzxcvbnm1234567890-=!@#$%^*_+QWERTYUIOPASDFGHJKL:ZXCVBNM~;?"
 function obfuscate(text="", condition = true) {
 	if(!condition) { return text }
 	let text2 = ""
 	while (text.length > 0) {
-		text2 = text2 + obfuscationCharacters[Math.floor(Math.random()*obfuscationCharacters.length)]
+		text2 = text2 + obfuscationCharacters[Math.floor((Math.sin(player.lastTabSwitch+text2.length*27)+1)/2*obfuscationCharacters.length)]
 		text = text.substring(0, text.length-1)
 	}
 	return text2

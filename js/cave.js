@@ -34,6 +34,7 @@ addLayer('crys', {
     gainMult() {
         let gain = tmp.pres.tier.max(0).pow(1.2).pow_base(1.35);
         gain = gain.mul(player.pres.points.max(1).log(10).pow(1.25).add(1));
+        gain = gain.mul(tmp.crys.milestones[3].effect[0]);
         return gain;
     },
     baseResource: 'Levels',
@@ -63,7 +64,14 @@ addLayer('crys', {
         },
         'Accomplishments': {
             content: [
+                ['raw-html', 'Accomplishments do not unlock upgrades... yet...'],
                 'blank',
+                ['row', [
+                    ['column', [['milestone', 0], 'blank']],
+                    ['column', [['milestone', 1], 'blank']],
+                    ['column', [['milestone', 2], 'blank']],
+                    ['column', [['milestone', 3], 'blank']],
+                ]],
             ],
             buttonStyle: {
                 'border-color': 'var(--acomp)',
@@ -95,23 +103,92 @@ addLayer('crys', {
     },
     tooltip() { return `<h2>THE CAVE</h2><br>${formatWhole(player.crys.points)} Crystals<br>${formatWhole(player.crys.flowers)} Flowers`; },
     milestones: {
+
         0: {
-            // Levels
-            // Boosts Grass and TP
-            // Unlocks more Perk Upgrades
-            
-            // Tiers
-            // Boosts Perks and EXP
-            // Unlocks more Platinum Upgrades
-            
-            // Grass
-            // Boosts PP and Platinum
-            // Unlocks more Grass Upgrades
-            
-            // PP
-            // Boosts Crystals and Flowers
-            // Unlocks more PP Upgrades
-        }
+            requirementDescription() { return `Best Level` },
+            effectDescription() { return `
+                Highest level reached since last<br>
+                ${obfuscate('grasshoppers', true)} reset is Level ${formatWhole(player.crys.maxLevel)}<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} grass, x${format(tmp[this.layer].milestones[this.id].effect[1])} TP<br><br>
+                ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Level ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
+                Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more perk upgrades` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxLevel.pow(0.8).pow_base(1.25),
+                player.crys.maxLevel.pow(0.6).pow_base(1.2),
+            ]},
+            upgs() {
+                const thresholds = [new Decimal(120), new Decimal(150), new Decimal(250), new Decimal(400), Decimal.dInf]
+                let reps = 0
+                while (player.crys.maxLevel.gte(thresholds[reps])) { reps++; }
+                return [thresholds[reps], reps]
+            },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--level))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+        1: {
+            requirementDescription() { return `Best Tier` },
+            effectDescription() { return `
+                Highest tier reached since last<br>
+                ${obfuscate('grasshoppers', true)} reset is Tier ${formatWhole(player.crys.maxTier)}<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} perks, x${format(tmp[this.layer].milestones[this.id].effect[1])} EXP<br><br>
+                ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Tier ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
+                Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more platinum upgrades` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxTier.div(4).add(1),
+                player.crys.maxTier.pow(1.6).pow_base(1.2),
+            ]},
+            upgs() {
+                const thresholds = [new Decimal(10), new Decimal(15), new Decimal(20), new Decimal(25), Decimal.dInf]
+                let reps = 0
+                while (player.crys.maxTier.gte(thresholds[reps])) { reps++; }
+                return [thresholds[reps], reps]
+            },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--tier))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+        2: {
+            requirementDescription() { return `Best Grass` },
+            effectDescription() { return `
+                Highest grass obtained since last<br>
+                ${obfuscate('grasshoppers', true)} reset is ${formatWhole(player.crys.maxGrass)} grass<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} PP, x${format(tmp[this.layer].milestones[this.id].effect[1])} Platinum<br><br>
+                ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
+                Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more grass upgrades` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxGrass.max(1).log(3).add(1).pow(0.75),
+                player.crys.maxGrass.max(1).log(1000).add(1).pow(0.65),
+            ]},
+            upgs() {
+                const thresholds = [new Decimal(1e33), new Decimal(1e63), new Decimal(1e123), new Decimal(1e303), Decimal.dInf]
+                let reps = 0
+                while (player.crys.maxGrass.gte(thresholds[reps])) { reps++; }
+                return [thresholds[reps], reps]
+            },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--grass))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+        3: {
+            requirementDescription() { return `Best Prestige` },
+            effectDescription() { return `
+                Highest prestige points obtained since last
+                ${obfuscate('grasshoppers', true)} reset is ${formatWhole(player.crys.maxPres)} PP<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} Crystals, x${format(tmp[this.layer].milestones[this.id].effect[1])} Flowers<br><br>
+                ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
+                Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more prestige upgrades` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxPres.max(1).log(33).add(1).pow(0.5),
+                player.crys.maxPres.max(1).log(10).add(1).pow(0.85),
+            ]},
+            upgs() {
+                const thresholds = [new Decimal(1e18), new Decimal(1e33), new Decimal(1e63), new Decimal(1e100), Decimal.dInf]
+                let reps = 0
+                while (player.crys.maxPres.gte(thresholds[reps])) { reps++; }
+                return [thresholds[reps], reps]
+            },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--pres))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+
     },
     buyables: {
 
@@ -339,7 +416,8 @@ addLayer('crys', {
     branches: ['pres'],
     flowersGain() {
         let gain = Decimal.dZero;
-        gain = gain.add(tmp.crys.buyables[11].effect)
+        gain = gain.add(tmp.crys.buyables[11].effect);
+        gain = gain.mul(tmp.crys.milestones[3].effect[1]);
         return gain;
     },
 });
