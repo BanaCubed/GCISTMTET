@@ -34,6 +34,7 @@ addLayer('crys', {
     gainMult() {
         let gain = tmp.pres.tier.max(0).pow(1.2).pow_base(1.35);
         gain = gain.mul(player.pres.points.max(1).log(10).pow(1.25).add(1));
+        gain = gain.mul(tmp.field.buyables[29].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[0]);
         return gain;
     },

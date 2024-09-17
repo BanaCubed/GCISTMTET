@@ -14,7 +14,7 @@ addLayer('field', {
         player.field.totalExp = player.field.totalExp.add(tmp.field.expOnCut.mul(tmp.field.autoCut).mul(diff));
         if(player.field.grass.lt(tmp.field.maxGrass || player.field.growTime.gt(0))) { player.field.growTime = player.field.growTime.sub(tmp.field.grassSpeed.mul(diff)); }
         if(player.field.grass.gte(tmp.field.maxGrass)) { player.field.growTime  = player.field.growTime.max(1); }
-        if(player.field.growTime.lt(0)) { player.field.grass = player.field.grass.add(player.field.growTime.ceil().mul(-1)).min(tmp.field.maxGrass); player.field.growTime = player.field.growTime.add(player.field.growTime.ceil().mul(-1)); }
+        if(player.field.growTime.lt(0)) { player.field.grass = player.field.grass.add(player.field.growTime.ceil().mul(-1).mul(tmp.field.grassPerGrow)).min(tmp.field.maxGrass); player.field.growTime = player.field.growTime.add(player.field.growTime.ceil().mul(-1)); }
         if(tmp.field.level.sub(1).mul(tmp.field.perksPerLevel).gt(player.field.bestPerks)) { player.field.bestPerks = tmp.field.level.sub(1).mul(tmp.field.perksPerLevel) }
     },
     automate() {
@@ -27,10 +27,22 @@ addLayer('field', {
         }
         if(player.crys.flautomation.includes('31')) {
             buyMaxBuyable('field', 21);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
             buyMaxBuyable('field', 22);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
             buyMaxBuyable('field', 23);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
             buyMaxBuyable('field', 24);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
             buyMaxBuyable('field', 25);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
+            buyMaxBuyable('field', 26);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
+            buyMaxBuyable('field', 27);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
+            buyMaxBuyable('field', 28);
+            tmp.field.unspentPerks = layers.field.unspentPerks();
+            buyMaxBuyable('field', 29);
         }
     },
     hotkeys: [{
@@ -278,6 +290,62 @@ addLayer('field', {
             purchaseLimit: new Decimal(15),
             bgCol: 'var(--level)',
         },
+        26: {
+            title: 'EXP Perk',
+            cost(x) { return new Decimal(1) },
+            effect(x) { return x.add(1) },
+            canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            display() {
+                return `Increases experience gain by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(100),
+            bgCol: 'var(--level)',
+            unlocked(){return tmp.crys.milestones[0].upgs[1]>=1},
+        },
+        27: {
+            title: 'TP Perk',
+            cost(x) { return new Decimal(3) },
+            effect(x) { return x.div(10).add(1) },
+            canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            display() {
+                return `Increases tier progress gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(50),
+            bgCol: 'var(--level)',
+            unlocked(){return tmp.crys.milestones[0].upgs[1]>=2},
+        },
+        28: {
+            title: 'PP Perk',
+            cost(x) { return new Decimal(5) },
+            effect(x) { return x.div(4).add(1) },
+            canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            display() {
+                return `Increases PP gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(50),
+            bgCol: 'var(--level)',
+            unlocked(){return tmp.crys.milestones[0].upgs[1]>=3},
+        },
+        29: {
+            title: 'Crystals Perk',
+            cost(x) { return new Decimal(10) },
+            effect(x) { return x.div(4).add(1) },
+            canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            display() {
+                return `Increases crystals gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(50),
+            bgCol: 'var(--level)',
+            unlocked(){return tmp.crys.milestones[0].upgs[1]>=4},
+        },
 
     },
     doReset(layer) {
@@ -314,6 +382,7 @@ addLayer('field', {
         let gain = tmp.field.levelEffect;
         gain = gain.mul(tmp.pres.tierEffect);
         gain = gain.mul(tmp.field.buyables[11].effect);
+        gain = gain.mul(tmp.field.buyables[21].effect);
         gain = gain.mul(tmp.pres.buyables[11].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[0]);
         return gain;
@@ -321,6 +390,7 @@ addLayer('field', {
     expOnCut() {
         let gain = new Decimal(1);
         gain = gain.mul(tmp.field.buyables[14].effect);
+        gain = gain.mul(tmp.field.buyables[26].effect);
         gain = gain.mul(tmp.pres.tierEffect);
         gain = gain.mul(tmp.pres.buyables[13].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
@@ -337,7 +407,7 @@ addLayer('field', {
     },
     unspentPerks() {
         let perks = player.field.bestPerks;
-        let perkSpends = [21, 22, 23, 24, 25]
+        let perkSpends = [21, 22, 23, 24, 25, 26, 27, 28, 29]
         for (let i = 0; i < perkSpends.length; i++) {
             const id = perkSpends[i];
             perks = perks.sub(getBuyableAmount('field', id).mul(tmp.field.buyables[id].cost))
