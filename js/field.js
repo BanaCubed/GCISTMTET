@@ -221,7 +221,7 @@ addLayer('field', {
             display() {
                 return `Increases multicut by +1 per level<br><br>Currently: +${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(24),
+            purchaseLimit: new Decimal(99),
         },
 
         // Perk Upgrades
