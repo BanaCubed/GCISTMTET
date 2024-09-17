@@ -384,6 +384,7 @@ addLayer('field', {
         gain = gain.mul(tmp.field.buyables[11].effect);
         gain = gain.mul(tmp.field.buyables[21].effect);
         gain = gain.mul(tmp.pres.buyables[11].effect);
+        gain = gain.mul(tmp.pres.buyables[26].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[0]);
         return gain;
     },
@@ -393,6 +394,7 @@ addLayer('field', {
         gain = gain.mul(tmp.field.buyables[26].effect);
         gain = gain.mul(tmp.pres.tierEffect);
         gain = gain.mul(tmp.pres.buyables[13].effect);
+        gain = gain.mul(tmp.pres.buyables[27].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[1].effect[1]);
         return gain;

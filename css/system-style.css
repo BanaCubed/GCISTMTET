@@ -73,13 +73,16 @@ td {
 
 .back {
 	position: fixed;
-	top: 0;
-	left: 0;
-	background-color: transparent;
-	border: 1px solid transparent;
+	top: 10px;
+	left: calc(50% - 25px);
 	color: var(--color);
 	font-size: 40px;
 	cursor: pointer;
+	border-radius: 50%;
+	background-color: hsl(180, 65%, 30%);
+	border-style: solid;
+	border-color: var(--pres);
+	border-width: 4px;
 }
 
 .other-back {

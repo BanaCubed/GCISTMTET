@@ -417,6 +417,7 @@ addLayer('crys', {
     branches: ['pres'],
     flowersGain() {
         let gain = Decimal.dZero;
+        gain = gain.mul(tmp.pres.buyables[29].effect);
         gain = gain.add(tmp.crys.buyables[11].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[1]);
         return gain;
