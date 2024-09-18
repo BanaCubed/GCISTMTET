@@ -42,6 +42,7 @@ addLayer('pres', {
         let gain = tmp.field.level.sub(29).max(1).pow(0.6).pow_base(1.25);
         gain = gain.mul(player.field.points.max(1).log(10).pow(2).add(1));
         gain = gain.mul(tmp.field.buyables[28].effect);
+        gain = gain.mul(tmp.field.buyables[16].effect);
         gain = gain.mul(tmp.pres.buyables[24].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[0]);

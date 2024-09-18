@@ -24,6 +24,10 @@ addLayer('field', {
             buyMaxBuyable('field', 13);
             buyMaxBuyable('field', 14);
             buyMaxBuyable('field', 15);
+            buyMaxBuyable('field', 16);
+            buyMaxBuyable('field', 17);
+            buyMaxBuyable('field', 18);
+            buyMaxBuyable('field', 19);
         }
         if(player.crys.flautomation.includes('31')) {
             buyMaxBuyable('field', 21);
@@ -167,13 +171,13 @@ addLayer('field', {
             title: 'Grass Value',
             cost(x) { return x.pow_base(1.17).mul(10).ceil() },
             effect(x) { return x.add(1).mul(x.div(25).floor().pow_base(2)) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit()) },
             buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(10).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buyMax() { let max = player[this.layer].points.floor().div(10).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit()); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit())) },
             display() {
-                return `Increases grass gain by +100% per level<br>Every 25 doubles grass gain<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+                return `Increases grass gain by +100% per level<br>Every 25 doubles grass gain<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit())}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(700),
+            purchaseLimit() {return Decimal.add(700, tmp.field.buyables[19].effect)},
         },
         12: {
             title: 'More Grass',
@@ -203,13 +207,13 @@ addLayer('field', {
             title: 'EXP',
             cost(x) { return x.pow_base(1.17).mul(1000).ceil() },
             effect(x) { return x.add(1).mul(x.div(25).floor().pow_base(2)) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit()) },
             buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(1000).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1000).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit()); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit())) },
             display() {
-                return `Increases experience gain by +100% per level<br>Every 25 doubles experience gain<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+                return `Increases experience gain by +100% per level<br>Every 25 doubles experience gain<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit())}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(250),
+            purchaseLimit() {return Decimal.add(300, tmp.field.buyables[19].effect)},
         },
         15: {
             title: 'Multicut',
@@ -223,6 +227,58 @@ addLayer('field', {
             },
             purchaseLimit: new Decimal(99),
         },
+        16: {
+            title: 'Prestige Points',
+            cost(x) { return x.pow_base(1.2).mul(1e24).ceil() },
+            effect(x) { return x.div(4).add(1).mul(x.div(25).floor().pow_base(1.5)) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e24).max(0.1).log(1.2).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases PP gain by +25% per level<br>Every 25 increases PP gain by +50%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1000),
+            unlocked(){return tmp.crys.milestones[2].upgs[1]>=1},
+        },
+        17: {
+            title: 'Grass Grass Grass Grass Grass',
+            cost(x) { return x.pow_base(1.2).mul(1e18).ceil() },
+            effect(x) { return x.div(4).add(1).mul(x.div(25).floor().pow_base(1.5)) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e18).max(0.1).log(1.2).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases grass gain by +25% per level<br>Every 25 increases grass gain by +50%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(3500),
+            unlocked(){return tmp.crys.milestones[2].upgs[1]>=2},
+        },
+        18: {
+            title: 'EXP II',
+            cost(x) { return x.pow_base(1.2).mul(1e50).ceil() },
+            effect(x) { return x.div(4).add(1).mul(x.div(25).floor().pow_base(1.5)) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e50).max(0.1).log(1.2).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases experience gain by +25% per level<br>Every 25 increases experience gain by +50%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(10000),
+            unlocked(){return tmp.crys.milestones[2].upgs[1]>=3},
+        },
+        19: {
+            title: 'Unlimiter',
+            cost(x) { return x.pow_base(2).mul(1e100).ceil() },
+            effect(x) { return x.mul(5) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e100).max(0.1).log(2).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases cap of Grass Value and EXP by +5 per level<br><br>Currently: +${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1000),
+            unlocked(){return tmp.crys.milestones[2].upgs[1]>=3},
+        },
 
         // Perk Upgrades
         21: {
@@ -235,7 +291,7 @@ addLayer('field', {
             display() {
                 return `Increases grass gain by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(100),
+            purchaseLimit: new Decimal(150),
             bgCol: 'var(--level)',
         },
         22: {
@@ -300,7 +356,7 @@ addLayer('field', {
             display() {
                 return `Increases experience gain by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(100),
+            purchaseLimit: new Decimal(250),
             bgCol: 'var(--level)',
             unlocked(){return tmp.crys.milestones[0].upgs[1]>=1},
         },
@@ -382,6 +438,7 @@ addLayer('field', {
         let gain = tmp.field.levelEffect;
         gain = gain.mul(tmp.pres.tierEffect);
         gain = gain.mul(tmp.field.buyables[11].effect);
+        gain = gain.mul(tmp.field.buyables[17].effect);
         gain = gain.mul(tmp.field.buyables[21].effect);
         gain = gain.mul(tmp.pres.buyables[11].effect);
         gain = gain.mul(tmp.pres.buyables[26].effect);
@@ -391,6 +448,7 @@ addLayer('field', {
     expOnCut() {
         let gain = new Decimal(1);
         gain = gain.mul(tmp.field.buyables[14].effect);
+        gain = gain.mul(tmp.field.buyables[18].effect);
         gain = gain.mul(tmp.field.buyables[26].effect);
         gain = gain.mul(tmp.pres.tierEffect);
         gain = gain.mul(tmp.pres.buyables[13].effect);

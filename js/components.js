@@ -257,11 +257,11 @@ function loadVue() {
 	Vue.component('buyables', {
 		props: ['layer', 'data'],
 		template: `
-		<div v-if="tmp[layer].buyables" class="upgTable">
+		<div v-if="tmp[layer].buyables" class="upgTable" style="max-width: calc(100vw*0.95); width: fit-content; overflow-x: auto; border-radius: 15px; transition: none;">
 			<respec-button v-if="tmp[layer].buyables.respec && !(tmp[layer].buyables.showRespec !== undefined && tmp[layer].buyables.showRespec == false)" :layer = "layer" v-bind:style="[{'margin-bottom': '12px'}, tmp[layer].componentStyles['respec-button']]"></respec-button>
-			<div v-for="row in (data === undefined ? tmp[layer].buyables.rows : data)" class="upgRow">
+			<div v-for="row in (data === undefined ? tmp[layer].buyables.rows : data)" class="upgRow" style="max-width: 100%; width: fit-content; overflow-x: auto; flex-wrap: nowrap; justify-content: safe center; margin: 0;">
 				<div v-for="col in tmp[layer].buyables.cols"><div v-if="tmp[layer].buyables[row*10+col]!== undefined && tmp[layer].buyables[row*10+col].unlocked"
-				class="upgAlign" v-bind:style="{'margin-left': '7px', 'margin-right': '7px',  'height': (data ? data : 'inherit'),}"
+				class="upgAlign" v-bind:style="{'height': (data ? data : 'inherit'),}"
 				v-if="tmp[layer].buyables && tmp[layer].buyables[row*10+col]!== undefined && tmp[layer].buyables[row*10+col].unlocked && (!options.hideMaxed || getBuyableAmount(layer, row*10+col).lt(tmp[layer].buyables[row*10+col].purchaseLimit))">
 					<buyable :layer = "layer" :data = "row*10+col"></buyable>
 				</div></div>

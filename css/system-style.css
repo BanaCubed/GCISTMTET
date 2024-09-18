@@ -74,7 +74,7 @@ td {
 .back {
 	position: fixed;
 	top: 10px;
-	left: calc(50% - 25px);
+	left: 10px;
 	color: var(--color);
 	font-size: 40px;
 	cursor: pointer;

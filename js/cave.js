@@ -28,6 +28,7 @@ addLayer('crys', {
     image: 'resources/cave-icon.webp',
     nodeStyle: {
         'background-size': 'contain',
+        'margin-left': '60px',
     },
     type: 'normal',
     resource: 'Crystals',
@@ -258,7 +259,8 @@ addLayer('crys', {
     },
     clickables: {
 
-        // Flautomation
+        // Flautomation 
+        // (these should really just be upgrades but I'm stupid)
         11: {
             title: 'Neverending Grass',
             canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
