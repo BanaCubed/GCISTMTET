@@ -71,6 +71,8 @@ addLayer('field', {
     image: 'resources/field-icon.webp',
     nodeStyle: {
         'background-size': 'contain',
+        'background-color': 'hsl(105, 85%, 22.5%)',
+        'border-color': 'var(--grass)',
     },
     tabFormat: {
         'Grass': {
@@ -95,8 +97,8 @@ addLayer('field', {
         },
         'Perks': {
             content: [
-                ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--level); text-shadow: var(--level) 0px 0px 10px;">${formatWhole(tmp.field.unspentPerks.max(0))}</h2> perks`}],
-                ['raw-html', function(){return `(${format(tmp.field.perksPerLevel)}/level)`}],
+                ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--level); text-shadow: var(--level) 0px 0px 10px;">${formatWhole(tmp.field.unspentPerks.max(0).floor())}</h2> perks`}],
+                ['raw-html', function(){return `(${format(tmp.field.perksPerLevel)}/level) | (${formatWhole(player.field.bestPerks)} Total)`}],
                 'blank',
                 ['bar', 'level'],
                 'blank',
@@ -366,7 +368,7 @@ addLayer('field', {
             effect(x) { return x.div(10).add(1) },
             canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
             buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks.div(this.cost('bruh'))).min(this.purchaseLimit)) },
             display() {
                 return `Increases tier progress gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -380,7 +382,7 @@ addLayer('field', {
             effect(x) { return x.div(4).add(1) },
             canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
             buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks.div(this.cost('bruh'))).min(this.purchaseLimit)) },
             display() {
                 return `Increases PP gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -394,7 +396,7 @@ addLayer('field', {
             effect(x) { return x.div(4).add(1) },
             canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
             buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks).min(this.purchaseLimit)) },
+            buyMax() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(tmp.field.unspentPerks.div(this.cost('bruh'))).min(this.purchaseLimit)) },
             display() {
                 return `Increases crystals gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },

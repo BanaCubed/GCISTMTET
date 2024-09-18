@@ -36,7 +36,7 @@ function updateStyle() {
 }
 function changeTreeQuality() {
 	var on = options.hqTree;
-	document.body.style.setProperty('--hqProperty1', on ? "2px solid" : "4px solid");
+	document.body.style.setProperty('--hqProperty1', on ? "4px solid" : "4px solid");
 	document.body.style.setProperty('--hqProperty2a', on ? "-4px -4px 4px rgba(0, 0, 0, 0.25) inset" : "-4px -4px 4px rgba(0, 0, 0, 0) inset");
 	document.body.style.setProperty('--hqProperty2b', on ? "0px 0px 20px var(--background)" : "");
 	document.body.style.setProperty('--hqProperty3', on ? "2px 2px 4px rgba(0, 0, 0, 0.25)" : "none");

@@ -3,7 +3,7 @@ let modInfo = {
 	id: "gcistmtet",
 	author: "BanaCubed",
 	pointsName: "grass",
-	modFiles: ["field.js", "tree.js", "city.js", "industrial.js", "cave.js"],
+	modFiles: ["field.js", "tree.js", "city.js", "cult.js", "cave.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -15,12 +15,18 @@ let modInfo = {
 let VERSION = {
 	num: "0.1",
 	name: "Grasshoppers",
-	build: 15,
+	build: 16,
 }
 
 let changelog = 
 	`<h1>Changelog:</h1><br><br>
 	<span style="text-align: left; position: absolute; left: 30px;">
+		<h2>v0.1</h2><br>
+			- Added <span style="color: var(--ghop)">Grasshoppers</span><br>
+			- Added <span style="color: var(--flow)">Flowers</span><br>
+			- Removed <span style="color: var(--ghop)">The Control Panel</span><br>
+			- Removed <span style="color: var(--auto)">Automation</span><br>
+			Endgame <span style="color: var(--level)">Level 200</span><br><br>
 		<h3>v0.0.3</h3><br>
 			- Added <span style="color: var(--crys)">Crystallize</span><br>
 			- Added <span style="color: var(--acomp)">Accomplishments</span><br>

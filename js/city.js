@@ -21,6 +21,10 @@ addLayer('pres', {
             buyMaxBuyable('pres', 13);
             buyMaxBuyable('pres', 14);
             buyMaxBuyable('pres', 15);
+            buyMaxBuyable('pres', 16);
+            buyMaxBuyable('pres', 17);
+            buyMaxBuyable('pres', 18);
+            buyMaxBuyable('pres', 19);
         }
         if(player.crys.flautomation.includes('23')) {
             buyMaxBuyable('pres', 21);
@@ -28,6 +32,10 @@ addLayer('pres', {
             buyMaxBuyable('pres', 23);
             buyMaxBuyable('pres', 24);
             buyMaxBuyable('pres', 25);
+            buyMaxBuyable('pres', 26);
+            buyMaxBuyable('pres', 27);
+            buyMaxBuyable('pres', 28);
+            buyMaxBuyable('pres', 29);
         }
     },
     color: 'var(--pres)',
@@ -35,6 +43,8 @@ addLayer('pres', {
     image: 'resources/city-icon.webp',
     nodeStyle: {
         'background-size': 'contain',
+        'background-color': 'hsl(180, 65%, 30%)',
+        'border-color': 'var(--pres)',
     },
     type: 'normal',
     resource: 'Prestige Points',
@@ -43,10 +53,11 @@ addLayer('pres', {
         gain = gain.mul(player.field.points.max(1).log(10).pow(2).add(1));
         gain = gain.mul(tmp.field.buyables[28].effect);
         gain = gain.mul(tmp.field.buyables[16].effect);
+        gain = gain.mul(tmp.pres.buyables[16].effect);
         gain = gain.mul(tmp.pres.buyables[24].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[0]);
-        return gain;
+        return gain.floor();
     },
     baseResource: 'Levels',
     baseAmount() { return tmp.field.level },
@@ -169,6 +180,58 @@ addLayer('pres', {
                 return `Increases passive PP generation by +1% per level<br><br>Currently: ${formatWhole(tmp[this.layer].buyables[this.id].effect.mul(100))}%<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
             purchaseLimit: new Decimal(1e6),
+        },
+        16: {
+            title: 'PPPP',
+            cost(x) { return x.pow_base(1.05).mul(1e12).ceil() },
+            effect(x) { return x.div(10).add(1) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e12).max(0.1).log(1.05).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases PP gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1e6),
+            unlocked(){return tmp.crys.milestones[3].upgs[1]>=1},
+        },
+        17: {
+            title: 'PPPlatinum',
+            cost(x) { return x.pow_base(1.05).mul(1e25).ceil() },
+            effect(x) { return x.div(10).add(1) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e25).max(0.1).log(1.05).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases platinum gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1e6),
+            unlocked(){return tmp.crys.milestones[3].upgs[1]>=2},
+        },
+        18: {
+            title: 'PPPrystals',
+            cost(x) { return x.pow_base(1.05).mul(1e50).ceil() },
+            effect(x) { return x.div(10).add(1) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e50).max(0.1).log(1.05).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases crystals gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1e6),
+            unlocked(){return tmp.crys.milestones[3].upgs[1]>=3},
+        },
+        19: {
+            title: 'PPPlowers',
+            cost(x) { return x.pow_base(1.05).mul(1e80).ceil() },
+            effect(x) { return x.div(10).add(1) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            buy() { if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e80).max(0.1).log(1.05).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            display() {
+                return `Increases flowers gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1e6),
+            unlocked(){return tmp.crys.milestones[3].upgs[1]>=4},
         },
 
         // Platinum Upgrades
@@ -320,6 +383,7 @@ addLayer('pres', {
     platOnCut() {
         if(!player.pres.done){return Decimal.dZero}
         let gain = Decimal.dOne.div(10);
+        gain = gain.mul(tmp.pres.buyables[17].effect);
         gain = gain.mul(tmp.pres.buyables[23].effect);
         gain = gain.mul(tmp.crys.buyables[13].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[1]);

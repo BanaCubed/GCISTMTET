@@ -29,6 +29,8 @@ addLayer('crys', {
     nodeStyle: {
         'background-size': 'contain',
         'margin-left': '60px',
+        'background-color': 'hsl(330, 100%, 35%)',
+        'border-color': 'var(--crys)',
     },
     type: 'normal',
     resource: 'Crystals',
@@ -36,8 +38,9 @@ addLayer('crys', {
         let gain = tmp.pres.tier.max(0).pow(1.2).pow_base(1.35);
         gain = gain.mul(player.pres.points.max(1).log(10).pow(1.25).add(1));
         gain = gain.mul(tmp.field.buyables[29].effect);
+        gain = gain.mul(tmp.pres.buyables[18].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[0]);
-        return gain;
+        return gain.floor();
     },
     baseResource: 'Levels',
     baseAmount() { return tmp.field.level; },
@@ -45,6 +48,7 @@ addLayer('crys', {
     requires: new Decimal(100),
     passiveGeneration() {
         let gain = Decimal.dZero;
+        if(player.crys.flautomation.includes('41')) { gain = gain.add(0.01) }
         return gain;
     },
     prestigeButtonText() {
@@ -66,8 +70,6 @@ addLayer('crys', {
         },
         'Accomplishments': {
             content: [
-                ['raw-html', 'Accomplishments do not unlock upgrades... yet...'],
-                'blank',
                 ['row', [
                     ['column', [['milestone', 0], 'blank']],
                     ['column', [['milestone', 1], 'blank']],
@@ -86,7 +88,7 @@ addLayer('crys', {
                 ['raw-html', function () { return `You have <h2  class="overlayThing" id="points" style="color: var(--flow); text-shadow: var(--flow) 0px 0px 10px;">${formatWhole(player.crys.flowers.max(0))}</h2> Flowers`; }],
                 ['raw-html', function () { return tmp.crys.flowersGain.gt(0) ? `(${format(tmp.crys.flowersGain)}/sec)` : ''; }],
                 'blank',
-                ['raw-html', function () { return `Flower upgrades are kept on all resets before ${obfuscate('galactic(?)', true)}` }],
+                ['raw-html', function () { return `Flower upgrades are kept on all resets before ${obfuscate('interplanetary', true)}` }],
                 'blank',
                 ['clickable-tree', [
                     [11, 12, 13],
@@ -110,7 +112,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Level` },
             effectDescription() { return `
                 Highest level reached since last<br>
-                ${obfuscate('grasshoppers', true)} reset is Level ${formatWhole(player.crys.maxLevel)}<br><br>
+                ${obfuscate('indoctrination', !player.hop.done)} reset is Level ${formatWhole(player.crys.maxLevel)}<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} grass, x${format(tmp[this.layer].milestones[this.id].effect[1])} TP<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Level ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more perk upgrades` },
@@ -131,7 +133,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Tier` },
             effectDescription() { return `
                 Highest tier reached since last<br>
-                ${obfuscate('grasshoppers', true)} reset is Tier ${formatWhole(player.crys.maxTier)}<br><br>
+                ${obfuscate('indoctrination', !player.hop.done)} reset is Tier ${formatWhole(player.crys.maxTier)}<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} perks, x${format(tmp[this.layer].milestones[this.id].effect[1])} EXP<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Tier ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more platinum upgrades` },
@@ -152,7 +154,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Grass` },
             effectDescription() { return `
                 Highest grass obtained since last<br>
-                ${obfuscate('grasshoppers', true)} reset is ${formatWhole(player.crys.maxGrass)} grass<br><br>
+                ${obfuscate('indoctrination', !player.hop.done)} reset is ${formatWhole(player.crys.maxGrass)} grass<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} PP, x${format(tmp[this.layer].milestones[this.id].effect[1])} Platinum<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more grass upgrades` },
@@ -173,7 +175,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Prestige` },
             effectDescription() { return `
                 Highest prestige points obtained since last
-                ${obfuscate('grasshoppers', true)} reset is ${formatWhole(player.crys.maxPres)} PP<br><br>
+                ${obfuscate('indoctrination', !player.hop.done)} reset is ${formatWhole(player.crys.maxPres)} PP<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} Crystals, x${format(tmp[this.layer].milestones[this.id].effect[1])} Flowers<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more prestige upgrades` },
@@ -229,7 +231,7 @@ addLayer('crys', {
             display() {
                 return `Increases platinum gain by +1% compounding per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
-            purchaseLimit: new Decimal(100),
+            purchaseLimit: new Decimal(1000),
         },
         14: {
             title: 'Crystal TEXPP',
@@ -420,6 +422,7 @@ addLayer('crys', {
     flowersGain() {
         let gain = Decimal.dZero;
         gain = gain.mul(tmp.pres.buyables[29].effect);
+        gain = gain.mul(tmp.pres.buyables[19].effect);
         gain = gain.add(tmp.crys.buyables[11].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[1]);
         return gain;
