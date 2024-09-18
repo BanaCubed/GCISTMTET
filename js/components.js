@@ -64,8 +64,8 @@ function loadVue() {
 		},
 		template: `
 		<div class="upgTable instant">
-			<div class="upgCol">
-				<div v-for="(item, index) in data">
+			<div class="upgCol" style="width: calc(100%)">
+				<div v-for="(item, index) in data" style="width: calc(100%)">
 					<div v-if="!Array.isArray(item)" v-bind:is="item" :layer= "layer" v-bind:style="tmp[layer].componentStyles[item]" :key="key + '-' + index"></div>
 					<div v-else-if="item.length==3" v-bind:style="[tmp[layer].componentStyles[item[0]], (item[2] ? item[2] : {})]" v-bind:is="item[0]" :layer= "layer" :data= "item[1]" :key="key + '-' + index"></div>
 					<div v-else-if="item.length==2" v-bind:is="item[0]" :layer= "layer" :data= "item[1]" v-bind:style="tmp[layer].componentStyles[item[0]]" :key="key + '-' + index"></div>
@@ -257,7 +257,7 @@ function loadVue() {
 	Vue.component('buyables', {
 		props: ['layer', 'data'],
 		template: `
-		<div v-if="tmp[layer].buyables" class="upgTable" style="max-width: calc(100vw*0.95); width: fit-content; overflow-x: auto; border-radius: 15px; transition: none;">
+		<div v-if="tmp[layer].buyables" class="upgTable" style="max-width: 95%; width: fit-content; overflow-x: auto; border-radius: 15px; transition: none;">
 			<respec-button v-if="tmp[layer].buyables.respec && !(tmp[layer].buyables.showRespec !== undefined && tmp[layer].buyables.showRespec == false)" :layer = "layer" v-bind:style="[{'margin-bottom': '12px'}, tmp[layer].componentStyles['respec-button']]"></respec-button>
 			<div v-for="row in (data === undefined ? tmp[layer].buyables.rows : data)" class="upgRow" style="max-width: 100%; width: fit-content; overflow-x: auto; flex-wrap: nowrap; justify-content: safe center; margin: 0;">
 				<div v-for="col in tmp[layer].buyables.cols"><div v-if="tmp[layer].buyables[row*10+col]!== undefined && tmp[layer].buyables[row*10+col].unlocked"

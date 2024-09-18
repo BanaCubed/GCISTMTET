@@ -101,6 +101,15 @@ function buyUpg(layer, id) {
 	needCanvasUpdate = true
 }
 
+function buttonsHeightFunction() {
+	let buttons = 2;
+	if(tmp.field.layerShown) { buttons++; }
+	if(tmp.pres.layerShown) { buttons++; }
+	if(tmp.crys.layerShown) { buttons++; }
+	if(tmp.hop.layerShown) { buttons++; }
+	return ((buttons*60)+10) + 'px'
+}
+
 function buyMaxBuyable(layer, id) {
 	if (!player[layer].unlocked) return
 	if (!tmp[layer].buyables[id].unlocked) return

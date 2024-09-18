@@ -67,7 +67,14 @@ var systemComponents = {
 	'layer-tab': {
 		props: ['layer', 'back', 'spacing', 'embedded'],
 		template: `<div v-bind:style="[tmp[layer].style ? tmp[layer].style : {}, (tmp[layer].tabFormat && !Array.isArray(tmp[layer].tabFormat)) ? tmp[layer].tabFormat[player.subtabs[layer].mainTabs].style : {}]" class="noBackground">
-		<div v-if="back" style="position: relative;"><button v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="goBack(layer)" style="width: 50px; height: 50px; background-image: url(resources/map-icon.webp); background-size: contain;"></button></div>
+		<div v-if="back" v-bind:style="{'position': 'fixed', 'width': '70px', 'height': buttonsHeightFunction(), 'background-color': '#0f0f0f', 'left': '0px', 'top': '0px', 'box-shadow': '0 0 10px 10px #0f0f0f', 'border-radius': '0 0 15px 0', 'z-index': '99999'}">
+			<button v-if="tmp.field.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('options-tab', 'tree')" style="border-color: var(--ghop); background-color: hsl(0, 0%, 27.5%); width: 50px; height: 50px; background-image: url(resources/options-icon.webp);background-size: contain; top: 10px;"></button>
+			<button v-if="tmp.field.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('info-tab', 'tree')" style="border-color: var(--ghop); background-color: hsl(0, 0%, 27.5%);    width: 50px; height: 50px; background-image: url(resources/info-icon.webp);   background-size: contain; top: 20px;"></button>
+			<button v-if="tmp.field.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('field', 'tree')" style="border-color: var(--grass); background-color: hsl(105, 85%, 22.5%);   width: 50px; height: 50px; background-image: url(resources/field-icon.webp);  background-size: contain; top: 30px;"></button>
+			<button v-if="tmp.pres.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('pres', 'tree')" style="border-color: var(--pres); background-color: hsl(180, 65%, 30%);        width: 50px; height: 50px; background-image: url(resources/city-icon.webp);   background-size: contain; top: 40px;"></button>
+			<button v-if="tmp.crys.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('crys', 'tree')" style="border-color: var(--crys); background-color: hsl(330, 100%, 35%);       width: 50px; height: 50px; background-image: url(resources/cave-icon.webp);   background-size: contain; top: 50px;"></button>
+			<button v-if="tmp.hop.layerShown" v-bind:class="back == 'big' ? 'other-back' : 'back'" v-on:click="showTab('hop', 'tree')" style="border-color: var(--ghop); background-color: hsl(0, 0%, 27.5%);           width: 50px; height: 50px; background-image: url(resources/cult-icon.webp);   background-size: contain; top: 60px;"></button>
+		</div>
 		<div v-if="!tmp[layer].tabFormat">
 			<div v-if="spacing" v-bind:style="{'height': spacing}" :key="this.$vnode.key + '-spacing'"></div>
 			<infobox v-if="tmp[layer].infoboxes" :layer="layer" :data="Object.keys(tmp[layer].infoboxes)[0]":key="this.$vnode.key + '-info'"></infobox>
@@ -87,7 +94,7 @@ var systemComponents = {
 			<achievements v-bind:style="tmp[layer].componentStyles.achievements" :layer="layer"></achievements>
 			<br><br>
 		</div>
-		<div v-if="tmp[layer].tabFormat">
+		<div v-if="tmp[layer].tabFormat" style="margin-left: 70px;">
 			<div v-if="Array.isArray(tmp[layer].tabFormat)"><div v-if="spacing" v-bind:style="{'height': spacing}"></div>
 				<column :layer="layer" :data="tmp[layer].tabFormat" :key="this.$vnode.key + '-col'"></column>
 			</div>
@@ -96,7 +103,7 @@ var systemComponents = {
 					<tab-buttons v-bind:style="tmp[layer].componentStyles['tab-buttons']" :layer="layer" :data="tmp[layer].tabFormat" :name="'mainTabs'"></tab-buttons>
 				</div>
 				<layer-tab v-if="tmp[layer].tabFormat[player.subtabs[layer].mainTabs].embedLayer" :layer="tmp[layer].tabFormat[player.subtabs[layer].mainTabs].embedLayer" :embedded="true" :key="this.$vnode.key + '-' + layer"></layer-tab>
-				<column v-else :layer="layer" :data="tmp[layer].tabFormat[player.subtabs[layer].mainTabs].content" :key="this.$vnode.key + '-col'"></column>
+				<column v-else :layer="layer" :data="tmp[layer].tabFormat[player.subtabs[layer].mainTabs].content" :key="this.$vnode.key + '-col'" style="width: calc(100% - 70px);"></column>
 			</div>
 		</div></div>
 			`
@@ -127,7 +134,8 @@ var systemComponents = {
         <div>
         <h2>{{modInfo.name}}</h2>
         <br>
-        <h3>{{VERSION.withName}}</h3>
+        <h3>{{VERSION.withName}}</h3><br>
+		<h4>Build {{VERSION.build}}</h4>
         <span v-if="modInfo.author">
             <br>
             Made by {{modInfo.author}}	
@@ -139,7 +147,7 @@ var systemComponents = {
 		<br>
         Inspired by Grass Cutting Incremental (not RGCI, the roblox one)
 		<br>
-        Sprites and formulas taken from the Grass Cutting Incremental wiki
+        Sprites taken from the Grass Cutting Incremental wiki
 		<br><br>
 		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
         <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>

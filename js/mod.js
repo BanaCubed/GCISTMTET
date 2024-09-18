@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.101",
+	num: 0.101,
 	name: "Grasshoppers",
-	build: 17,
+	build: 19,
 }
 
 let changelog = 
 	`<h1>Changelog:</h1><br><br>
-	<span style="text-align: left; position: absolute; left: 30px;">
+	<span style="text-align: left; position: absolute; left: 100px;">
 		<h2>v0.1</h2><br>
 			- Added <span style="color: var(--ghop)">Grasshoppers</span><br>
 			- Added <span style="color: var(--flow)">Flowers</span><br>

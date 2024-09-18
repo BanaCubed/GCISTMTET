@@ -64,6 +64,11 @@ addLayer('field', {
             description: "C: Crystallize",
             onPress() { doReset('crys') },
             unlocked() {return player.crys.done},
+        }, {
+            key: "i",
+            description: "I: Indoctrinate Grasshoppers",
+            onPress() { doReset('hop') },
+            unlocked() {return player.hop.done},
         },
     ],
     color: 'var(--grass)',
@@ -109,22 +114,6 @@ addLayer('field', {
                 'border-color': 'var(--level)',
                 'background-color': 'var(--level)',
             }
-        },
-        'Platinum': {
-            content: [
-                ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--plat); text-shadow: var(--plat) 0px 0px 10px;">${formatWhole(player.pres.platinum.max(0))}</h2> platinum`}],
-                ['raw-html', function(){return `(${format(tmp.pres.platOnCut)}/cut)` + (tmp.field.autoCut.gt(0)?` | (${format(tmp.pres.platOnCut.mul(tmp.field.autoCut))}/sec)`:'')}],
-                'blank',
-                ['layer-proxy', ['pres', [
-                    ['buyables', [2]]
-                ]]],
-                'blank',
-            ],
-            buttonStyle: {
-                'border-color': 'var(--plat)',
-                'background-color': 'var(--plat)',
-            },
-            unlocked(){return player.pres.done},
         },
     },
     bars: {

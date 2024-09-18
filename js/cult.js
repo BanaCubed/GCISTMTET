@@ -11,7 +11,7 @@ addLayer('hop', {
     },
     color: 'var(--ghop)',
     layerShown() { return player.crys.done },
-    image: 'resources/industrial-icon.webp',
+    image: 'resources/cult-icon.webp',
     nodeStyle: {
         'background-size': 'contain',
         'background-color': 'hsl(0, 0%, 27.5%)',
@@ -34,7 +34,7 @@ addLayer('hop', {
         return gain;
     },
     prestigeButtonText() {
-        return tmp.field.level.lt(30)?`Reach Level 200 to Indoctrinate`:`Indoctrinate ${formatWhole(getResetGain('hop'))} Grasshoppers<br><br>Indoctrinated Grasshoppers is boosted by Grass, Level and Rank`
+        return tmp.field.level.lt(200)?`Reach Level 200 to Indoctrinate`:`Indoctrinate ${formatWhole(getResetGain('hop'))} Grasshoppers<br><br>Indoctrinated Grasshoppers is boosted by Grass, Level and Rank`
     },
     tabFormat: {
         'Indoctrination': {
@@ -45,7 +45,7 @@ addLayer('hop', {
                 ['raw-html', function(){return tmp.hop.passiveGeneration.gt(0)?`(${format(tmp.hop.passiveGeneration.mul(getResetGain('hop')))}/sec)`:''}],
                 'blank',
                 ['bar', 'level'],
-                ['raw-html', function(){return player.hop.done?`x${format(tmp.hop.rankEffect)} Combat Stats`:'First Indoctrination unlocks Rank and Combat'}],
+                ['raw-html', function(){return player.hop.done?`x${format(tmp.hop.rankEffect)} Grasshoppers, Combat Stats`:'First Indoctrination unlocks Rank and Combat'}],
                 'blank',
             ],
         },
