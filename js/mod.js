@@ -13,9 +13,9 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
+	num: "0.101",
 	name: "Grasshoppers",
-	build: 16,
+	build: 17,
 }
 
 let changelog = 
@@ -81,7 +81,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return tmp.field.level.gte(200)
+	return player.hop.points.gte(1)
 }
 
 
