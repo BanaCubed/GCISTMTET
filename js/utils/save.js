@@ -214,6 +214,7 @@ function load() {
 	updateTemp();
 	updateTabFormats()
 	loadVue();
+	mainLoop()
 }
 
 function loadOptions() {

@@ -15,7 +15,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.101,
 	name: "Grasshoppers",
-	build: 21,
+	build: 22,
 }
 
 let changelog = 
@@ -24,6 +24,9 @@ let changelog =
 		<h2>v0.1</h2><br>
 			- Added <span style="color: var(--ghop)">Grasshoppers</span><br>
 			- Added <span style="color: var(--flow)">Flowers</span><br>
+			- Added <span style="color: var(--rank)">Ranks</span><br>
+			- Added <span style="color: var(--rank)">The Colosseum</span><br>
+			- Added <span style="color: var(--ghop)">Misc Features</span><br>
 			- Removed <span style="color: var(--ghop)">The Control Panel</span><br>
 			- Removed <span style="color: var(--auto)">Automation</span><br>
 			Endgame <span style="color: var(--level)">Level 200</span><br><br>

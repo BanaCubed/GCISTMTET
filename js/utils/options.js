@@ -14,6 +14,7 @@ function getStartOptions() {
 		forceTooltips: true,
 		hideMaxed: false,
 		science: false,
+		slowMode: false,
 	}
 }
 

@@ -9,8 +9,21 @@ addLayer('hop', {
         coloTier: new Decimal(0),
         opp: new Decimal(10),
         active: new Decimal(0),
+        enlistPortion: 100,
+        coloTimer: 3,
     }},
     update(diff) {
+        player.hop.coloTimer -= diff;
+        if(player.hop.coloTimer < 0) { // Colosseum Tick
+            player.hop.coloTimer = Math.max(0, player.hop.coloTimer+3);
+            player.hop.opp = player.hop.opp.sub(player.hop.active.max(0).mul(tmp.hop.dmg.sub(tmp.hop.oppStats[2]).max(0)).sub(tmp.hop.oppStats[3])).ceil().min(tmp.hop.oppStats[0]);
+            if(player.hop.opp.lte(0)) { // Colosseum Tierup
+                player.hop.coloTier = player.hop.coloTier.add(1);
+                player.hop.opp = layers.hop.oppStats()[0];
+            } else {
+                player.hop.active = player.hop.active.sub(tmp.hop.oppStats[1].div(tmp.hop.arm.add(1).max(1)).max(0)).ceil().max(0);
+            }
+        }
     },
     color: 'var(--ghop)',
     layerShown() { return player.crys.done },
@@ -57,9 +70,17 @@ addLayer('hop', {
             content: [
                 ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatWhole(player.hop.points.max(0))}</h2> Grasshoppers`}],
                 ['raw-html', function(){return `You are Rank <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(tmp.hop.rank.max(0))}</h2>`}],
+                ['raw-html', function(){return `You are at Stage <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(player.hop.coloTier.add(1).max(0))}</h2><br><br>Combat currently has no gameplay affect other than consuming Grasshoppers`}],
                 'blank',
+                ['clickable', 11],
+                'blank',
+                ['raw-html', 'Enlisting Percentage'],
+                ['slider', ['enlistPortion', 0, 100]],
+                'blank',
+                ['raw-html', function(){return `<div style="margin-bottom: 5px;">Combat tick in ${formatTime(player.hop.coloTimer)}</div>`}],
                 'colosseum',
                 'colo-stats',
+                'blank',
             ],
             unlocked(){return player.hop.done},
             buttonStyle: {
@@ -83,6 +104,24 @@ addLayer('hop', {
             unlocked(){return player.hop.done},
         },
     },
+    clickables: {
+        11: {
+            title: 'Enlist Grasshoppers',
+            display() {
+                return `Enlists ${formatWhole(player.hop.enlistPortion)}%, ${formatWhole(player.hop.points.mul(player.hop.enlistPortion/100).floor())} Grasshoppers`
+            },
+            canClick() { return player.hop.points.gte(1) },
+            onClick() {
+                player.hop.active = player.hop.active.add(player.hop.points.mul(player.hop.enlistPortion/100)).floor();
+                player.hop.points = player.hop.points.mul(Decimal.sub(1, player.hop.enlistPortion/100)).ceil();
+            },
+            style: {
+                width: '250px',
+                height: '50px',
+                'min-height': '50px',
+            },
+        },
+    },
     tooltip() { return `<h2>THE CULT</h2><br>${formatWhole(player.hop.points)} GH<br>Rank ${formatWhole(tmp.hop.rank)}` },
     doReset(layer) {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
@@ -97,11 +136,17 @@ addLayer('hop', {
     forRank(x = tmp.hop.rank) { return x.add(1).pow(2).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow_base(2.25) },
     branches: ['crys'],
-    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
-    insectMods: ['Weak', 'Scrawny', 'Common', 'Strong', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Demonic', 'Mythical', 'Heavenly', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite', 'Universal', 'Omnicient', 'Multiversal', 'Omniversal'],
+    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
+    insectMods: ['Weak', 'Scrawny', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Demonic', 'Mythical', 'Heavenly', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite', 'Universal', 'Omnicient', 'Multiversal', 'Omniversal'],
+    insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
-        const prefix = this.insectMods[player.hop.coloTier.div(this.insects.length).mod(this.insectMods.length).floor().toNumber()]
+        let prefix = this.insectMods[player.hop.coloTier.div(this.insects.length).mod(this.insectMods.length).floor().toNumber()]
+        if(player.hop.coloTier.gte(Decimal.mul(this.insects.length, this.insectMods.length).mul(4))) {
+            prefix = prefix + '+' + formatWhole(player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).floor())
+        } else if(player.hop.coloTier.gte(Decimal.mul(this.insects.length, this.insectMods.length))) {
+            prefix = prefix + this.insectModsPlusPlusPlus[player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).floor().toNumber()]
+        }
         return prefix + ' ' + insect
     },
     oppStats() {
@@ -109,7 +154,7 @@ addLayer('hop', {
             player.hop.coloTier.pow(2).pow_base(1.6).mul(10).floor(),
             player.hop.coloTier.pow(2.4).pow_base(1.2).floor(),
             player.hop.coloTier.pow(1.6).pow_base(1.6).mul(0.05).floor(),
-            player.hop.coloTier.pow(2).pow_base(1.6).div(10).floor(),
+            player.hop.coloTier.pow(2).pow_base(1.6).div(30).floor(),
         ]
     },
     dmg() {

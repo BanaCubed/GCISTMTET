@@ -176,6 +176,7 @@ var systemComponents = {
 			</tr>
             <tr>
                 <td><button class="opt" onclick="toggleOpt('offlineProd')">Offline Prod: {{ options.offlineProd?"ON":"OFF" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('slowMode')">Performance Mode: {{ options.slowMode?"ON":"OFF" }}</button></td>
             </tr>
         </table>`
     },

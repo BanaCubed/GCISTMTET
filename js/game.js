@@ -393,7 +393,7 @@ function hardReset(resetOptions) {
 
 var ticking = false
 
-var interval = setInterval(function() {
+function mainLoop() {
 	if (player===undefined||tmp===undefined) return;
 	if (ticking) return;
 	if (tmp.gameEnded&&!player.keepGoing) return;
@@ -425,6 +425,7 @@ var interval = setInterval(function() {
 	adjustPopupTime(trueDiff)
 	updateParticles(trueDiff)
 	ticking = false
-}, 50/3)
+	setTimeout(mainLoop, options.slowMode?100:50/3)
+}
 
 setInterval(function() {needCanvasUpdate = true}, 500)

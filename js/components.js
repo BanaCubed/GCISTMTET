@@ -82,12 +82,12 @@ function loadVue() {
 			key() {return this.$vnode.key}
 		},
 		template: `
-		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(0, 0%, 27.5%), var(--ghop)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(0, 0%, 29.15%), var(--ghop)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
 			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
 
-				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2><br>({{ formatWhole(player.hop.coloTier.add(1)) }})
+				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2>
 			</div>
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
@@ -108,7 +108,7 @@ function loadVue() {
 			key() {return this.$vnode.key}
 		},
 		template: `
-		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, darkred, red); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(0, 90%, 29.15%), var(--rank)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
 			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
@@ -118,7 +118,7 @@ function loadVue() {
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
-				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.active) }}</h2> Fighting<br>
+				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.active) }}</h2> Enlisted<br>
 				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
 				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.arm) }}</h2> DEF<br>
 			</div>
@@ -622,8 +622,7 @@ function loadVue() {
 	Vue.component('slider', {
 		props: ['layer', 'data'],
 		template: `
-			<div class="tooltipBox">
-			<tooltip :text="player[layer][data[0]]"></tooltip><input type="range" v-model="player[layer][data[0]]" :min="data[1]" :max="data[2]"></div>
+			<div class="tooltipBox" style="width: 150px;"><input type="range" v-model="player[layer][data[0]]" :min="data[1]" :max="data[2]"></div>
 		`
 	})
 

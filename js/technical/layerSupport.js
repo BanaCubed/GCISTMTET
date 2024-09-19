@@ -295,7 +295,8 @@ addLayer("info-tab", {
                     You have <h2 style="color: var(--crys);">${formatWhole(player.crys.points)}</h2> Crystals<br>
                     You have <h2 style="color: var(--flow);">${formatWhole(player.crys.flowers)}</h2> Flowers<br>`) + (!player.hop.done?'':`
                         <br><h2 style="color: var(--rank);">The Cult</h2><br>
-                    You have <h2 style="color: var(--ghop);">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>`)
+                    You have <h2 style="color: var(--ghop);">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>
+                    You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`)
                 }]
             ],
             color: 'var(--ghop)',

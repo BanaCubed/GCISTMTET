@@ -154,7 +154,6 @@ addLayer('field', {
                 width: '150px',
                 height: '150px',
             },
-            onHold() { this.onClick() },
         },
     },
     buyables: {
