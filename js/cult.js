@@ -167,26 +167,18 @@ addLayer('hop', {
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
         3: {
-            requirementDescription: 'Stage 5',
+            requirementDescription: 'Stage 27',
             effectDescription() { return `Every stage increases experience gain by +25% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
-            done() { return player.hop.coloTier.gte(400) },
+            done() { return player.hop.coloTier.gte(26) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
         4: {
-            requirementDescription: 'Stage 6',
-            effectDescription() { return `Every stage increases grasshoppers gain by +5% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
-            effect() { return player.hop.coloTier.add(1).pow_base(1.05) },
-            done() { return player.hop.coloTier.gte(500) },
-            unlocked() { return hasMilestone(this.layer, this.id-2) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
-        },
-        5: {
-            requirementDescription: 'Stage 8',
+            requirementDescription: 'Stage 32',
             effectDescription() { return `Every stage increases grasshoppers' END by +1<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1) },
-            done() { return player.hop.coloTier.gte(700) },
+            done() { return player.hop.coloTier.gte(31) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
@@ -232,6 +224,7 @@ addLayer('hop', {
     },
     arm() {
         let dmg = Decimal.dZero;
+        if(hasMilestone('hop', 4)) { dmg = dmg.add(milestoneEffect('hop', 4)); }
         return dmg.floor();
     },
 })

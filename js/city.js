@@ -173,11 +173,11 @@ addLayer('pres', {
         },
         15: {
             title: 'PP Passive PP',
-            cost(x) { return x.pow_base(1.75).mul(10000).ceil() },
+            cost(x) { return x.pow_base(1.15).mul(10000).ceil() },
             effect(x) { return x.div(100) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
             buy() { if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(10000).max(0.1).log(1.75).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buyMax() { let max = player[this.layer].points.floor().div(10000).max(0.1).log(1.15).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!player.crys.flautomation.includes('12')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases passive PP generation by +1% per level<br><br>Currently: ${formatWhole(tmp[this.layer].buyables[this.id].effect.mul(100))}%<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
