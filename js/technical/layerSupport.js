@@ -287,15 +287,18 @@ addLayer("info-tab", {
                     You have played for <h2 style="color: var(--ghop);">${formatTime(player.timePlayed)}</h2><br>
                         <br><h2 style="color: var(--grass);">The Field</h2><br>
                     You have <h2 style="color: var(--grass);">${formatWhole(player.field.points)}</h2> Grass<br>
-                    You have <h2 style="color: var(--level);">${formatWhole(tmp.field.unspentPerks)}</h2> Perks<br>` + (!player.pres.done?'':`
+                    You have <h2 style="color: var(--level);">${formatWhole(tmp.field.unspentPerks)}</h2> Perks<br>
+                    You are Level <h2 style="color: var(--level);">${formatWhole(tmp.field.level)}</h2><br>` + (!player.pres.done?'':`
                         <br><h2 style="color: var(--pres);">The City</h2><br>
                     You have <h2 style="color: var(--pres);">${formatWhole(player.pres.points)}</h2> Prestige Points<br>
-                    You have <h2 style="color: var(--plat);">${formatWhole(player.pres.platinum)}</h2> Platinum<br>`) + (!player.crys.done?'':`
+                    You have <h2 style="color: var(--plat);">${formatWhole(player.pres.platinum)}</h2> Platinum<br>
+                    You are Tier <h2 style="color: var(--tier);">${formatWhole(tmp.pres.tier)}</h2><br>`) + (!player.crys.done?'':`
                         <br><h2 style="color: var(--crys);">The Cave</h2><br>
                     You have <h2 style="color: var(--crys);">${formatWhole(player.crys.points)}</h2> Crystals<br>
                     You have <h2 style="color: var(--flow);">${formatWhole(player.crys.flowers)}</h2> Flowers<br>`) + (!player.hop.done?'':`
                         <br><h2 style="color: var(--rank);">The Cult</h2><br>
                     You have <h2 style="color: var(--ghop);">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>
+                    You are Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.rank)}</h2><br>
                     You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`)
                 }]
             ],

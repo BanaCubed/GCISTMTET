@@ -96,10 +96,6 @@ function loadVue() {
 					><tooltip :text="'HP is the health of the opponent<br><br>You want this to reach 0'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.opp) }}/{{ formatWhole(tmp.hop.oppStats[0]) }}</h2> HP<br>
 				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
 					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[1]) }}</h2> DMG<br>
-				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'DEF reduces your functional DMG against the opponent<br><br>If enemy DEF is above cult DMG, you cannot defeat it'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[2]) }}</h2> DEF<br>
-				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'REG stands for Regeneration<br><br>REG is the amount of HP the enemey regenerates each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[3]) }}</h2> REG
 			</div>
 		</div>
 		`

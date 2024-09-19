@@ -14,7 +14,7 @@ addLayer('field', {
         player.field.totalExp = player.field.totalExp.add(tmp.field.expOnCut.mul(tmp.field.autoCut).mul(diff));
         if(player.field.grass.lt(tmp.field.maxGrass || player.field.growTime.gt(0))) { player.field.growTime = player.field.growTime.sub(tmp.field.grassSpeed.mul(diff)); }
         if(player.field.grass.gte(tmp.field.maxGrass)) { player.field.growTime  = player.field.growTime.max(1); }
-        if(player.field.growTime.lt(0)) { player.field.grass = player.field.grass.add(player.field.growTime.ceil().mul(-1).mul(tmp.field.grassPerGrow)).min(tmp.field.maxGrass); player.field.growTime = player.field.growTime.add(player.field.growTime.ceil().mul(-1)); }
+        if(player.field.growTime.lt(0)) { player.field.grass = player.field.grass.add(player.field.growTime.floor().mul(-1).mul(tmp.field.grassPerGrow)).min(tmp.field.maxGrass); player.field.growTime = player.field.growTime.add(player.field.growTime.floor().mul(-1)); }
         if(tmp.field.level.sub(1).mul(tmp.field.perksPerLevel).gt(player.field.bestPerks)) { player.field.bestPerks = tmp.field.level.sub(1).mul(tmp.field.perksPerLevel) }
     },
     automate() {

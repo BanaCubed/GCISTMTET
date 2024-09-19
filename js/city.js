@@ -371,7 +371,7 @@ addLayer('pres', {
     tier() { return player.pres.totalTp.floor().div(1500).max(0).add(1).log(1.5).pow(0.5).floor() },
     tpForLevel(x = tmp.pres.tier) { return x.pow(2).pow_base(1.5).sub(1).mul(1500).ceil() },
     tpToLevel() { return this.tpForLevel(tmp.pres.tier.add(1)).sub(this.tpForLevel(tmp.pres.tier)) },
-    tierEffect() { return tmp.pres.tier.pow_base(4.5) },
+    tierEffect() { return tmp.pres.tier.pow(1.25).pow_base(4.5) },
     tpOnCut() {
         if(!player.pres.done){return Decimal.dZero}
         let gain = Decimal.dOne;

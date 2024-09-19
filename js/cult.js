@@ -16,7 +16,7 @@ addLayer('hop', {
         player.hop.coloTimer -= diff;
         if(player.hop.coloTimer < 0) { // Colosseum Tick
             player.hop.coloTimer = Math.max(0, player.hop.coloTimer+tmp.hop.tickLength);
-            player.hop.opp = player.hop.opp.sub(player.hop.active.max(0).mul(tmp.hop.dmg.sub(tmp.hop.oppStats[2]).max(0)).sub(tmp.hop.oppStats[3])).ceil().min(tmp.hop.oppStats[0]);
+            player.hop.opp = player.hop.opp.sub(player.hop.active.max(0).mul(tmp.hop.dmg.max(0))).ceil().min(tmp.hop.oppStats[0]);
             if(player.hop.opp.lte(0)) { // Colosseum Tierup
                 player.hop.coloTier = player.hop.coloTier.add(1);
                 player.hop.opp = layers.hop.oppStats()[0];
@@ -26,7 +26,9 @@ addLayer('hop', {
         }
     },
     tickLength() {
-        return 15;
+        let length = 15;
+        if(hasMilestone('hop', 2)) { length -= 7; }
+        return length
     },
     color: 'var(--ghop)',
     layerShown() { return player.crys.done },
@@ -143,24 +145,24 @@ addLayer('hop', {
     },
     milestones: {
         0: {
-            requirementDescription: 'Stage 2',
+            requirementDescription: 'Stage 4',
             effectDescription() { return `Every stage increases crystals gain by +100%<br>Currently: x${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(2) },
-            done() { return player.hop.coloTier.gte(1) },
+            done() { return player.hop.coloTier.gte(3) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
         1: {
-            requirementDescription: 'Stage 3',
+            requirementDescription: 'Stage 10',
             effectDescription() { return `Every stage increases TP gain by +100%<br>Also unlocks an accomplishment | Currently: x${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(2) },
-            done() { return player.hop.coloTier.gte(2) },
+            done() { return player.hop.coloTier.gte(9) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
         2: {
-            requirementDescription: 'Stage 4',
-            effectDescription() { return `Every stage increases grass gain by +25% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
+            requirementDescription: 'Stage 20',
+            effectDescription() { return `Every stage increases grass gain by +25% compounding<br>Also reduces Combat Tick time to 8s | Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
-            done() { return player.hop.coloTier.gte(3) },
+            done() { return player.hop.coloTier.gte(19) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
@@ -168,7 +170,7 @@ addLayer('hop', {
             requirementDescription: 'Stage 5',
             effectDescription() { return `Every stage increases experience gain by +25% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
-            done() { return player.hop.coloTier.gte(4) },
+            done() { return player.hop.coloTier.gte(400) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
@@ -176,15 +178,15 @@ addLayer('hop', {
             requirementDescription: 'Stage 6',
             effectDescription() { return `Every stage increases grasshoppers gain by +5% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1).pow_base(1.05) },
-            done() { return player.hop.coloTier.gte(5) },
+            done() { return player.hop.coloTier.gte(500) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
         5: {
             requirementDescription: 'Stage 8',
-            effectDescription() { return `Every stage increases defense by +1 compounding<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
+            effectDescription() { return `Every stage increases grasshoppers' END by +1<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1) },
-            done() { return player.hop.coloTier.gte(7) },
+            done() { return player.hop.coloTier.gte(700) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
         },
@@ -201,27 +203,25 @@ addLayer('hop', {
     },
     rank() { return player.hop.bestReset.floor().div(10).max(0).add(1).log(1.5).pow(0.5).floor() },
     forRank(x = tmp.hop.rank) { return x.add(1).pow(2).pow_base(1.5).sub(1).mul(10).ceil() },
-    rankEffect() { return tmp.hop.rank.pow_base(2.25) },
+    rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
     branches: ['crys'],
-    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
-    insectMods: ['Weak', 'Scrawny', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Demonic', 'Mythical', 'Heavenly', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite', 'Universal', 'Omnicient', 'Multiversal', 'Omniversal'],
+    insects: ['Ant', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon'],
+    insectMods: ['Weak', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
         let prefix = this.insectMods[player.hop.coloTier.div(this.insects.length).mod(this.insectMods.length).floor().toNumber()]
         if(player.hop.coloTier.gte(Decimal.mul(this.insects.length, this.insectMods.length).mul(4))) {
-            prefix = prefix + '+' + formatWhole(player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).floor())
+            insect = insect + '+' + formatWhole(player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).floor())
         } else if(player.hop.coloTier.gte(Decimal.mul(this.insects.length, this.insectMods.length))) {
-            prefix = prefix + this.insectModsPlusPlusPlus[player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).floor().toNumber()]
+            insect = insect + this.insectModsPlusPlusPlus[player.hop.coloTier.div(this.insects.length).div(this.insectMods.length).sub(1).floor().toNumber()]
         }
         return prefix + ' ' + insect
     },
     oppStats() {
         return [
-            player.hop.coloTier.pow(1.5).pow_base(1.4).mul(10).floor(),
-            player.hop.coloTier.pow(1.5).pow_base(1.2).floor(),
-            player.hop.coloTier.pow(1.5).pow_base(1.1).mul(0.05).floor(),
-            player.hop.coloTier.pow(1.5).pow_base(1.15).div(50).floor(),
+            player.hop.coloTier.pow_base(1.2).mul(10).floor(),
+            player.hop.coloTier.pow_base(1.1).mul(player.hop.coloTier.pow(0.5)).floor(),
         ]
     },
     dmg() {

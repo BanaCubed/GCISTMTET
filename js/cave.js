@@ -150,7 +150,7 @@ addLayer('crys', {
                 player.crys.maxTier.pow(1.6).pow_base(1.2),
             ]},
             upgs() {
-                const thresholds = [new Decimal(10), new Decimal(15), new Decimal(20), new Decimal(25), Decimal.dInf]
+                const thresholds = [new Decimal(7), new Decimal(10), new Decimal(12), new Decimal(15), Decimal.dInf]
                 let reps = 0
                 while (player.crys.maxTier.gte(thresholds[reps])) { reps++; }
                 return [thresholds[reps], reps]
@@ -202,7 +202,7 @@ addLayer('crys', {
         4: {
             requirementDescription() { return `Best Crystals` },
             effectDescription() { return `
-                Highest crystals obtained since last
+                Highest crystals obtained since last<br>
                 ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxCrys)} Crystals<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} Grasshoppers` },
             done(){return false},
