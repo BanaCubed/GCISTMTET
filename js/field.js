@@ -99,6 +99,7 @@ addLayer('field', {
                 ['display-text', 'Hold on an upgrade to max'],
                 'blank',
             ],
+            color: 'var(--grass)',
         },
         'Perks': {
             content: [
@@ -113,7 +114,8 @@ addLayer('field', {
             buttonStyle: {
                 'border-color': 'var(--level)',
                 'background-color': 'var(--level)',
-            }
+            },
+            color: 'var(--level)',
         },
     },
     bars: {

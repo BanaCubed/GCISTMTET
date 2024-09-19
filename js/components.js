@@ -82,12 +82,20 @@ function loadVue() {
 			key() {return this.$vnode.key}
 		},
 		template: `
-		<div style="width: 400px; height: 500px; background-image: linear-gradient(45deg, darkgray, gray); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(0, 0%, 27.5%), var(--ghop)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
 			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
 
-				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">{{ tmp.hop.opponentName }}</h2>
+				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2><br>({{ formatWhole(player.hop.coloTier.add(1)) }})
+			</div>
+
+			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
+
+				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.opp) }}/{{ formatWhole(tmp.hop.oppStats[0]) }}</h2> HP<br>
+				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[1]) }}</h2> DMG<br>
+				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[2]) }}</h2> DEF<br>
+				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[3]) }}</h2> REG
 			</div>
 		</div>
 		`
@@ -100,12 +108,19 @@ function loadVue() {
 			key() {return this.$vnode.key}
 		},
 		template: `
-		<div style="width: 400px; height: 500px; background-image: linear-gradient(45deg, darkred, red); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, darkred, red); border-width: 5px; border-style: solid; border-color: #0f0f0f;
 			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
 
-				Cult's Stats<br><h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">Grasshoppers</h2>
+				Cult's Stats<br><h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">Grasshoppers</h2>
+			</div>
+
+			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
+
+				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.active) }}</h2> Fighting<br>
+				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
+				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.arm) }}</h2> DEF<br>
 			</div>
 		</div>
 		`

@@ -6,7 +6,9 @@ addLayer('hop', {
         points: new Decimal(0),
         done: false,
         bestReset: new Decimal(0),
-        coloTier: new Decimal(0)
+        coloTier: new Decimal(0),
+        opp: new Decimal(10),
+        active: new Decimal(0),
     }},
     update(diff) {
     },
@@ -46,25 +48,25 @@ addLayer('hop', {
                 ['raw-html', function(){return tmp.hop.passiveGeneration.gt(0)?`(${format(tmp.hop.passiveGeneration.mul(getResetGain('hop')))}/sec)`:''}],
                 'blank',
                 ['bar', 'level'],
-                ['raw-html', function(){return player.hop.done?`x${format(tmp.hop.rankEffect)} Grasshoppers, Combat Stats`:'First Indoctrination unlocks Rank and Combat'}],
+                ['raw-html', function(){return player.hop.done?`x${format(tmp.hop.rankEffect)} Grasshoppers, Damage`:'First Indoctrination unlocks Rank and Combat'}],
                 'blank',
             ],
+            color: 'var(--ghop)',
         },
         'The Colosseum': {
             content: [
                 ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatWhole(player.hop.points.max(0))}</h2> Grasshoppers`}],
                 ['raw-html', function(){return `You are Rank <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(tmp.hop.rank.max(0))}</h2>`}],
                 'blank',
-                ['row', [
-                    'colo-stats',
-                    'colosseum',
-                ]]
+                'colosseum',
+                'colo-stats',
             ],
             unlocked(){return player.hop.done},
             buttonStyle: {
                 'background-color': 'var(--rank)',
                 'border-color': 'var(--rank)',
             },
+            color: 'var(--rank)',
         },
     },
     bars: {
@@ -93,13 +95,30 @@ addLayer('hop', {
     },
     rank() { return player.hop.bestReset.floor().div(10).max(0).add(1).log(1.5).pow(0.5).floor() },
     forRank(x = tmp.hop.rank) { return x.add(1).pow(2).pow_base(1.5).sub(1).mul(10).ceil() },
-    rankEffect() { return tmp.hop.rank.pow_base(2.5) },
+    rankEffect() { return tmp.hop.rank.pow_base(2.25) },
     branches: ['crys'],
-    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Kitten', 'Dog', 'Horse', 'Elephant', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
-    insectMods: ['Weak', 'Scrawny', 'Common', 'Strong', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Mythical', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite'],
+    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
+    insectMods: ['Weak', 'Scrawny', 'Common', 'Strong', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Demonic', 'Mythical', 'Heavenly', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite', 'Universal', 'Omnicient', 'Multiversal', 'Omniversal'],
     opponentName() {
         const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
         const prefix = this.insectMods[player.hop.coloTier.div(this.insects.length).mod(this.insectMods.length).floor().toNumber()]
         return prefix + ' ' + insect
+    },
+    oppStats() {
+        return [
+            player.hop.coloTier.pow(2).pow_base(1.6).mul(10).floor(),
+            player.hop.coloTier.pow(2.4).pow_base(1.2).floor(),
+            player.hop.coloTier.pow(1.6).pow_base(1.6).mul(0.05).floor(),
+            player.hop.coloTier.pow(2).pow_base(1.6).div(10).floor(),
+        ]
+    },
+    dmg() {
+        let dmg = Decimal.dOne;
+        dmg = dmg.mul(tmp.hop.rankEffect);
+        return dmg.floor();
+    },
+    arm() {
+        let dmg = Decimal.dZero;
+        return dmg.floor();
     },
 })

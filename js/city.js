@@ -86,6 +86,7 @@ addLayer('pres', {
                 ['buyables', [1]],
                 'blank',
             ],
+            color: 'var(--pres)',
         },
         'Platinum': {
             content: [
@@ -100,6 +101,7 @@ addLayer('pres', {
                 'background-color': 'var(--plat)',
             },
             unlocked(){return player.pres.done},
+            color: 'var(--plat)',
         },
     },
     bars: {

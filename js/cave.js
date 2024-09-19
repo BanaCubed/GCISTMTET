@@ -67,6 +67,7 @@ addLayer('crys', {
                 ['buyables', [1]],
                 'blank',
             ],
+            color: 'var(--crys)',
         },
         'Accomplishments': {
             content: [
@@ -82,6 +83,7 @@ addLayer('crys', {
                 'background-color': 'var(--acomp)',
             },
             unlocked(){return player.crys.done},
+            color: 'var(--acomp)',
         },
         'Flowers': {
             content: [
@@ -103,6 +105,7 @@ addLayer('crys', {
                 'background-color': 'var(--flow)',
             },
             unlocked(){return player.crys.done},
+            color: 'var(--flow)',
         },
     },
     tooltip() { return `<h2>THE CAVE</h2><br>${formatWhole(player.crys.points)} Crystals<br>${formatWhole(player.crys.flowers)} Flowers`; },
