@@ -145,7 +145,7 @@ var systemComponents = {
         <br>
         The Prestige Tree made by Jacorb and Aarex
 		<br>
-        Inspired by Grass Cutting Incremental (not RGCI, the roblox one)
+        Inspired by Grass Cutting Incremental
 		<br>
         Sprites taken from the Grass Cutting Incremental wiki
 		<br><br>
@@ -154,7 +154,6 @@ var systemComponents = {
         <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
         <a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">Main Prestige Tree server</a><br>
 		<br><br>
-        Time Played: {{ formatTime(player.timePlayed) }}<br><br>
         <h3>Hotkeys</h3><br>
         <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{key.description}}</span></div>
     `
@@ -172,7 +171,6 @@ var systemComponents = {
             </tr>
             <tr>
                 <td><button class="opt" onclick="adjustMSDisp()">Show Milestones: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('hqTree')">High-Quality Tree: {{ options.hqTree?"ON":"OFF" }}</button></td>
                 <td><button class="opt" onclick="toggleOpt('science')">Scientific Notation: {{ options.science?"ON":"OFF" }}</button></td>
                 <td><button class="opt" onclick="toggleOpt('hideMaxed')">Maxed Upgrades: {{ options.hideMaxed?"HIDDEN":"SHOWN" }}</button></td>
 			</tr>

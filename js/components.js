@@ -75,6 +75,42 @@ function loadVue() {
 		`
 	})
 
+	// data = an array of Components to be displayed in a column
+	Vue.component('colosseum', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `
+		<div style="width: 400px; height: 500px; background-image: linear-gradient(45deg, darkgray, gray); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
+
+			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
+
+				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">{{ tmp.hop.opponentName }}</h2>
+			</div>
+		</div>
+		`
+	})
+
+	// data = an array of Components to be displayed in a column
+	Vue.component('colo-stats', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `
+		<div style="width: 400px; height: 500px; background-image: linear-gradient(45deg, darkred, red); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;">
+
+			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
+
+				Cult's Stats<br><h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">Grasshoppers</h2>
+			</div>
+		</div>
+		`
+	})
+
 	// data [other layer, tabformat for within proxy]
 	Vue.component('layer-proxy', {
 		props: ['layer', 'data'],

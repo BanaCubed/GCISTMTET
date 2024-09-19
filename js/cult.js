@@ -6,6 +6,7 @@ addLayer('hop', {
         points: new Decimal(0),
         done: false,
         bestReset: new Decimal(0),
+        coloTier: new Decimal(0)
     }},
     update(diff) {
     },
@@ -51,13 +52,19 @@ addLayer('hop', {
         },
         'The Colosseum': {
             content: [
-                ['raw-html', 'Uninished, feel free to grind grasshoppers in the meantime.']
+                ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatWhole(player.hop.points.max(0))}</h2> Grasshoppers`}],
+                ['raw-html', function(){return `You are Rank <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(tmp.hop.rank.max(0))}</h2>`}],
+                'blank',
+                ['row', [
+                    'colo-stats',
+                    'colosseum',
+                ]]
             ],
             unlocked(){return player.hop.done},
             buttonStyle: {
                 'background-color': 'var(--rank)',
                 'border-color': 'var(--rank)',
-            }
+            },
         },
     },
     bars: {
@@ -75,9 +82,6 @@ addLayer('hop', {
         },
     },
     tooltip() { return `<h2>THE CULT</h2><br>${formatWhole(player.hop.points)} GH<br>Rank ${formatWhole(tmp.hop.rank)}` },
-    buyables: {
-        
-    },
     doReset(layer) {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
         if(tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return }
@@ -91,4 +95,11 @@ addLayer('hop', {
     forRank(x = tmp.hop.rank) { return x.add(1).pow(2).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow_base(2.5) },
     branches: ['crys'],
+    insects: ['Ant', 'Catterpillar', 'Aphid', 'Stag Beetle', 'Praying Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Kitten', 'Dog', 'Horse', 'Elephant', 'Rhinoceros', 'Stegosaurus', 'Brachiosaurus', 'T-Rex', 'Megalodon'],
+    insectMods: ['Weak', 'Scrawny', 'Common', 'Strong', 'Powerful', 'Master', 'Gifted', 'Magical', 'Legendary', 'Ascendant', 'Mythical', 'Transcendant', 'Godly', 'Omega', 'Aleph', 'Infinite'],
+    opponentName() {
+        const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
+        const prefix = this.insectMods[player.hop.coloTier.div(this.insects.length).mod(this.insectMods.length).floor().toNumber()]
+        return prefix + ' ' + insect
+    },
 })

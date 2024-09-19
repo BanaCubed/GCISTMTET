@@ -279,8 +279,36 @@ const RIGHT = 3
 
 
 addLayer("info-tab", {
-    tabFormat: ["info-tab"],
-    row: "otherside"
+    tabFormat: {
+        Stats: {
+            content: [
+                ['raw-html', function(){return `
+                    You have played for <h2 class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatTime(player.timePlayed)}</h2><br>
+                        <br><h2 class="overlayThing" id="points" style="color: var(--grass); text-shadow: var(--grass) 0px 0px 10px;">The Field</h2><br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--grass); text-shadow: var(--grass) 0px 0px 10px;">${formatWhole(player.field.points)}</h2> Grass<br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--level); text-shadow: var(--level) 0px 0px 10px;">${formatWhole(tmp.field.unspentPerks)}</h2> Perks<br>
+                    You are Level <h2 class="overlayThing" id="points" style="color: var(--level); text-shadow: var(--level) 0px 0px 10px;">${formatWhole(tmp.field.level)}</h2><br>` + (!player.pres.done?'':`
+                        <br><h2 class="overlayThing" id="points" style="color: var(--pres); text-shadow: var(--pres) 0px 0px 10px;">The City</h2><br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--pres); text-shadow: var(--pres) 0px 0px 10px;">${formatWhole(player.pres.points)}</h2> Prestige Points<br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--plat); text-shadow: var(--plat) 0px 0px 10px;">${formatWhole(player.pres.platinum)}</h2> Platinum<br>
+                    You are Tier <h2 class="overlayThing" id="points" style="color: var(--tier); text-shadow: var(--tier) 0px 0px 10px;">${formatWhole(tmp.pres.tier)}</h2><br>`) + (!player.crys.done?'':`
+                        <br><h2 class="overlayThing" id="points" style="color: var(--crys); text-shadow: var(--crys) 0px 0px 10px;">The Cave</h2><br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--crys); text-shadow: var(--crys) 0px 0px 10px;">${formatWhole(player.crys.points)}</h2> Crystals<br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--flow); text-shadow: var(--flow) 0px 0px 10px;">${formatWhole(player.crys.flowers)}</h2> Flowers<br>`) + (!player.hop.done?'':`
+                        <br><h2 class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">The Cult</h2><br>
+                    You have <h2 class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>
+                    You are Rank <h2 class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(tmp.hop.rank)}</h2><br>`)
+                }]
+            ]
+        },
+        'Info': {
+            content: [
+                'info-tab',
+            ]
+        }
+    },
+    row: "otherside",
+    color: 'var(--ghop)'
 })
 
 addLayer("options-tab", {

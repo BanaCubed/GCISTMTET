@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "Grass Cutting Incremental's Scuffed TMT Evil Twin",
+	name: "Grasshopper Conquest Incremental",
 	id: "gcistmtet",
 	author: "BanaCubed",
 	pointsName: "grass",
@@ -15,7 +15,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.101,
 	name: "Grasshoppers",
-	build: 19,
+	build: 20,
 }
 
 let changelog = 
