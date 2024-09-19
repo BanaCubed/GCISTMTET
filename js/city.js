@@ -380,6 +380,7 @@ addLayer('pres', {
         gain = gain.mul(tmp.pres.buyables[28].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[1]);
+        if(hasMilestone('hop', 1)) { gain = gain.mul(tmp.hop.milestones[1].effect); }
         return gain;
     },
     platOnCut() {

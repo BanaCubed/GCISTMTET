@@ -12,6 +12,7 @@ addLayer('crys', {
             maxTier: new Decimal(0),
             maxGrass: new Decimal(0),
             maxPres: new Decimal(0),
+            maxCrys: new Decimal(0,)
         };
     },
     update(diff) {
@@ -21,6 +22,7 @@ addLayer('crys', {
             player.crys.maxTier = player.crys.maxTier.max(tmp.pres.tier)
             player.crys.maxGrass = player.crys.maxGrass.max(player.field.points)
             player.crys.maxPres = player.crys.maxPres.max(player.pres.points)
+            if(hasMilestone('hop', 1)) { player.crys.maxCrys = player.crys.maxCrys.max(player.crys.points) }
         }
     },
     color: 'var(--crys)',
@@ -40,6 +42,7 @@ addLayer('crys', {
         gain = gain.mul(tmp.field.buyables[29].effect);
         gain = gain.mul(tmp.pres.buyables[18].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[0]);
+        if(hasMilestone('hop', 0)) { gain = gain.mul(tmp.hop.milestones[0].effect); }
         return gain.floor();
     },
     baseResource: 'Levels',
@@ -76,6 +79,7 @@ addLayer('crys', {
                     ['column', [['milestone', 1], 'blank']],
                     ['column', [['milestone', 2], 'blank']],
                     ['column', [['milestone', 3], 'blank']],
+                    ['column', [['milestone', 4], 'blank']],
                 ]],
             ],
             buttonStyle: {
@@ -194,6 +198,20 @@ addLayer('crys', {
                 return [thresholds[reps], reps]
             },
             style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--pres))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+        4: {
+            requirementDescription() { return `Best Crystals` },
+            effectDescription() { return `
+                Highest crystals obtained since last
+                ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxCrys)} Crystals<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} Grasshoppers` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxCrys.max(1).log(1000).add(1).pow(0.5),
+                player.crys.maxCrys.max(1).log(10).add(1).pow(0.25),
+            ]},
+            unlocked(){return hasMilestone('hop', 1)},
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--crys))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
         },
 
     },
@@ -416,6 +434,7 @@ addLayer('crys', {
         if (tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return; }
         let keep = ['done'];
         if (tmp[layer].realm != 0) { keep.push('flowers', 'flautomation') }
+        if (tmp[layer].row <= 3) { keep.push('maxCrys') }
         layerDataReset(this.layer, keep);
     },
     onPrestige(gain) {

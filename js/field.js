@@ -435,6 +435,7 @@ addLayer('field', {
         gain = gain.mul(tmp.pres.buyables[11].effect);
         gain = gain.mul(tmp.pres.buyables[26].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[0]);
+        if(hasMilestone('hop', 2)) { gain = gain.mul(tmp.hop.milestones[2].effect); }
         return gain;
     },
     expOnCut() {
@@ -447,6 +448,7 @@ addLayer('field', {
         gain = gain.mul(tmp.pres.buyables[27].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[1].effect[1]);
+        if(hasMilestone('hop', 3)) { gain = gain.mul(tmp.hop.milestones[3].effect); }
         return gain;
     },
     grassSpeed() {

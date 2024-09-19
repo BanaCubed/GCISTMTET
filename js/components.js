@@ -87,15 +87,19 @@ function loadVue() {
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
 
-				Opponent's Stats<br><h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2>
+				Opponent Stats<br><h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2>
 			</div>
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
-				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.opp) }}/{{ formatWhole(tmp.hop.oppStats[0]) }}</h2> HP<br>
-				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[1]) }}</h2> DMG<br>
-				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[2]) }}</h2> DEF<br>
-				<h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.oppStats[3]) }}</h2> REG
+				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'HP is the health of the opponent<br><br>You want this to reach 0'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.opp) }}/{{ formatWhole(tmp.hop.oppStats[0]) }}</h2> HP<br>
+				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[1]) }}</h2> DMG<br>
+				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'DEF reduces your functional DMG against the opponent<br><br>If enemy DEF is above cult DMG, you cannot defeat it'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[2]) }}</h2> DEF<br>
+				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'REG stands for Regeneration<br><br>REG is the amount of HP the enemey regenerates each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[3]) }}</h2> REG
 			</div>
 		</div>
 		`
@@ -113,14 +117,17 @@ function loadVue() {
 
 			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
 
-				Cult's Stats<br><h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">Grasshoppers</h2>
+				Cult Stats<br><h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">The Grasshoppers</h2>
 			</div>
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
-				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(player.hop.active) }}</h2> Enlisted<br>
-				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
-				<h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ formatWhole(tmp.hop.arm) }}</h2> DEF<br>
+				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'ENL stands for Enlisted<br><br>ENL is the amount of living grasshoppers enlisted in The Colosseum'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.active) }}</h2> ENL<br>
+				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'DMG is the amount of damage each enlisted grasshopper deals each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
+				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'END stands for Endurance<br><br>END increases the amount of damage required to kill a grasshopper<br><br>If your END is above enemy DMG, grasshoppers do not die'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.arm) }}</h2> END<br>
 			</div>
 		</div>
 		`
