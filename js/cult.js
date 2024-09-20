@@ -203,8 +203,8 @@ addLayer('hop', {
     forRank(x = tmp.hop.rank) { return x.add(1).pow(7/4).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
     branches: ['crys'],
-    insects: ['Ant', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon'],
-    insectMods: ['Weak', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
+    insects: ['Amoeba', 'Ant', 'Flower', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon'],
+    insectMods: ['Weak', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Psycho', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
