@@ -15,7 +15,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.103,
 	name: "Grasshoppers",
-	build: 24,
+	build: 25,
 }
 
 let changelog = 
@@ -105,8 +105,8 @@ function maxTickLength() {
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
 	if(oldVersion<0.103) {
-		player.hop.points = player.hop.points.max(1000);
-		player.hop.coloTier = player.hop.coloTier.max(50);
-		player.hop.active = player.hop.active.max(1000);
+		player.hop.points = player.hop.points.min(1000);
+		player.hop.coloTier = player.hop.coloTier.min(50);
+		player.hop.active = player.hop.active.min(1000);
 	}
 }
