@@ -199,8 +199,8 @@ addLayer('hop', {
         player.hop.done = true
         player.hop.bestReset = player.hop.bestReset.max(gain)
     },
-    rank() { return player.hop.bestReset.floor().div(10).max(0).add(1).log(1.5).pow(0.5).floor() },
-    forRank(x = tmp.hop.rank) { return x.add(1).pow(2).pow_base(1.5).sub(1).mul(10).ceil() },
+    rank() { return player.hop.bestReset.floor().div(10).max(0).add(1).log(1.5).pow(4/7).floor() },
+    forRank(x = tmp.hop.rank) { return x.add(1).pow(7/4).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
     branches: ['crys'],
     insects: ['Ant', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon'],
@@ -220,7 +220,11 @@ addLayer('hop', {
         return [
             player.hop.coloTier.pow_base(1.2).mul(10).floor(),
             player.hop.coloTier.pow_base(1.1).mul(player.hop.coloTier.pow(0.5)).floor(),
-        ]
+        ];
+    },
+    highestOneShot() {
+        const plrDmg = player.hop.active.mul(tmp.hop.dmg);
+        return plrDmg.max(1).div(10).log(1.2).max(0).floor();
     },
     dmg() {
         let dmg = Decimal.dOne;

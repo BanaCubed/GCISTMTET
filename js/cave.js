@@ -25,6 +25,15 @@ addLayer('crys', {
             if(hasMilestone('hop', 1)) { player.crys.maxCrys = player.crys.maxCrys.max(player.crys.points) }
         }
     },
+    automate() {
+        if(player.crys.flautomation.includes('51')) {
+            buyMaxBuyable('crys', 11);
+            buyMaxBuyable('crys', 12);
+            buyMaxBuyable('crys', 13);
+            buyMaxBuyable('crys', 14);
+            buyMaxBuyable('crys', 15);
+        }
+    },
     color: 'var(--crys)',
     layerShown() { return player.pres.done; },
     image: 'resources/cave-icon.webp',
@@ -100,7 +109,8 @@ addLayer('crys', {
                     [11, 12, 13],
                     [21, 22, 23],
                     [31, 32],
-                    [41],
+                    [41, 42],
+                    [51],
                 ]],
                 'blank',
             ],
@@ -224,7 +234,7 @@ addLayer('crys', {
             effect(x) { return x; },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost) && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit); },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); },
-            buyMax() { let max = player[this.layer].points.floor().div(1).max(0.1).log(1.15).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
+            buyMax() { let max = player[this.layer].points.floor().div(1).max(0.1).log(1.15).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } if(!player.crys.flautomation.includes('42')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
             display() {
                 return `Increases base flower gain by +1/sec<br><br>Currently: +${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
@@ -236,7 +246,7 @@ addLayer('crys', {
             effect(x) { return x.div(20).add(1); },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost) && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit); },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); },
-            buyMax() { let max = player[this.layer].points.floor().div(1).max(0.1).log(1.2).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
+            buyMax() { let max = player[this.layer].points.floor().div(1).max(0.1).log(1.2).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } if(!player.crys.flautomation.includes('42')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
             display() {
                 return `Increases autocut and multicut by +5% per level<br>First level causes autocut to always be at least 1<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
@@ -248,7 +258,7 @@ addLayer('crys', {
             effect(x) { return x.pow_base(1.01); },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost) && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit); },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); },
-            buyMax() { let max = player[this.layer].points.floor().div(5).max(0.1).log(1.12).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
+            buyMax() { let max = player[this.layer].points.floor().div(5).max(0.1).log(1.12).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } if(!player.crys.flautomation.includes('42')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
             display() {
                 return `Increases platinum gain by +1% compounding per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
@@ -260,7 +270,7 @@ addLayer('crys', {
             effect(x) { return x.div(2).add(1); },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost) && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit); },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); },
-            buyMax() { let max = player[this.layer].points.floor().div(50).max(0.1).log(1.12).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
+            buyMax() { let max = player[this.layer].points.floor().div(50).max(0.1).log(1.12).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } if(!player.crys.flautomation.includes('42')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
             display() {
                 return `Increases TP, EXP and PP gain by +50% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
@@ -272,7 +282,7 @@ addLayer('crys', {
             effect(x) { return x; },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost) && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit); },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); },
-            buyMax() { let max = player[this.layer].points.floor().div(100).max(0.1).log(1.4).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
+            buyMax() { let max = player[this.layer].points.floor().div(100).max(0.1).log(1.4).add(1).max(0).floor().min(this.purchaseLimit); if (max.lte(getBuyableAmount(this.layer, this.id))) { return; } if(!player.crys.flautomation.includes('42')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)); },
             display() {
                 return `Increases grass per grow by +1 per level<br><br>Currently: +${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
@@ -299,6 +309,37 @@ addLayer('crys', {
                 height: '160px',
             },
         },
+        12: {
+            title: 'Neverending PP',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(10000),
+            display() {
+                return `Prestige upgrades no longer spend PP<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+        13: {
+            title: 'Neverending Platinum',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(250000),
+            display() {
+                return `Platinum upgrades no longer spend platinum<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+
         21: {
             title: 'Flautomate Grass',
             canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('11'); },
@@ -314,54 +355,6 @@ addLayer('crys', {
                 height: '160px',
             },
             branches: [11],
-        },
-        31: {
-            title: 'Flautomate Perks',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('21') && player.crys.flautomation.includes('22'); },
-            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(1e6),
-            display() {
-                return `Automatically buy perk upgrades<br>Total perks are no longer reset on Prestige/Crystallize<br><br>Cost: ${formatWhole(this.cost)} Flowers`
-            },
-            bgCol: "var(--flow)",
-            bought(){return player.crys.flautomation.includes(this.id)},
-            style: {
-                width: '160px',
-                height: '160px',
-            },
-            branches: [21, 22],
-        },
-        41: {
-            title: 'Blooming Passive Crystals',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('32'); },
-            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(1e7),
-            display() {
-                return `Increases passive Crystal generation by +1%<br><br>Cost: ${formatWhole(this.cost)} Flowers`
-            },
-            bgCol: "var(--flow)",
-            bought(){return player.crys.flautomation.includes(this.id)},
-            style: {
-                width: '160px',
-                height: '160px',
-            },
-            branches: [32],
-        },
-
-        12: {
-            title: 'Neverending PP',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
-            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(10000),
-            display() {
-                return `Prestige upgrades no longer spend PP<br><br>Cost: ${formatWhole(this.cost)} Flowers`
-            },
-            bgCol: "var(--flow)",
-            bought(){return player.crys.flautomation.includes(this.id)},
-            style: {
-                width: '160px',
-                height: '160px',
-            },
         },
         22: {
             title: 'Flautomate PP',
@@ -379,6 +372,39 @@ addLayer('crys', {
             },
             branches: [12],
         },
+        23: {
+            title: 'Flautomate Platinum',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('13'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(2.5e6),
+            display() {
+                return `Automatically buy platinum upgrades<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [13],
+        },
+
+        31: {
+            title: 'Flautomate Perks',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('21') && player.crys.flautomation.includes('22'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e6),
+            display() {
+                return `Automatically buy perk upgrades<br>Total perks are no longer reset on Prestige/Crystallize<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [21, 22],
+        },
         32: {
             title: 'Blooming Passive PP',
             canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('22'); },
@@ -395,14 +421,14 @@ addLayer('crys', {
             },
             branches: [22],
         },
-
-        13: {
-            title: 'Neverending Platinum',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
+        
+        41: {
+            title: 'Blooming Passive Crystals',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('32'); },
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(250000),
+            cost: new Decimal(1e7),
             display() {
-                return `Platinum upgrades no longer spend platinum<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+                return `Increases passive Crystal generation by +1%<br><br>Cost: ${formatWhole(this.cost)} Flowers`
             },
             bgCol: "var(--flow)",
             bought(){return player.crys.flautomation.includes(this.id)},
@@ -410,14 +436,15 @@ addLayer('crys', {
                 width: '160px',
                 height: '160px',
             },
+            branches: [32],
         },
-        23: {
-            title: 'Flautomate Platinum',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('13'); },
+        42: {
+            title: 'Neverending Crystals',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('32'); },
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(2.5e6),
+            cost: new Decimal(5e6),
             display() {
-                return `Automatically buy platinum upgrades<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+                return `Crystal upgrades no longer spend crystals<br><br>Cost: ${formatWhole(this.cost)} Flowers`
             },
             bgCol: "var(--flow)",
             bought(){return player.crys.flautomation.includes(this.id)},
@@ -425,7 +452,24 @@ addLayer('crys', {
                 width: '160px',
                 height: '160px',
             },
-            branches: [13],
+            branches: [32],
+        },
+
+        51: {
+            title: 'Flautomate Crystals',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('41') && player.crys.flautomation.includes('42'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(3.75e7),
+            display() {
+                return `Honestly, this should be obvious<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [41, 42],
         },
 
     },
