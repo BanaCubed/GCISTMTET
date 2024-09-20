@@ -8,6 +8,8 @@ addLayer('field', {
         growTime: new Decimal(1),
         points: new Decimal(0),
         bestPerks: new Decimal(0),
+        autoG: true,
+        autoP: true,
     }},
     update(diff) {
         player.field.points = player.field.points.add(tmp.field.autoCut.mul(tmp.field.grassOnCut).mul(diff));
@@ -18,7 +20,7 @@ addLayer('field', {
         if(tmp.field.level.sub(1).mul(tmp.field.perksPerLevel).gt(player.field.bestPerks)) { player.field.bestPerks = tmp.field.level.sub(1).mul(tmp.field.perksPerLevel) }
     },
     automate() {
-        if(player.crys.flautomation.includes('21')) {
+        if(player.crys.flautomation.includes('21') && player.field.autoG) {
             buyMaxBuyable('field', 11);
             buyMaxBuyable('field', 12);
             buyMaxBuyable('field', 13);
@@ -29,7 +31,7 @@ addLayer('field', {
             buyMaxBuyable('field', 18);
             buyMaxBuyable('field', 19);
         }
-        if(player.crys.flautomation.includes('31')) {
+        if(player.crys.flautomation.includes('31') && player.field.autoP) {
             buyMaxBuyable('field', 21);
             tmp.field.unspentPerks = layers.field.unspentPerks();
             buyMaxBuyable('field', 22);
@@ -399,9 +401,9 @@ addLayer('field', {
     doReset(layer) {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
         if(tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return }
-        let keep = []
-        if(tmp[layer].row <= 2) { keep.push('bestPerks') }
-        layerDataReset(this.layer)
+        let keep = ['autoG', 'autoP']
+        if((tmp[layer].row <= 2 && player.crys.flautomation.includes('31')) || (tmp[layer].row <= 3 && player.crys.flautomation.includes('52'))) { keep.push('bestPerks') }
+        layerDataReset(this.layer, keep)
     },
     level() { return player.field.totalExp.floor().div(245).max(0).add(1).pow(0.5).log(1.15).add(1).floor() },
     expForLevel(x = tmp.field.level) { return x.sub(1).pow_base(1.15).pow(2).sub(1).mul(245).ceil() },

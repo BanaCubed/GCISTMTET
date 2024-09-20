@@ -17,7 +17,7 @@ addLayer('hop', {
         bestEnlist: new Decimal(0),
         leg: new Decimal(0),
         autoIndoc: false,
-        autoThresh: new Decimal(5000),
+        autoThresh: new Decimal(100),
     }},
     update(diff) {
         player.hop.coloTimer -= diff;
@@ -314,7 +314,7 @@ addLayer('hop', {
         7: {
             requirementDescription: 'Stage 85',
             effectDescription() { return `Every stage above 50 increases grasshoppers gain by +5%<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
-            effect() { return player.hop.coloTier.sub(29).div(20) },
+            effect() { return player.hop.coloTier.sub(29).div(20).max(1) },
             done() { return player.hop.coloTier.gte(84) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },

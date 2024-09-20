@@ -302,7 +302,7 @@ addLayer("info-tab", {
                     You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`)
                 }]
             ],
-            color: 'var(--ghop)',
+            color: 'cyan',
         },
         'Levels': {
             content: [
@@ -319,22 +319,87 @@ addLayer("info-tab", {
                     'blank',
                 ]]],
             ],
-            color: 'var(--ghop)',
+            color: 'cyan',
         },
         'Info': {
             content: [
                 'info-tab',
             ],
-            color: 'var(--ghop)',
+            color: 'cyan',
         },
     },
     row: "otherside",
-    color: 'var(--ghop)'
+    color: 'cyan'
 })
 
 addLayer("options-tab", {
-    tabFormat: ["options-tab"],
-    row: "otherside"
+    tabFormat: {
+        Settings: {
+            content: ["options-tab"],
+            color: 'var(--ghop)',
+        },
+        Auto: {
+            content: [
+                ['raw-html', 'Upgrades'],
+                'blank',
+                ['row', [
+                    ['row', [
+                        function(){return player.crys.flautomation.includes('21')?['row', [
+                            ['raw-html', 'Grass'],
+                            'blank',
+                            ['toggle', ['field', 'autoG']],
+                        ]]:'blank'},
+                    ]], 'blank', 'blank', 'blank',
+                    ['row', [
+                        function(){return player.crys.flautomation.includes('21')?['row', [
+                            ['raw-html', 'Perks'],
+                            'blank',
+                            ['toggle', ['field', 'autoP', 'var(--level)']],
+                        ]]:'blank'},
+                    ]],
+                ]],
+                'blank',
+                ['row', [
+                    ['row', [
+                        function(){return player.crys.flautomation.includes('22')?['row', [
+                            ['raw-html', 'Prestige'],
+                            'blank',
+                            ['toggle', ['pres', 'autoPr', 'var(--pres)']],
+                        ]]:'blank'},
+                    ]], 'blank', 'blank', 'blank',
+                    ['row', [
+                        function(){return player.crys.flautomation.includes('23')?['row', [
+                            ['raw-html', 'Platinum'],
+                            'blank',
+                            ['toggle', ['pres', 'autoPl', 'var(--plat)']],
+                        ]]:'blank'},
+                    ]],
+                ]],
+                'blank',
+                ['row', [
+                    ['row', [
+                        function(){return player.crys.flautomation.includes('51')?['row', [
+                            ['raw-html', 'Crystal'],
+                            'blank',
+                            ['toggle', ['crys', 'autoC', 'var(--crys)']],
+                        ]]:'blank'},
+                    ]],
+                ]],
+                'blank',
+                'blank',
+                ['layer-proxy', ['hop', [
+                    function(){return hasMilestone('hop', 6)?['column', ['blank',
+                        ['raw-html', 'Auto-Indoctrinate'],
+                        ['row', [
+                            ['text-input', 'autoThresh'],
+                            'blank',
+                            ['toggle', ['hop', 'autoIndoc']]]], 'blank']]:'blank'},]]]
+            ],
+            color: 'var(--ghop)',
+        }
+    },
+    row: "otherside",
+    color: 'var(--ghop)'
 })
 
 addLayer("changelog-tab", {

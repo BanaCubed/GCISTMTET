@@ -14,6 +14,7 @@ addLayer('crys', {
             maxPres: new Decimal(0),
             maxCrys: new Decimal(0),
             maxHop: new Decimal(0),
+            autoC: true,
         };
     },
     update(diff) {
@@ -28,7 +29,7 @@ addLayer('crys', {
         }
     },
     automate() {
-        if(player.crys.flautomation.includes('51')) {
+        if(player.crys.flautomation.includes('51') && player.crys.autoC) {
             buyMaxBuyable('crys', 11);
             buyMaxBuyable('crys', 12);
             buyMaxBuyable('crys', 13);
@@ -112,9 +113,9 @@ addLayer('crys', {
                 ['clickable-tree', [
                     [11, 12, 13],
                     [21, 22, 23],
-                    [31, 32],
+                    [32, 31],
                     [41, 42, 43],
-                    [51],
+                    [51, 52],
                 ]],
                 'blank',
             ],
@@ -143,7 +144,7 @@ addLayer('crys', {
                 player.crys.maxLevel.pow(0.6).pow_base(1.2),
             ]},
             upgs() {
-                const thresholds = [new Decimal(120), new Decimal(150), new Decimal(250), new Decimal(400), Decimal.dInf]
+                const thresholds = [new Decimal(120), new Decimal(150), new Decimal(225), new Decimal(350), Decimal.dInf]
                 let reps = 0
                 while (player.crys.maxLevel.gte(thresholds[reps])) { reps++; }
                 return [thresholds[reps], reps]
@@ -409,7 +410,7 @@ addLayer('crys', {
 
         31: {
             title: 'Flautomate Perks',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('21') && player.crys.flautomation.includes('22'); },
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('22'); },
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
             cost: new Decimal(1e6),
             display() {
@@ -421,7 +422,7 @@ addLayer('crys', {
                 width: '160px',
                 height: '160px',
             },
-            branches: [21, 22],
+            branches: [22],
         },
         32: {
             title: 'Blooming Passive PP',
@@ -474,7 +475,7 @@ addLayer('crys', {
         },
         43: {
             title: 'Neverending Field',
-            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('32') && player.crys.flautomation.includes('23'); },
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('23'); },
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
             cost: new Decimal(5e8),
             display() {
@@ -486,7 +487,7 @@ addLayer('crys', {
                 width: '160px',
                 height: '160px',
             },
-            branches: [32, 23],
+            branches: [23],
         },
 
         51: {
@@ -505,12 +506,28 @@ addLayer('crys', {
             },
             branches: [41, 42],
         },
+        52: {
+            title: 'Retained Perks',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('31'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(2e7),
+            display() {
+                return `Keep best perks on ${obfuscate('indoctrination', !player.hop.done)}<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [31],
+        },
 
     },
     doReset(layer) {
         if (tmp[layer].row <= tmp[this.layer].row) { return; }
         if (tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return; }
-        let keep = ['done'];
+        let keep = ['done', 'autoC'];
         if (tmp[layer].realm != 0) { keep.push('flowers', 'flautomation') }
         if (tmp[layer].row <= 3) { keep.push('maxCrys', 'maxHop') }
         layerDataReset(this.layer, keep);

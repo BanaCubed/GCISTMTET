@@ -9,6 +9,39 @@
 	user-select: none;
 }
 
+#input-hop-autoThresh, #toggle-hop-autoIndoc {
+	border-radius: 15px;
+	border-width: 4px;
+	border-style: solid;
+	border-color: var(--ghop);
+	background-color: hsl(0, 0%, 29.15%);
+}
+
+#toggle-field-autoG {
+	border-color: var(--grass);
+	background-color: hsl(105, 85%, 23.85%);
+}
+
+#toggle-field-autoP {
+	border-color: var(--level);
+	background-color: hsl(215, 85%, 29.15%);
+}
+
+#toggle-pres-autoPr {
+	border-color: var(--pres);
+	background-color: hsl(180, 34.45%, 31.8%);
+}
+
+#toggle-pres-autoPl {
+	border-color: var(--plat);
+	background-color: hsl(210, 35%, 44.2%);
+}
+
+#toggle-crys-autoC {
+	border-color: var(--crys);
+	background-color: hsl(330, 53%, 37.1%);
+}
+
 .crys.milestone {
 	border-width: 5px; border-style: solid; border-color: #0f0f0f;
 }

@@ -7,6 +7,8 @@ addLayer('pres', {
         totalTp: new Decimal(0),
         done: false,
         platinum: new Decimal(0),
+        autoPr: true,
+        autoPl: true,
     }},
     update(diff) {
         if(player.pres.done) {
@@ -15,7 +17,7 @@ addLayer('pres', {
         }
     },
     automate() {
-        if(player.crys.flautomation.includes('22')) {
+        if(player.crys.flautomation.includes('22') && player.pres.autoPr) {
             buyMaxBuyable('pres', 11);
             buyMaxBuyable('pres', 12);
             buyMaxBuyable('pres', 13);
@@ -26,7 +28,7 @@ addLayer('pres', {
             buyMaxBuyable('pres', 18);
             buyMaxBuyable('pres', 19);
         }
-        if(player.crys.flautomation.includes('23')) {
+        if(player.crys.flautomation.includes('23') && player.pres.autoPl) {
             buyMaxBuyable('pres', 21);
             buyMaxBuyable('pres', 22);
             buyMaxBuyable('pres', 23);
@@ -363,7 +365,7 @@ addLayer('pres', {
     doReset(layer) {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
         if(tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return }
-        layerDataReset(this.layer, ['done'])
+        layerDataReset(this.layer, ['done', 'autoPr', 'autoPl'])
     },
     onPrestige(gain) {
         player.pres.done = true
