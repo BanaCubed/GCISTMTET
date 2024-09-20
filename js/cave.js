@@ -60,7 +60,8 @@ addLayer('crys', {
     requires: new Decimal(100),
     passiveGeneration() {
         let gain = Decimal.dZero;
-        if(player.crys.flautomation.includes('41')) { gain = gain.add(0.01) }
+        if(player.crys.flautomation.includes('41')) { gain = gain.add(0.01); }
+        gain = gain.add(tmp.hop.clickables[23].effect.div(100));
         return gain;
     },
     prestigeButtonText() {
@@ -487,10 +488,11 @@ addLayer('crys', {
     branches: ['pres'],
     flowersGain() {
         let gain = Decimal.dZero;
+        gain = gain.add(tmp.crys.buyables[11].effect);
         gain = gain.mul(tmp.pres.buyables[29].effect);
         gain = gain.mul(tmp.pres.buyables[19].effect);
-        gain = gain.add(tmp.crys.buyables[11].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[1]);
+        gain = gain.mul(tmp.hop.clickables[22].effect);
         return gain;
     },
 });

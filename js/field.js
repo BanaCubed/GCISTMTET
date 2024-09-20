@@ -435,6 +435,7 @@ addLayer('field', {
         gain = gain.mul(tmp.pres.buyables[11].effect);
         gain = gain.mul(tmp.pres.buyables[26].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[0]);
+        gain = gain.mul(tmp.hop.clickables[22].effect.pow(3));
         if(hasMilestone('hop', 2)) { gain = gain.mul(tmp.hop.milestones[2].effect); }
         return gain;
     },
@@ -476,6 +477,7 @@ addLayer('field', {
     autoCut() {
         let cuts = Decimal.dZero;
         cuts = cuts.add(tmp.field.buyables[24].effect);
+        cuts = cuts.add(tmp.hop.clickables[21].effect);
         cuts = cuts.add(tmp.pres.buyables[21].effect);
         cuts = cuts.mul(tmp.pres.buyables[22].effect);
         cuts = cuts.mul(tmp.crys.buyables[12].effect);

@@ -11,6 +11,9 @@ addLayer('hop', {
         active: new Decimal(0),
         enlistPortion: 100,
         coloTimer: 15,
+        lawns: new Decimal(0),
+        groves: new Decimal(0),
+        crys: new Decimal(0),
     }},
     update(diff) {
         player.hop.coloTimer -= diff;
@@ -109,6 +112,25 @@ addLayer('hop', {
             },
             color: 'var(--rank)',
         },
+        'Jobs': {
+            content: [
+                ['raw-html', function(){return `Assigning ${formatWhole(player.hop.enlistPortion)}%, ${formatWhole(player.hop.points.mul(player.hop.enlistPortion/100).floor())} grasshoppers`}],
+                ['slider', ['enlistPortion', 0, 100]],
+                'blank',
+                ['clickable', 21],
+                'blank',
+                ['clickable', 22],
+                'blank',
+                ['clickable', 23],
+                'blank',
+            ],
+            unlocked(){return hasMilestone('hop', 5)},
+            buttonStyle: {
+                'background-color': 'var(--ghop)',
+                'border-color': 'var(--ghop)',
+            },
+            color: 'var(--ghop)',
+        },
     },
     bars: {
         level: {
@@ -138,8 +160,66 @@ addLayer('hop', {
             style: {
                 width: '250px',
                 height: '50px',
-                'min-height': '50px',
+                'min-height': '60px',
             },
+        },
+        21: {
+            title: 'Assign Lawnmowers',
+            display() {
+                return `You have ${formatWhole(player.hop.lawns)}, which boosts autocut by +${format(tmp.hop.clickables[21].effect)}`
+            },
+            canClick() { return player.hop.points.gte(1) },
+            onClick() {
+                player.hop.lawns = player.hop.lawns.add(player.hop.points.mul(player.hop.enlistPortion/100)).floor();
+                player.hop.points = player.hop.points.mul(Decimal.sub(1, player.hop.enlistPortion/100)).ceil();
+            },
+            style: {
+                width: '250px',
+                height: '60px',
+                'min-height': '60px',
+            },
+            effect() {
+                return player.hop.lawns.max(0).pow(0.5);
+            },
+        },
+        22: {
+            title: 'Assign Grovetenders',
+            display() {
+                return `You have ${formatWhole(player.hop.groves)}, which boosts flowers by x${format(tmp.hop.clickables[22].effect)} and grass by x${format(tmp.hop.clickables[22].effect.pow(3))}`
+            },
+            canClick() { return player.hop.points.gte(1) },
+            onClick() {
+                player.hop.groves = player.hop.groves.add(player.hop.points.mul(player.hop.enlistPortion/100)).floor();
+                player.hop.points = player.hop.points.mul(Decimal.sub(1, player.hop.enlistPortion/100)).ceil();
+            },
+            style: {
+                width: '250px',
+                height: '60px',
+                'min-height': '60px',
+            },
+            effect() {
+                return player.hop.groves.max(0).pow(0.25).add(1);
+            },
+        },
+        23: {
+            title: 'Assign Crystallisers',
+            display() {
+                return `You have ${formatWhole(player.hop.crys)}, which boosts passive crystals by +${format(tmp.hop.clickables[23].effect)}%`
+            },
+            canClick() { return player.hop.points.gte(1) },
+            onClick() {
+                player.hop.crys = player.hop.crys.add(player.hop.points.mul(player.hop.enlistPortion/100)).floor();
+                player.hop.points = player.hop.points.mul(Decimal.sub(1, player.hop.enlistPortion/100)).ceil();
+            },
+            style: {
+                width: '250px',
+                height: '60px',
+                'min-height': '60px',
+            },
+            effect() {
+                return player.hop.crys.max(0).pow(0.75);
+            },
+            unlocked(){return player.crys.flautomation.includes('41')}
         },
     },
     milestones: {
@@ -175,7 +255,7 @@ addLayer('hop', {
         },
         4: {
             requirementDescription: 'Stage 35',
-            effectDescription() { return `Every stage increases grasshoppers' END by +0.1<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
+            effectDescription() { return `Every stage increases grasshoppers' HP by +0.1<br>Currently: +${format(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(1).div(10) },
             done() { return player.hop.coloTier.gte(34) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
@@ -183,7 +263,7 @@ addLayer('hop', {
         },
         5: {
             requirementDescription: 'Stage 50',
-            effectDescription() { return `Unlock Jobs (in other tabs)` },
+            effectDescription() { return `Unlock Jobs` },
             done() { return player.hop.coloTier.gte(49) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
@@ -203,8 +283,8 @@ addLayer('hop', {
     forRank(x = tmp.hop.rank) { return x.add(1).pow(7/4).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
     branches: ['crys'],
-    insects: ['Amoeba', 'Ant', 'Flower', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bumblebee', 'Wasp', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon'],
-    insectMods: ['Weak', 'Common', 'Average', 'Adept', 'Strong', 'Buff', 'Veteran', 'Psycho', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
+    insects: ['Amoeba', 'Ant', 'Flower', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Grassman', 'Shark', 'T-Rex', 'Megalodon', 'Army'],
+    insectMods: ['Weak', 'Common', 'Average', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         const insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]

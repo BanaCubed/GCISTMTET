@@ -15,7 +15,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.103,
 	name: "Grasshoppers",
-	build: 27,
+	build: 28,
 }
 
 let changelog = 
