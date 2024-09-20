@@ -12,7 +12,8 @@ addLayer('crys', {
             maxTier: new Decimal(0),
             maxGrass: new Decimal(0),
             maxPres: new Decimal(0),
-            maxCrys: new Decimal(0,)
+            maxCrys: new Decimal(0),
+            maxHop: new Decimal(0),
         };
     },
     update(diff) {
@@ -23,6 +24,7 @@ addLayer('crys', {
             player.crys.maxGrass = player.crys.maxGrass.max(player.field.points)
             player.crys.maxPres = player.crys.maxPres.max(player.pres.points)
             if(hasMilestone('hop', 1)) { player.crys.maxCrys = player.crys.maxCrys.max(player.crys.points) }
+            if(hasMilestone('hop', 6)) { player.crys.maxHop = player.crys.maxHop.max(player.hop.points) }
         }
     },
     automate() {
@@ -85,11 +87,12 @@ addLayer('crys', {
         'Accomplishments': {
             content: [
                 ['row', [
-                    ['column', [['milestone', 0], 'blank']],
-                    ['column', [['milestone', 1], 'blank']],
-                    ['column', [['milestone', 2], 'blank']],
-                    ['column', [['milestone', 3], 'blank']],
-                    ['column', [['milestone', 4], 'blank']],
+                    ['milestone', 0],
+                    ['milestone', 1],
+                    ['milestone', 2],
+                    ['milestone', 3],
+                    ['milestone', 4],
+                    ['milestone', 5],
                 ]],
             ],
             buttonStyle: {
@@ -110,7 +113,7 @@ addLayer('crys', {
                     [11, 12, 13],
                     [21, 22, 23],
                     [31, 32],
-                    [41, 42],
+                    [41, 42, 43],
                     [51],
                 ]],
                 'blank',
@@ -130,7 +133,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Level` },
             effectDescription() { return `
                 Highest level reached since last<br>
-                ${obfuscate('indoctrination', !player.hop.done)} reset is Level ${formatWhole(player.crys.maxLevel)}<br><br>
+                ${obfuscate('indoctrination', !tmp.hop.layerShown)} reset is Level ${formatWhole(player.crys.maxLevel)}<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} grass, x${format(tmp[this.layer].milestones[this.id].effect[1])} TP<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Level ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more perk upgrades` },
@@ -151,7 +154,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Tier` },
             effectDescription() { return `
                 Highest tier reached since last<br>
-                ${obfuscate('indoctrination', !player.hop.done)} reset is Tier ${formatWhole(player.crys.maxTier)}<br><br>
+                ${obfuscate('indoctrination', !tmp.hop.layerShown)} reset is Tier ${formatWhole(player.crys.maxTier)}<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} perks, x${format(tmp[this.layer].milestones[this.id].effect[1])} EXP<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at Tier ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more platinum upgrades` },
@@ -166,13 +169,13 @@ addLayer('crys', {
                 while (player.crys.maxTier.gte(thresholds[reps])) { reps++; }
                 return [thresholds[reps], reps]
             },
-            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--tier))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--tier))', 'background-clip': 'padding-box', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
         },
         2: {
             requirementDescription() { return `Best Grass` },
             effectDescription() { return `
                 Highest grass obtained since last<br>
-                ${obfuscate('indoctrination', !player.hop.done)} reset is ${formatWhole(player.crys.maxGrass)} grass<br><br>
+                ${obfuscate('indoctrination', !tmp.hop.layerShown)} reset is ${formatWhole(player.crys.maxGrass)} grass<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} PP, x${format(tmp[this.layer].milestones[this.id].effect[1])} Platinum<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more grass upgrades` },
@@ -187,13 +190,13 @@ addLayer('crys', {
                 while (player.crys.maxGrass.gte(thresholds[reps])) { reps++; }
                 return [thresholds[reps], reps]
             },
-            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--grass))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--grass))', 'background-clip': 'padding-box', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
         },
         3: {
             requirementDescription() { return `Best Prestige` },
             effectDescription() { return `
                 Highest prestige points obtained since last
-                ${obfuscate('indoctrination', !player.hop.done)} reset is ${formatWhole(player.crys.maxPres)} PP<br><br>
+                ${obfuscate('indoctrination', !tmp.hop.layerShown)} reset is ${formatWhole(player.crys.maxPres)} PP<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} Crystals, x${format(tmp[this.layer].milestones[this.id].effect[1])} Flowers<br><br>
                 ${tmp[this.layer].milestones[this.id].upgs[1]<4?`Unlocks another upgrade at ${formatWhole(tmp[this.layer].milestones[this.id].upgs[0])}<br>`:''}
                 Currently adding ${formatWhole(tmp[this.layer].milestones[this.id].upgs[1])} more prestige upgrades` },
@@ -208,7 +211,7 @@ addLayer('crys', {
                 while (player.crys.maxPres.gte(thresholds[reps])) { reps++; }
                 return [thresholds[reps], reps]
             },
-            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--pres))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--pres))', 'background-clip': 'padding-box', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
         },
         4: {
             requirementDescription() { return `Best Crystals` },
@@ -222,7 +225,21 @@ addLayer('crys', {
                 player.crys.maxCrys.max(1).log(10).add(1).pow(0.25),
             ]},
             unlocked(){return hasMilestone('hop', 1)},
-            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--crys))', 'background-clip': 'padding-box', border: 'none', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--crys))', 'background-clip': 'padding-box', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
+        },
+        5: {
+            requirementDescription() { return `Best Grasshoppers` },
+            effectDescription() { return `
+                Highest grasshoppers obtained since last<br>
+                ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxHop)} Grasshoppers<br><br>
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} Grasshoppers HP` },
+            done(){return false},
+            effect() { return [
+                player.crys.maxHop.max(1).log(10).add(1).pow(0.6),
+                player.crys.maxHop.max(1).log(10).add(1).pow(0.4),
+            ]},
+            unlocked(){return hasMilestone('hop', 6)},
+            style: { width: '340px', height: '140px', 'background-image': 'linear-gradient(45deg, var(--acomp), var(--ghop))', 'background-clip': 'padding-box', 'box-shadow': 'inset 0 0 0 4px rgba(0, 0, 0, 0.125)', padding: '9px', },
         },
 
     },
@@ -455,6 +472,22 @@ addLayer('crys', {
             },
             branches: [32],
         },
+        43: {
+            title: 'Neverending Field',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && player.crys.flautomation.includes('32') && player.crys.flautomation.includes('23'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e8),
+            display() {
+                return `Remove the grass cap<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [32, 23],
+        },
 
         51: {
             title: 'Flautomate Crystals',
@@ -479,7 +512,7 @@ addLayer('crys', {
         if (tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return; }
         let keep = ['done'];
         if (tmp[layer].realm != 0) { keep.push('flowers', 'flautomation') }
-        if (tmp[layer].row <= 3) { keep.push('maxCrys') }
+        if (tmp[layer].row <= 3) { keep.push('maxCrys', 'maxHop') }
         layerDataReset(this.layer, keep);
     },
     onPrestige(gain) {

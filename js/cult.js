@@ -14,6 +14,10 @@ addLayer('hop', {
         lawns: new Decimal(0),
         groves: new Decimal(0),
         crys: new Decimal(0),
+        bestEnlist: new Decimal(0),
+        leg: new Decimal(0),
+        autoIndoc: false,
+        autoThresh: new Decimal(5000),
     }},
     update(diff) {
         player.hop.coloTimer -= diff;
@@ -27,6 +31,9 @@ addLayer('hop', {
                 player.hop.active = player.hop.active.sub(tmp.hop.oppStats[1].div(tmp.hop.arm.add(1).max(1)).max(0)).ceil().max(0);
             }
         }
+    },
+    automate() {
+        if(player.hop.autoIndoc && getResetGain('hop').gte(player.hop.autoThresh)) { doReset('hop') }
     },
     tickLength() {
         let length = 15;
@@ -48,6 +55,7 @@ addLayer('hop', {
         gain = gain.mul(player.field.points.max(1).log(10).pow(0.5).add(1));
         gain = gain.mul(tmp.hop.rank.pow_base(2.5));
         if(hasMilestone('hop', 1)) { gain = gain.mul(tmp.crys.milestones[4].effect[1]); }
+        if(hasMilestone('hop', 7)) { gain = gain.mul(tmp.hop.milestones[7].effect); }
         return gain.max(5).floor();
     },
     baseResource: 'Levels',
@@ -71,21 +79,21 @@ addLayer('hop', {
                 'blank',
                 ['bar', 'level'],
                 ['raw-html', function(){return player.hop.done?`x${format(tmp.hop.rankEffect)} Grasshoppers, Damage`:'First Indoctrination unlocks Rank and Combat'}],
-                'blank',
+                function(){return hasMilestone('hop', 6)?['column', ['blank', ['raw-html', 'Auto-Indoctrinate'], ['row', [['text-input', 'autoThresh'], 'blank', ['toggle', ['hop', 'autoIndoc']]]], 'blank']]:'blank'},
             ],
             color: 'var(--ghop)',
         },
-        'The Colosseum': {
+        'Colosseum': {
             content: [
                 ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px;">${formatWhole(player.hop.points.max(0))}</h2> Grasshoppers`}],
                 ['raw-html', function(){return `You are Rank <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(tmp.hop.rank.max(0))}</h2>`}],
-                ['raw-html', function(){return `You are at Stage <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(player.hop.coloTier.add(1).max(0))}</h2>`}],
                 'blank',
                 ['clickable', 11],
                 'blank',
                 ['raw-html', function(){return `Enlisting Percentage: ${formatWhole(player.hop.enlistPortion)}`}],
                 ['slider', ['enlistPortion', 0, 100]],
                 'blank',
+                ['raw-html', function(){return `Stage <h2  class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px;">${formatWhole(player.hop.coloTier.add(1).max(0))}</h2>`}],
                 ['raw-html', function(){return `<div style="margin-bottom: 5px;">Combat Tick in ${formatTime(player.hop.coloTimer)}</div>`}],
                 'colosseum',
                 'colo-stats',
@@ -117,12 +125,21 @@ addLayer('hop', {
                 ['raw-html', function(){return `Assigning ${formatWhole(player.hop.enlistPortion)}%, ${formatWhole(player.hop.points.mul(player.hop.enlistPortion/100).floor())} grasshoppers`}],
                 ['slider', ['enlistPortion', 0, 100]],
                 'blank',
-                ['clickable', 21],
-                'blank',
-                ['clickable', 22],
-                'blank',
-                ['clickable', 23],
-                'blank',
+                ['row', [
+                    ['column', [
+                        ['raw-html', 'Basic Jobs'],
+                        ['clickable', 21],
+                        'blank',
+                        ['clickable', 22],
+                        'blank',
+                    ]],
+                    'blank',
+                    ['column', [
+                        ['raw-html', 'Passive Jobs'],
+                        ['clickable', 23],
+                        'blank',
+                    ]],
+                ]]
             ],
             unlocked(){return hasMilestone('hop', 5)},
             buttonStyle: {
@@ -145,6 +162,24 @@ addLayer('hop', {
             fillStyle: { 'background-color': 'var(--rank)', },
             unlocked(){return player.hop.done},
         },
+        enlisted: {
+            direction: RIGHT,
+            width: 300,
+            height: 10,
+            progress() { return player.hop.active.div(player.hop.bestEnlist) },
+            fillStyle: { 'background-color': 'var(--ghop)', },
+            unlocked(){return player.hop.done},
+            borderStyle: { 'border-width': '2px', },
+        },
+        oppHP: {
+            direction: RIGHT,
+            width: 300,
+            height: 10,
+            progress() { return player.hop.opp.div(tmp.hop.oppStats[0]) },
+            fillStyle: { 'background-color': 'var(--rank)', },
+            unlocked(){return player.hop.done},
+            borderStyle: { 'border-width': '2px', },
+        },
     },
     clickables: {
         11: {
@@ -156,6 +191,7 @@ addLayer('hop', {
             onClick() {
                 player.hop.active = player.hop.active.add(player.hop.points.mul(player.hop.enlistPortion/100)).floor();
                 player.hop.points = player.hop.points.mul(Decimal.sub(1, player.hop.enlistPortion/100)).ceil();
+                player.hop.bestEnlist = player.hop.bestEnlist.max(player.hop.active);
             },
             style: {
                 width: '250px',
@@ -202,7 +238,7 @@ addLayer('hop', {
             },
         },
         23: {
-            title: 'Assign Crystallisers',
+            title: 'Assign Crystallizers',
             display() {
                 return `You have ${formatWhole(player.hop.crys)}, which boosts passive crystals by +${format(tmp.hop.clickables[23].effect)}%`
             },
@@ -239,16 +275,16 @@ addLayer('hop', {
         },
         2: {
             requirementDescription: 'Stage 20',
-            effectDescription() { return `Every stage increases grass gain by +25% compounding<br>Also reduces Combat Tick time to 8s | Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
-            effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
+            effectDescription() { return `Every stage increases grass gain by +20% compounding<br>Also reduces Combat Tick time to 8s | Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
+            effect() { return player.hop.coloTier.add(1).pow_base(1.2) },
             done() { return player.hop.coloTier.gte(19) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
         3: {
             requirementDescription: 'Stage 27',
-            effectDescription() { return `Every stage increases experience gain by +25% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
-            effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
+            effectDescription() { return `Every stage increases experience gain by +20% compounding<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
+            effect() { return player.hop.coloTier.add(1).pow_base(1.2) },
             done() { return player.hop.coloTier.gte(26) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
@@ -268,6 +304,28 @@ addLayer('hop', {
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
+        6: {
+            requirementDescription: 'Stage 70',
+            effectDescription() { return `Unlock another accomplishment and Auto-Indoctrinate` },
+            done() { return player.hop.coloTier.gte(69) },
+            unlocked() { return hasMilestone(this.layer, this.id-2) },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
+        },
+        7: {
+            requirementDescription: 'Stage 85',
+            effectDescription() { return `Every stage above 50 increases grasshoppers gain by +5%<br>Currently: x${format(tmp[this.layer].milestones[this.id].effect)}` },
+            effect() { return player.hop.coloTier.sub(29).div(20) },
+            done() { return player.hop.coloTier.gte(84) },
+            unlocked() { return hasMilestone(this.layer, this.id-2) },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
+        },
+        8: {
+            requirementDescription: 'Stage 100',
+            effectDescription() { return `Unlock Leagues` },
+            done() { return player.hop.coloTier.gte(99) },
+            unlocked() { return hasMilestone(this.layer, this.id-2) },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
+        },
     },
     tooltip() { return `<h2>THE CULT</h2><br>${formatWhole(player.hop.points)} GH<br>Rank ${formatWhole(tmp.hop.rank)}` },
     doReset(layer) {
@@ -283,7 +341,7 @@ addLayer('hop', {
     forRank(x = tmp.hop.rank) { return x.add(1).pow(7/4).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
     branches: ['crys'],
-    insects: ['Amoeba', 'Ant', 'Flower', 'Catterpillar', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Grassman', 'Shark', 'T-Rex', 'Megalodon', 'Army'],
+    insects: ['Amoeba', 'Ant', 'Flower', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'T-Rex', 'Megalodon', 'Army'],
     insectMods: ['Weak', 'Common', 'Average', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
@@ -297,9 +355,13 @@ addLayer('hop', {
         return prefix + ' ' + insect
     },
     oppStats() {
+        let dmg = player.hop.coloTier.pow_base(1.1).mul(player.hop.coloTier.pow(0.5)).floor();
+        if(player.hop.coloTier.gte(85)) {
+            dmg = dmg.mul(player.hop.coloTier.sub(75).div(35).pow_base(15))
+        }
         return [
             player.hop.coloTier.pow_base(1.2).mul(10).floor(),
-            player.hop.coloTier.pow_base(1.1).mul(player.hop.coloTier.pow(0.5)).floor(),
+            dmg,
         ];
     },
     highestOneShot() {
@@ -310,11 +372,13 @@ addLayer('hop', {
         let dmg = Decimal.dOne;
         dmg = dmg.mul(tmp.hop.rankEffect);
         if(hasMilestone('hop', 1)) { dmg = dmg.mul(tmp.crys.milestones[4].effect[0]); }
+        if(hasMilestone('hop', 6)) { dmg = dmg.mul(tmp.crys.milestones[5].effect[0]); }
         return dmg.floor();
     },
     arm() {
         let dmg = Decimal.dZero;
         if(hasMilestone('hop', 4)) { dmg = dmg.add(milestoneEffect('hop', 4)); }
+        if(hasMilestone('hop', 6)) { dmg = dmg.mul(tmp.crys.milestones[5].effect[1]); }
         return dmg;
     },
 })

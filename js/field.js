@@ -137,7 +137,7 @@ addLayer('field', {
         11: {
             title: 'Cut Grass',
             display() {
-                return `There is ${formatWhole(player.field.grass)}/${formatWhole(tmp.field.maxGrass)} grass<br>Multicut: ${formatWhole(tmp.field.multiCut)}/click<br>Autocut: ${formatWhole(tmp.field.autoCut)}/sec<br>` + (player.field.grass.gte(tmp.field.maxGrass)?`Field is full`:(tmp.field.grassSpeed.gte(10)?`(${format(tmp.field.grassPerGrow.mul(tmp.field.grassSpeed))}/sec)`:`+${formatWhole(tmp.field.grassPerGrow)} in ${formatTime(player.field.growTime.div(tmp.field.grassSpeed))}`))
+                return `There is ${formatWhole(player.field.grass)}${player.crys.flautomation.includes('43')?'':`/${formatWhole(tmp.field.maxGrass)}`} grass<br>Multicut: ${formatWhole(tmp.field.multiCut)}/click<br>Autocut: ${formatWhole(tmp.field.autoCut)}/sec<br>` + (player.field.grass.gte(tmp.field.maxGrass)?`Field is full`:(tmp.field.grassSpeed.gte(10)?`(${format(tmp.field.grassPerGrow.mul(tmp.field.grassSpeed))}/sec)`:`+${formatWhole(tmp.field.grassPerGrow)} in ${formatTime(player.field.growTime.div(tmp.field.grassSpeed))}`))
             },
             canClick() { return player.field.grass.gte(1) },
             onClick() {
@@ -412,6 +412,7 @@ addLayer('field', {
         max = max.add(tmp.field.buyables[12].effect);
         max = max.mul(tmp.field.buyables[25].effect);
         max = max.mul(tmp.pres.buyables[12].effect);
+        if(player.crys.flautomation.includes('43')) { max = Decimal.dInf; }
         return max;
     },
     grassPerGrow() {

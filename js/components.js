@@ -89,13 +89,14 @@ function loadVue() {
 
 				Opponent Stats<br><h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.hop.opponentName }}</h2>
 			</div>
+			<bar :layer="'hop'" :data="'oppHP'"></bar>
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
-				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'HP is the health of the opponent<br><br>You want this to reach 0'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.opp) }}/{{ formatWhole(tmp.hop.oppStats[0]) }}</h2> HP<br>
-				<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[1]) }}</h2> DMG<br>
+				HP  <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'HP is the health of the opponent<br><br>You want this to reach 0'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.opp) }}</h2>/{{ formatWhole(tmp.hop.oppStats[0]) }}<br>
+				DMG <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[1]) }}</h2><br>
 			</div>
 		</div>
 		`
@@ -115,15 +116,16 @@ function loadVue() {
 
 				Cult Stats<br><h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">The Grasshoppers</h2>
 			</div>
+			<bar :layer="'hop'" :data="'enlisted'"></bar>
 
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
-				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'ENL stands for Enlisted<br><br>ENL is the amount of living grasshoppers enlisted in The Colosseum'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.active) }}</h2> ENL<br>
-				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'HP is the amount of health that each individual grasshopper has<br>Enemies have to kill a grashopper in one hit'" style="text-shadow: none;"></tooltip>{{ format(tmp.hop.arm.add(1)) }}</h2> HP<br>
-				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'DMG is the amount of damage each enlisted grasshopper deals each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
+				GH  <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'GH is the amount of living grasshoppers enlisted in The Colosseum'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.active) }}</h2><br>
+				HP  <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'HP is the amount of health that each individual grasshopper has<br><br>Enemies have to kill a grashopper in one hit'" style="text-shadow: none;"></tooltip>{{ format(tmp.hop.arm.add(1)) }}</h2><br>
+				DMG <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'DMG is the amount of damage each enlisted grasshopper deals each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.dmg) }}</h2><br>
 			</div>
 		</div>
 		`

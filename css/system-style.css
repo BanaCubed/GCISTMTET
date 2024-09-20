@@ -9,6 +9,10 @@
 	user-select: none;
 }
 
+.crys.milestone {
+	border-width: 5px; border-style: solid; border-color: #0f0f0f;
+}
+
 .hop.milestone {
 	background-image: linear-gradient(270deg, var(--rank), transparent);
 }
