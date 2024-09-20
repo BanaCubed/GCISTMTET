@@ -123,7 +123,7 @@ function loadVue() {
 				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
 					><tooltip :text="'DMG is the amount of damage each enlisted grasshopper deals each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.dmg) }}</h2> DMG<br>
 				<h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'END stands for Endurance<br><br>END increases the amount of damage required to kill a grasshopper<br><br>If your END is above enemy DMG, grasshoppers do not die'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.arm) }}</h2> END<br>
+					><tooltip :text="'END stands for Endurance<br><br>END increases the amount of damage required to kill a grasshopper<br><br>If your END is above enemy DMG, grasshoppers do not die'" style="text-shadow: none;"></tooltip>{{ format(tmp.hop.arm) }}</h2> END<br>
 			</div>
 		</div>
 		`
@@ -259,7 +259,7 @@ function loadVue() {
 	Vue.component('milestone', {
 		props: ['layer', 'data'],
 		template: `
-		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data)}">
+		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data), [layer]: true}">
 			<h3 v-html="tmp[layer].milestones[data].requirementDescription"></h3><br>
 			<span v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><br>
 			<tooltip v-if="tmp[layer].milestones[data].tooltip" :text="tmp[layer].milestones[data].tooltip"></tooltip>

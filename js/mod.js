@@ -13,9 +13,9 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: 0.102,
+	num: 0.103,
 	name: "Grasshoppers",
-	build: 23,
+	build: 24,
 }
 
 let changelog = 
@@ -104,10 +104,9 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
-	if(oldVersion<0.102) {
-		player.hop.points = player.hop.coloTier.pow_base(2.25).floor();
-		player.hop.coloTier = new Decimal(0);
-		player.hop.active = new Decimal(0);
-		player.hop.milestones = [];
+	if(oldVersion<0.103) {
+		player.hop.points = player.hop.points.max(1000);
+		player.hop.coloTier = player.hop.coloTier.max(50);
+		player.hop.active = player.hop.active.max(1000);
 	}
 }

@@ -280,7 +280,7 @@ const RIGHT = 3
 
 addLayer("info-tab", {
     tabFormat: {
-        Currencies: {
+        Stats: {
             content: [
                 ['raw-html', function(){return `
                     Text glows removed for readability<br><br>

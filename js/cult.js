@@ -44,7 +44,6 @@ addLayer('hop', {
         let gain = tmp.field.level.sub(199).max(1).pow(0.25).pow_base(1.25);
         gain = gain.mul(player.field.points.max(1).log(10).pow(0.5).add(1));
         gain = gain.mul(tmp.hop.rank.pow_base(2.5));
-        if(hasMilestone('hop', 4)) { gain = gain.mul(tmp.hop.milestones[4].effect); }
         if(hasMilestone('hop', 1)) { gain = gain.mul(tmp.crys.milestones[4].effect[1]); }
         return gain.max(5).floor();
     },
@@ -119,7 +118,7 @@ addLayer('hop', {
             progress() { return player.hop.bestReset.div(tmp.hop.forRank) },
             display() {
                 return `Rank <h2 class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;">${formatWhole(tmp.hop.rank.max(0))}</h2><br>
-                ${formatWhole(player.hop.bestReset)}/${formatWhole(tmp.hop.forRank)} Best GH Gained`
+                ${formatWhole(player.hop.bestReset)}/${formatWhole(tmp.hop.forRank)} Best GH Gained` + (getResetGain('hop').gt(player.hop.bestReset)?`<br>(${formatWhole(getResetGain('hop').sub(player.hop.bestReset))}/reset)`:'')
             },
             fillStyle: { 'background-color': 'var(--rank)', },
             unlocked(){return player.hop.done},
@@ -149,14 +148,14 @@ addLayer('hop', {
             effectDescription() { return `Every stage increases crystals gain by +100%<br>Currently: x${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(2) },
             done() { return player.hop.coloTier.gte(3) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
         1: {
             requirementDescription: 'Stage 10',
             effectDescription() { return `Every stage increases TP gain by +100%<br>Also unlocks an accomplishment | Currently: x${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
             effect() { return player.hop.coloTier.add(2) },
             done() { return player.hop.coloTier.gte(9) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
         2: {
             requirementDescription: 'Stage 20',
@@ -164,7 +163,7 @@ addLayer('hop', {
             effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
             done() { return player.hop.coloTier.gte(19) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
         3: {
             requirementDescription: 'Stage 27',
@@ -172,15 +171,22 @@ addLayer('hop', {
             effect() { return player.hop.coloTier.add(1).pow_base(1.25) },
             done() { return player.hop.coloTier.gte(26) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
         4: {
-            requirementDescription: 'Stage 32',
-            effectDescription() { return `Every stage increases grasshoppers' END by +1<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
-            effect() { return player.hop.coloTier.add(1) },
-            done() { return player.hop.coloTier.gte(31) },
+            requirementDescription: 'Stage 35',
+            effectDescription() { return `Every stage increases grasshoppers' END by +0.1<br>Currently: +${formatWhole(tmp[this.layer].milestones[this.id].effect)}` },
+            effect() { return player.hop.coloTier.add(1).div(10) },
+            done() { return player.hop.coloTier.gte(34) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
-            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)', 'background-image': 'linear-gradient(45deg, var(--rank), transparent)' },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
+        },
+        5: {
+            requirementDescription: 'Stage 50',
+            effectDescription() { return `Unlock Jobs (in other tabs)` },
+            done() { return player.hop.coloTier.gte(49) },
+            unlocked() { return hasMilestone(this.layer, this.id-2) },
+            style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
     },
     tooltip() { return `<h2>THE CULT</h2><br>${formatWhole(player.hop.points)} GH<br>Rank ${formatWhole(tmp.hop.rank)}` },
@@ -225,6 +231,6 @@ addLayer('hop', {
     arm() {
         let dmg = Decimal.dZero;
         if(hasMilestone('hop', 4)) { dmg = dmg.add(milestoneEffect('hop', 4)); }
-        return dmg.floor();
+        return dmg;
     },
 })
