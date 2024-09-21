@@ -8,6 +8,10 @@
 	border-color: rgba(0, 0, 0, 0.125);
 }
 
+.hop.clickable {
+    margin-bottom: 10px;
+}
+
 .tabButton {
 	background-color: transparent;
 	color: var(--color);

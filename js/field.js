@@ -378,7 +378,7 @@ addLayer('field', {
             display() {
                 return `Increases PP gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(50),
+            purchaseLimit: new Decimal(250),
             bgCol: 'var(--level)',
             unlocked(){return tmp.crys.milestones[0].upgs[1]>=3},
         },
@@ -392,7 +392,7 @@ addLayer('field', {
             display() {
                 return `Increases crystals gain by +25% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(50),
+            purchaseLimit: new Decimal(5000),
             bgCol: 'var(--level)',
             unlocked(){return tmp.crys.milestones[0].upgs[1]>=4},
         },

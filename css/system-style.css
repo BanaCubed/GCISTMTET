@@ -46,11 +46,11 @@
 	border-width: 5px; border-style: solid; border-color: #0f0f0f;
 }
 
-.hop.milestone {
+.hop.milestone, .leag.milestone {
 	background-image: linear-gradient(270deg, var(--rank), transparent);
 }
 
-.hop.milestoneDone {
+.hop.milestoneDone, .leag.milestoneDone {
 	background-image: linear-gradient(90deg, var(--ghop), transparent);
 }
 
@@ -100,6 +100,7 @@ html, body {
 	--flow: hsl(285, 100%, 60%);
 	--ghop: hsl(0, 0%, 55%);
 	--rank: hsl(0, 90%, 55%);
+	--leag: hsl(270, 90%, 55%);
 }
 
 td {

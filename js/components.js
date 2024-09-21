@@ -131,6 +131,34 @@ function loadVue() {
 		`
 	})
 
+	// data = an array of Components to be displayed in a column
+	Vue.component('league', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(270, 90%, 29.15%), var(--leag)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;" v-if="hasMilestone('hop', 8)">
+
+			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
+
+				League Stats<br><h2  class="tooltipBox" style="color: hsl(270, 80%, 25%); text-shadow: hsl(270, 80%, 25%) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">{{ tmp.leag.leagueName }} League</h2>
+			</div>
+			<bar :layer="'hop'" :data="'league'"></bar>
+
+			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
+
+				STG <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'STG is your current stage, out of the required stage to progress a league'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.coloTier.add(1).max(0)) }}</h2>/{{ formatWhole(tmp.hop.leagueRequirement) }}<br>
+				LEG <h2  class="tooltipBox" style="color:hsl(270, 80%, 25%); text-shadow: hsl(270, 80%, 25%) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'LEG is your current league, represented as a number'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.leg.add(1).max(0)) }}</h2><br>
+			</div>
+			<clickable :layer="'leag'" :data="11"></clickable><br><br>
+		</div>
+		`
+	})
+
 	// data [other layer, tabformat for within proxy]
 	Vue.component('layer-proxy', {
 		props: ['layer', 'data'],
@@ -248,7 +276,7 @@ function loadVue() {
 		template: `
 		<div v-if="tmp[layer].milestones">
 			<table>
-				<tr v-for="id in (data === undefined ? Object.keys(tmp[layer].milestones) : data)" v-if="tmp[layer].milestones[id]!== undefined && tmp[layer].milestones[id].unlocked && milestoneShown(layer, id)">
+				<tr v-for="id in (data === undefined ? Object.keys(tmp[layer].milestones) : data)" v-if="tmp[layer].milestones[id]!== undefined && tmp[layer].milestones[id].unlocked && milestoneShown(layer, id) && !tmp[layer].milestones[id].hidden">
 					<milestone :layer = "layer" :data = "id" v-bind:style="tmp[layer].componentStyles.milestone"></milestone>
 				</tr>
 			</table>
@@ -261,7 +289,7 @@ function loadVue() {
 	Vue.component('milestone', {
 		props: ['layer', 'data'],
 		template: `
-		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data), [layer]: true}">
+		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked && !tmp[layer].milestones[data].hidden" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data), [layer]: true}">
 			<h3 v-html="tmp[layer].milestones[data].requirementDescription"></h3><br>
 			<span v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><br>
 			<tooltip v-if="tmp[layer].milestones[data].tooltip" :text="tmp[layer].milestones[data].tooltip"></tooltip>
@@ -400,7 +428,7 @@ function loadVue() {
 		template: `
 		<button 
 			v-if="tmp[layer].clickables && tmp[layer].clickables[data]!== undefined && tmp[layer].clickables[data].unlocked" 
-			v-bind:class="{ upg: true, tooltipBox: true, can: tmp[layer].clickables[data].canClick, locked: !tmp[layer].clickables[data].canClick, bought: tmp[layer].clickables[data].bought}"
+			v-bind:class="{ upg: true, tooltipBox: true, can: tmp[layer].clickables[data].canClick, locked: !tmp[layer].clickables[data].canClick, bought: tmp[layer].clickables[data].bought, [layer]: true, clickable: true}"
 			v-bind:style="[tmp[layer].clickables[data].canClick ? {'background-color': tmp[layer].clickables[data].bgCol?tmp[layer].clickables[data].bgCol:tmp[layer].color} : {}, tmp[layer].clickables[data].style]"
 			v-on:click="if(!interval) clickClickable(layer, data)" :id='"clickable-" + layer + "-" + data'>
 			<span v-if= "tmp[layer].clickables[data].title"><h2 v-html="tmp[layer].clickables[data].title"></h2><br></span>
@@ -519,7 +547,7 @@ function loadVue() {
 		template: `
 		<div v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'relative'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
 			<div class = "overlayTextContainer barBorder" v-bind:style="[tmp[layer].bars[data].borderStyle, style.dims]">
-				<span class = "overlayText" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].textStyle]" v-html="run(layers[layer].bars[data].display, layers[layer].bars[data])"></span>
+				<span class = "overlayText" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].textStyle, {'text-shadow': 'black 0 0 4px'}]" v-html="run(layers[layer].bars[data].display, layers[layer].bars[data])"></span>
 			</div>
 			<div class ="barBG barBorder" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].baseStyle, tmp[layer].bars[data].borderStyle,  style.dims]">
 				<div class ="fill" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].fillStyle, style.fillDims]"></div>
@@ -599,7 +627,7 @@ function loadVue() {
 		computed: {
 			key() {return this.$vnode.key}
 		},
-		template: `<thing-tree :layer="layer" :data = "data" :type = "'clickable'"></thing-tree>`
+		template: `<thing-tree :layer="layer" :data = "data" :type = "'clickable'" style="max-width: 95%; width: fit-content; overflow-x: auto;"></thing-tree>`
 	})
 
 	Vue.component('thing-tree', {
@@ -608,12 +636,12 @@ function loadVue() {
 			key() {return this.$vnode.key}
 		},
 		template: `<div>
-		<span class="upgRow" v-for="(row, r) in data"><table>
+		<span class="upgRow" v-for="(row, r) in data" style="width: fit-content;"><div style="width: fit-content;">
 			<span v-for="id in row" style = "{width: 0px; height: 0px;}" v-if="tmp[layer][type+'s'][id]!== undefined && tmp[layer][type+'s'][id].unlocked" class="upgAlign">
 				<div v-bind:is="type" :layer = "layer" :data = "id" v-bind:style="tmp[layer].componentStyles[type]" class = "treeThing"></div>
 			</span>
 			<tr><table><button class="treeNode hidden"></button></table></tr>
-		</span></div>
+		</div></span></div>
 	`
 	})
 

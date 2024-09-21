@@ -299,7 +299,8 @@ addLayer("info-tab", {
                         <br><h2 style="color: var(--rank);">The Cult</h2><br>
                     You have <h2 style="color: var(--ghop);">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>
                     You are Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.rank)}</h2><br>
-                    You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`)
+                    You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`) + (!hasMilestone('hop', 8)?'':`
+                    You are in League <h2 style="color: var(--leag);">${formatWhole(player.hop.leg.add(1))}</h2><br>`)
                 }]
             ],
             color: 'cyan',
@@ -316,6 +317,8 @@ addLayer("info-tab", {
                 ]]],
                 ['layer-proxy', ['hop', [
                     ['bar', 'level'],
+                    'blank',
+                    ['bar', 'bigLeague'],
                     'blank',
                 ]]],
             ],

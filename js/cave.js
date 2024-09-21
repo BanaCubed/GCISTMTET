@@ -111,7 +111,7 @@ addLayer('crys', {
                 ['raw-html', function () { return `Flower upgrades are kept on all resets before ${obfuscate('interplanetary', true)}` }],
                 'blank',
                 ['clickable-tree', [
-                    [11, 12, 13],
+                    [11, 12, 13, 14],
                     [21, 22, 23],
                     [32, 31],
                     [41, 42, 43],
@@ -233,7 +233,7 @@ addLayer('crys', {
             effectDescription() { return `
                 Highest grasshoppers obtained since last<br>
                 ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxHop)} Grasshoppers<br><br>
-                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} Grasshoppers HP` },
+                Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} HP` },
             done(){return false},
             effect() { return [
                 player.crys.maxHop.max(1).log(10).add(1).pow(0.6),
@@ -350,6 +350,21 @@ addLayer('crys', {
             cost: new Decimal(250000),
             display() {
                 return `Platinum upgrades no longer spend platinum<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+        14: {
+            title() { return `Rapid ${obfuscate('Combat', !player.hop.done)}` },
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e7),
+            display() {
+                return `Reduce ${obfuscate('Combat', !player.hop.done)} ${obfuscate('Tick', !player.hop.done)} length by 2.5s<br><br>Cost: ${formatWhole(this.cost)} Flowers`
             },
             bgCol: "var(--flow)",
             bought(){return player.crys.flautomation.includes(this.id)},
