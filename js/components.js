@@ -159,6 +159,69 @@ function loadVue() {
 		`
 	})
 
+	// data = an array of Components to be displayed in a column
+	Vue.component('cabin', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(15, 60%, 37.1%), var(--rank)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;" v-if="getBuyableAmount('forest', 12).gte(1)">
+
+			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
+
+				The Cabin<br><h2  class="tooltipBox" style="color: var(--lood); text-shadow: var(--lood) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">Sacrifices</h2>
+			</div>
+			<bar :layer="'hop'" :data="'level2small'"></bar>
+
+			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
+
+				SAC <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'SAC is the amount of sacrificed grasshoppers, out of the amount to increase Sacrifice Rank'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.sacs.max(0)) }}</h2>/{{ formatWhole(tmp.hop.sacForRank) }}<br>
+				RNK <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'RNK is your sacrifice rank'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.sacRank) }}</h2><br>
+				x<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					>{{ format(tmp.hop.sacRankEffect) }}</h2> HP, x<h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					>{{ format(tmp.hop.sacRankEffect.pow(buyableEffect('forest', 12))) }}</h2> Wood<br>
+			</div>
+
+			<clickable :layer="'leag'" :data="12"></clickable><br><br>Sacrifice Amount<br>
+			<slider :layer="'hop'" :data="['enlistPortion', 1, 100]"></slider><br>
+		</div>
+		`
+	})
+
+	// data = an array of Components to be displayed in a column
+	Vue.component('crafting', {
+		props: ['layer', 'data'],
+		computed: {
+			key() {return this.$vnode.key}
+		},
+		template: `
+		<div style="width: 400px; height: fit-content; background-image: linear-gradient(45deg, hsl(15, 60%, 37.1%), var(--ghop)); border-width: 5px; border-style: solid; border-color: #0f0f0f;
+			max-width: 100%; border-radius: 15px; box-shadow: inset 0 0 0 4px rgba(0,0,0,0.125); position: relative;" v-if="getBuyableAmount('forest', 14).gte(1)">
+
+			<div style="text-shadow: black  0 0 4px; text-align: center; width: 100%; padding-top: 10px;">
+
+				The Cabin<br><h2  class="tooltipBox" style="color: var(--lood); text-shadow: var(--lood) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;">Crafting</h2>
+			</div>
+
+			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
+
+				ARM <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'ARM is your armor tier'" style="text-shadow: none;"></tooltip>0</h2><br>
+				WEA <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
+					><tooltip :text="'WEA is your weapon tier'" style="text-shadow: none;"></tooltip>0</h2><br>
+			</div>
+
+			<clickable :layer="'forest'" :data="12"></clickable><br>
+			<clickable :layer="'forest'" :data="13"></clickable><br><br>
+
+		</div>
+		`
+	})
+
 	// data [other layer, tabformat for within proxy]
 	Vue.component('layer-proxy', {
 		props: ['layer', 'data'],

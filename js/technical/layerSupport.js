@@ -321,6 +321,14 @@ addLayer("info-tab", {
                     ['bar', 'bigLeague'],
                     'blank',
                 ]]],
+                ['layer-proxy', ['forest', [
+                    ['bar', 'level'],
+                    'blank',
+                ]]],
+                ['layer-proxy', ['hop', [
+                    ['bar', 'level2'],
+                    'blank',
+                ]]],
             ],
             color: 'cyan',
         },

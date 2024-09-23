@@ -3,7 +3,11 @@ let modInfo = {
 	id: "gcistmtet",
 	author: "BanaCubed",
 	pointsName: "grass",
-	modFiles: ["field.js", "tree.js", "city.js", "cult.js", "cave.js"],
+	modFiles: [
+		"tree.js",
+		"layers/field/field.js", "layers/field/city.js", "layers/field/cult.js", "layers/field/cave.js",
+		"layers/forest/forest.js",
+	],
 
 	discordName: "",
 	discordLink: "",
@@ -15,7 +19,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.103,
 	name: "Grasshoppers",
-	build: 31,
+	build: 32,
 }
 
 let changelog = 

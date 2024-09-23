@@ -57,6 +57,11 @@ addLayer('field', {
             onPress() { clickClickable('field', 11) },
             unlocked() {return true},
         }, {
+            key: "t",
+            description: "T: Chop Tree",
+            onPress() { clickClickable('forest', 11) },
+            unlocked() {return tmp.forest.layerShown},
+        }, {
             key: "p",
             description: "P: Prestige",
             onPress() { doReset('pres') },
@@ -88,11 +93,11 @@ addLayer('field', {
                 ['raw-html', function(){return `(${format(tmp.field.grassOnCut)}/cut)` + (tmp.field.autoCut.gt(0)?` | (${format(tmp.field.grassOnCut.mul(tmp.field.autoCut))}/sec)`:'')}],
                 'blank',
                 ['bar', 'level'],
-                ['raw-html', function(){return `x${format(tmp.field.levelEffect)} grass`}],
+                ['raw-html', function(){return `x${format(tmp.field.levelEffect)} Grass`}],
                 ['layer-proxy', ['pres', [
                     'blank',
                     ['bar', 'level'],
-                    ['raw-html', function(){return player.pres.done?`x${format(tmp.pres.tierEffect)} grass, EXP`:''}],
+                    ['raw-html', function(){return player.pres.done?`x${format(tmp.pres.tierEffect)} Grass, EXP`:''}],
                 ]]],
                 'blank',
                 ['clickable', 11],
@@ -244,7 +249,7 @@ addLayer('field', {
             display() {
                 return `Increases grass gain by +25% per level<br>Every 25 increases grass gain by +50%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(3500),
+            purchaseLimit: new Decimal(1e5),
             unlocked(){return tmp.crys.milestones[2].upgs[1]>=2},
         },
         18: {
@@ -370,7 +375,7 @@ addLayer('field', {
         },
         28: {
             title: 'PP Perk',
-            cost(x) { return new Decimal(5) },
+            cost(x) { return new Decimal(3) },
             effect(x) { return x.div(4).add(1) },
             canAfford() { return tmp.field.unspentPerks.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
             buy() { setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
@@ -415,7 +420,7 @@ addLayer('field', {
         max = max.mul(tmp.field.buyables[25].effect);
         max = max.mul(tmp.pres.buyables[12].effect);
         if(player.crys.flautomation.includes('43')) { max = Decimal.dInf; }
-        return max;
+        return max.floor();
     },
     grassPerGrow() {
         let gain = Decimal.dOne;
@@ -427,6 +432,7 @@ addLayer('field', {
         cuts = cuts.add(tmp.field.buyables[15].effect);
         cuts = cuts.mul(tmp.field.buyables[22].effect);
         cuts = cuts.mul(tmp.crys.buyables[12].effect);
+        cuts = cuts.mul(tmp.forest.levelEffect);
         return cuts.floor().max(1);
     },
     grassOnCut() {
@@ -461,6 +467,7 @@ addLayer('field', {
         gain = gain.mul(tmp.field.buyables[23].effect);
         gain = gain.mul(tmp.pres.buyables[12].effect);
         gain = gain.mul(tmp.pres.buyables[25].effect);
+        gain = gain.mul(tmp.forest.levelEffect);
         return gain;
     },
     unspentPerks() {

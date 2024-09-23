@@ -107,6 +107,7 @@ function buttonsHeightFunction() {
 	if(tmp.pres.layerShown) { buttons++; }
 	if(tmp.crys.layerShown) { buttons++; }
 	if(tmp.hop.layerShown) { buttons++; }
+	if(tmp.forest.layerShown) { buttons++; }
 	return ((buttons*60)+10) + 'px'
 }
 

@@ -24,6 +24,7 @@ addLayer('hop', {
         crys: new Decimal(0),    // Crystallizers
         breed: new Decimal(0),   // Breeders
         armor: new Decimal(0),   // Armorers
+        sacs: new Decimal(0),    // Sacrifices
 
         // Misc
         bestEnlist: new Decimal(0),    // Highest total Grasshoppers enlisted at once, used for Grasshopper healthbar
@@ -84,6 +85,7 @@ addLayer('hop', {
         if(hasMilestone('hop', 1)) { gain = gain.mul(tmp.crys.milestones[4].effect[1]); }
         if(hasMilestone('hop', 7)) { gain = gain.mul(tmp.hop.milestones[7].effect); }
         if(hasMilestone('leag', 0)) { gain = gain.mul(tmp.leag.milestones[0].effect); }
+        gain = gain.mul(tmp.forest.buyables[15].effect);
         return gain.max(5).floor();
     },
     baseResource: 'Levels',
@@ -118,7 +120,7 @@ addLayer('hop', {
                 'blank',
                 ['clickable', 11],
                 ['raw-html', function(){return `Enlisting Percentage: ${formatWhole(player.hop.enlistPortion)}`}],
-                ['slider', ['enlistPortion', 0, 100]],
+                ['slider', ['enlistPortion', 1, 100]],
                 'blank',
                 ['column', function(){return !hasMilestone('leag', 2)?['blank']:[['raw-html', `Auto-Enlist Percentage: ${formatWhole(player.hop.autoEnlistPortion)}`],
                 ['slider', ['autoEnlistPortion', 0, 100]],
@@ -154,7 +156,7 @@ addLayer('hop', {
         'Jobs': {
             content: [
                 ['raw-html', function(){return `Assigning ${formatWhole(player.hop.enlistPortion)}%, ${formatWhole(player.hop.points.mul(player.hop.enlistPortion/100).floor())} grasshoppers`}],
-                ['slider', ['enlistPortion', 0, 100]],
+                ['slider', ['enlistPortion', 1, 100]],
                 'blank',
                 ['row', [
                     ['column', [
@@ -209,6 +211,27 @@ addLayer('hop', {
             },
             fillStyle: { 'background-color': 'var(--rank)', },
             unlocked(){return player.hop.done},
+        },
+        level2: {
+            direction: RIGHT,
+            width: 550,
+            height: 70,
+            progress() { return player.hop.sacs.div(tmp.hop.sacForRank) },
+            display() {
+                return `Sacrifice Rank <h2 class="overlayThing" id="points" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;">${formatWhole(tmp.hop.sacRank.max(0))}</h2><br>
+                ${formatWhole(player.hop.sacs)}/${formatWhole(tmp.hop.sacForRank)} Sacrificed Grasshoppers<br>(${formatWhole(player.hop.points.mul(player.hop.enlistPortion).div(100))}/sac)`
+            },
+            fillStyle: { 'background-image': 'url(resources/blood.webp)' },
+            unlocked(){return tmp.forest.tabFormat.Cabin.unlocked},
+        },
+        level2small: {
+            direction: RIGHT,
+            width: 300,
+            height: 10,
+            progress() { return player.hop.sacs.div(tmp.hop.sacForRank) },
+            fillStyle: { 'background-image': 'url(resources/blood.webp)' },
+            unlocked(){return player.hop.done},
+            borderStyle: { 'border-width': '2px', 'margin-top': '3px', },
         },
         enlisted: {
             direction: RIGHT,
@@ -466,6 +489,9 @@ addLayer('hop', {
     rank() { return player.hop.bestReset.floor().div(10).max(0).add(1).log(1.5).pow(4/7).floor() },
     forRank(x = tmp.hop.rank) { return x.add(1).pow(7/4).pow_base(1.5).sub(1).mul(10).ceil() },
     rankEffect() { return tmp.hop.rank.pow(0.66).pow_base(2) },
+    sacRank() { return player.hop.sacs.floor().div(10).max(0).add(1).log(1.5).pow(4/5).floor() },
+    sacForRank(x = tmp.hop.sacRank) { return x.add(1).pow(5/4).pow_base(1.5).sub(1).mul(10).ceil() },
+    sacRankEffect() { return tmp.hop.sacRank.pow(0.66).pow_base(1.15) },
     branches: ['crys'],
     insects: ['Amoeba', 'Ant', 'Flower', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'Soldier', 'T-Rex', 'Cultist', 'Megalodon', 'Army'],
     insectMods: ['Weak', 'Common', 'Average', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Crystal', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
@@ -514,6 +540,7 @@ addLayer('hop', {
         if(hasMilestone('hop', 6)) { dmg = dmg.mul(tmp.crys.milestones[5].effect[1]); }
         if(hasMilestone('leag', 0)) { dmg = dmg.mul(tmp.leag.milestones[0].effect); }
         if(hasMilestone('hop', 9)) { dmg = dmg.mul(tmp.hop.clickables[25].effect); }
+        dmg = dmg.mul(tmp.hop.sacRankEffect);
         return dmg.sub(1);
     },
 })
@@ -542,7 +569,7 @@ addLayer('leag', {
         },
         3: {
             requirementDescription: 'League 3',
-            effectDescription() { return `Unlock The ${obfuscate('Forest', true)}` },
+            effectDescription() { return `Unlock The Forest` },
             done() { return player.hop.leg.gte(2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
         },
@@ -574,8 +601,25 @@ addLayer('leag', {
             },
             bgCol: 'hsl(270, 70%, 65%)'
         },
+        12: {
+            title: 'Sacrifice Grasshoppers',
+            display() {
+                return `This will sacrifice ${formatWhole(player.hop.enlistPortion)}%, ${formatWhole(player.hop.points.mul(player.hop.enlistPortion).div(100))} grasshoppers to Grassthulhu`
+            },
+            canClick() { return player.hop.points.gte(1) },
+            onClick() {
+                player.hop.sacs = player.hop.sacs.add(player.hop.points.mul(player.hop.enlistPortion).div(100));
+                player.hop.points = player.hop.points.mul(Decimal.sub(100, player.hop.enlistPortion)).div(100);
+            },
+            style: {
+                width: '300px',
+                height: '50px',
+                'min-height': '80px',
+            },
+            bgCol: 'var(--rank)'
+        },
     },
-    leagues: ['Dirt', 'Wooden', 'Stone', 'Tin', 'Copper', 'Iron', 'Titanium', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Topaz', 'Amethyst', 'Emerald', 'Sapphire', 'Amber', 'Ruby', 'Diamond', 'Final'],
+    leagues: ['Dirt', 'Wooden', 'Stone', 'Tin', 'Copper', 'Iron', 'Titanium', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Topaz', 'Amethyst', 'Emerald', 'Sapphire', 'Amber', 'Ruby', 'Diamond', 'Alpha', 'Beta', "Gamma", 'Omega', 'Final'],
     leagueName() {
         return this.leagues[player.hop.leg.floor().min(this.leagues.length).toNumber()]
     },
