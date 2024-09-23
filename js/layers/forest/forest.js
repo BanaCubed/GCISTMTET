@@ -17,6 +17,15 @@ addLayer('forest', {
         if(player.forest.wood.gte(tmp.forest.maxWood)) { player.forest.growTime  = player.forest.growTime.max(1); }
         if(player.forest.growTime.lt(0)) { player.forest.wood = player.forest.wood.add(player.forest.growTime.floor().mul(-1).mul(tmp.forest.woodPerGrow)).min(tmp.forest.maxWood); player.forest.growTime = player.forest.growTime.add(player.forest.growTime.floor().mul(-1)); }
     },
+    automate() {
+        if(hasFlauto('82')) {
+            buyMaxBuyable('forest', 11);
+            buyMaxBuyable('forest', 12);
+            buyMaxBuyable('forest', 13);
+            buyMaxBuyable('forest', 14);
+            buyMaxBuyable('forest', 15);
+        }
+    },
     color: 'var(--wood)',
     layerShown() { return hasMilestone('leag', 3) },
     image: 'resources/forest-icon.webp',
@@ -172,8 +181,8 @@ addLayer('forest', {
             cost(x) { return x.pow_base(1.17).mul(10).ceil() },
             effect(x) { return x.add(1).mul(x.div(25).floor().pow_base(2)) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
-            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(10).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buy() { if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(10).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases wood gain by +100% per level<br>Every 25 doubles wood gain<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -184,8 +193,8 @@ addLayer('forest', {
             cost(x) { return x.pow_base(1.25).mul(25).ceil() },
             effect(x) { return x.sub(1).div(20).max(0).add(1) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
-            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(25).max(0.1).log(1.25).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buy() { if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(25).max(0.1).log(1.25).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Build a cabin<br>Each level past 1 boosts cabin's boost to wood by +5%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -196,8 +205,8 @@ addLayer('forest', {
             cost(x) { return x.pow_base(1.17).mul(1e4).ceil() },
             effect(x) { return x.add(1).mul(x.div(25).floor().pow_base(2)) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
-            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(1e4).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buy() { if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e4).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases Forest Points (FP) gain by +100% per level<br>Every 25 doubles FP gain<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -208,8 +217,8 @@ addLayer('forest', {
             cost(x) { return x.pow_base(1.5).mul(1e6).ceil() },
             effect(x) { return x.sub(1).div(8).max(0).add(1) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
-            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(1e6).max(0.1).log(1.5).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buy() { if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e6).max(0.1).log(1.5).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Build an extension to the Cabin<br>Each level past 1 boosts tree grow speed by +12.5%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -220,8 +229,8 @@ addLayer('forest', {
             cost(x) { return x.pow_base(1.1).mul(1e6).ceil() },
             effect(x) { return x.div(10).add(1).mul(x.div(10).floor().pow_base(1.1)) },
             canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
-            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.floor().div(1e6).max(0.1).log(1.1).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
+            buy() { if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { let max = player[this.layer].points.floor().div(1e6).max(0.1).log(1.1).add(1).max(0).floor().min(this.purchaseLimit); if(max.lte(getBuyableAmount(this.layer, this.id))){return} if(!hasFlauto('73')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases grasshopper gain by +10% per level<br>Every 10 boosts grasshopper gain by +10%<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -258,6 +267,7 @@ addLayer('forest', {
         let gain = Decimal.dOne;
         gain = gain.mul(tmp.forest.buyables[11].effect);
         gain = gain.mul(tmp.hop.sacRankEffect.pow(buyableEffect('forest', 12)));
+        if(hasMilestone('leag', 5)) { gain = gain.mul(tmp.hop.milestones[2].effect.pow(0.15)) }
         return gain;
     },
     expOnCut() {

@@ -59,6 +59,7 @@ addLayer('pres', {
         gain = gain.mul(tmp.pres.buyables[24].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[0]);
+        if(hasMilestone('hop', 13)) { gain = gain.mul(tmp.hop.milestones[2].effect) }
         return gain.floor();
     },
     baseResource: 'Levels',
@@ -393,6 +394,7 @@ addLayer('pres', {
         gain = gain.mul(tmp.pres.buyables[23].effect);
         gain = gain.mul(tmp.crys.buyables[13].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[1]);
+        if(hasMilestone('hop', 13)) { gain = gain.mul(tmp.hop.milestones[2].effect.pow(0.3)) }
         return gain;
     },
     branches: ['field'],

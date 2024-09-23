@@ -135,7 +135,8 @@ addLayer('crys', {
                 'blank',
                 ['clickable-tree', [
                     [61, 62, 63],
-                    [71, 72],
+                    [71, 72, 73],
+                    [81, 82],
                 ]],
                 'blank',
             ],
@@ -627,7 +628,7 @@ addLayer('crys', {
             title: 'Hyper Combat',
             canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('61') && hasFlauto('62') },
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
-            cost: new Decimal(1e12),
+            cost: new Decimal(5e11),
             display() {
                 return `Decuple Grasshopper health, always have the Super Combat boost applied, and multiply Auto-Enlisting based on Combat Tick Length<br><br>Cost: ${formatWhole(this.cost)} Flowers`
             },
@@ -638,6 +639,55 @@ addLayer('crys', {
                 height: '160px',
             },
             branches: [61, 62],
+        },
+        73: {
+            title: 'Neverending Wood',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('63'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(2.5e11),
+            display() {
+                return `Think really hard about what the other Neverending upgrades did<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [63],
+        },
+        
+        81: {
+            title: 'Omega Combat',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('72') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e12),
+            display() {
+                return `Increment up to 10 stages at once, based on what stage you can oneshot<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [72],
+        },
+        82: {
+            title: 'Flautomate Wood',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('73'); },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e12),
+            display() {
+                return `Wow, I sure to wonder what this one does<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [73],
         },
 
     },

@@ -96,7 +96,7 @@ function loadVue() {
 				HP  <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
 					><tooltip :text="'HP is the health of the opponent<br><br>You want this to reach 0'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.hop.opp) }}</h2>/{{ formatWhole(tmp.hop.oppStats[0]) }}<br>
 				DMG <h2  class="tooltipBox" style="color: var(--rank); text-shadow: var(--rank) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ formatWhole(tmp.hop.oppStats[1]) }}</h2><br>
+					><tooltip :text="'DMG is the amount of damage that your cult takes each Combat Tick'" style="text-shadow: none;"></tooltip>{{ obfuscate(formatWhole(tmp.hop.oppStats[1]), tmp.hop.oppStats[1].gte(player.hop.active.mul(tmp.hop.arm).mul(1e9))) }}</h2><br>
 			</div>
 		</div>
 		`

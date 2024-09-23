@@ -303,7 +303,9 @@ addLayer("info-tab", {
                     You are in League <h2 style="color: var(--leag);">${formatWhole(player.hop.leg.add(1))}</h2><br>`) + (!tmp.forest.layerShown?'':`
                         <br><h2 style="color: var(--lood);">The Forest</h2><br>
                     You have <h2 style="color: var(--wood);">${formatWhole(player.forest.points)}</h2> Wood<br>
-                    You are Naturality <h2 style="color: var(--wood);">${formatWhole(tmp.forest.level)}</h2><br>`)
+                    You are Naturality <h2 style="color: var(--wood);">${formatWhole(tmp.forest.level)}</h2><br>
+                    You are Sacrifice Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.sacRank)}</h2><br>`) + 
+                    '<br>'
                 }]
             ],
             color: 'cyan',
