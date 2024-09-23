@@ -210,9 +210,9 @@ function loadVue() {
 			<div style="text-shadow: black  0 0 4px; text-align: left; width: calc(100%-20px); padding-bottom: 10px; padding-top: 20px; margin-left: 20px;">
 
 				ARM <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'ARM is your armor tier'" style="text-shadow: none;"></tooltip>0</h2><br>
+					><tooltip :text="'ARM is your armor tier'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.forest.arm) }} - {{ tmp.forest.clickables[12].names[player.forest.arm.toNumber()] }}</h2><br>
 				WEA <h2  class="tooltipBox" style="color: var(--ghop); text-shadow: var(--ghop) 0px 0px 10px, black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;;"
-					><tooltip :text="'WEA is your weapon tier'" style="text-shadow: none;"></tooltip>0</h2><br>
+					><tooltip :text="'WEA is your weapon tier'" style="text-shadow: none;"></tooltip>{{ formatWhole(player.forest.wea) }} - {{ tmp.forest.clickables[13].names[player.forest.wea.toNumber()] }}</h2><br>
 			</div>
 
 			<clickable :layer="'forest'" :data="12"></clickable><br>
@@ -690,7 +690,7 @@ function loadVue() {
 		computed: {
 			key() {return this.$vnode.key}
 		},
-		template: `<thing-tree :layer="layer" :data = "data" :type = "'clickable'" style="max-width: 95%; width: fit-content; overflow-x: auto;"></thing-tree>`
+		template: `<thing-tree :layer="layer" :data = "data" :type = "'clickable'""></thing-tree>`
 	})
 
 	Vue.component('thing-tree', {

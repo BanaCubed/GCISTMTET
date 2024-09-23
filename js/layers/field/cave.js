@@ -54,7 +54,7 @@ addLayer('crys', {
         gain = gain.mul(tmp.field.buyables[29].effect);
         gain = gain.mul(tmp.pres.buyables[18].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[0]);
-        if(hasMilestone('hop', 0)) { gain = gain.mul(tmp.hop.milestones[0].effect); }
+        if(hasMilestone('hop', 0)) { gain = gain.mul(hasMilestone('hop', 10)?tmp.hop.milestones[2].effect:tmp.hop.milestones[0].effect); }
         return gain.floor();
     },
     baseResource: 'Levels',
@@ -124,6 +124,26 @@ addLayer('crys', {
                 'background-color': 'var(--flow)',
             },
             unlocked(){return player.crys.done},
+            color: 'var(--flow)',
+        },
+        'Flowers II': {
+            content: [
+                ['raw-html', function () { return `You have <h2  class="overlayThing" id="points" style="color: var(--flow); text-shadow: var(--flow) 0px 0px 10px;">${formatWhole(player.crys.flowers.max(0))}</h2> Flowers`; }],
+                ['raw-html', function () { return tmp.crys.flowersGain.gt(0) ? `(${format(tmp.crys.flowersGain)}/sec)` : ''; }],
+                'blank',
+                ['raw-html', function () { return `Flower upgrades are still kept on all resets before ${obfuscate('interplanetary', true)}` }],
+                'blank',
+                ['clickable-tree', [
+                    [61, 62, 63],
+                    [71, 72],
+                ]],
+                'blank',
+            ],
+            buttonStyle: {
+                'border-color': 'var(--flow)',
+                'background-color': 'var(--flow)',
+            },
+            unlocked(){return hasMilestone('hop', 11)},
             color: 'var(--flow)',
         },
     },
@@ -538,6 +558,88 @@ addLayer('crys', {
             branches: [31],
         },
 
+
+
+        // Flowers Part 2
+        61: {
+            title: 'Neverending Grasshoppers I',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e9),
+            display() {
+                return `Auto-Enlist no longer spends grasshoppers, and is based on current grasshoppers instead of gain<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+        62: {
+            title: 'Super Combat',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e9),
+            display() {
+                return `Reduce Combat Tick length by 0.75s if the enemy can be oneshot<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+        63: {
+            title: 'Lumberjack',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e10),
+            display() {
+                return `Gain +100 autochop, and unlock the lumberjack job<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+        },
+        
+        71: {
+            title: 'Neverending Grasshoppers II',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('61') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e11),
+            display() {
+                return `Auto-Enlist also sacrifices the same amount that it enlists<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [61],
+        },
+        72: {
+            title: 'Hyper Combat',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('61') && hasFlauto('62') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e12),
+            display() {
+                return `Decuple Grasshopper health, always have the Super Combat boost applied, and multiply Auto-Enlisting based on Combat Tick Length<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [61, 62],
+        },
+
     },
     doReset(layer) {
         if (tmp[layer].row <= tmp[this.layer].row) { return; }
@@ -549,6 +651,7 @@ addLayer('crys', {
     },
     onPrestige(gain) {
         player.crys.done = true;
+        activityParticle('resources/cave-icon.webp', true);
     },
     branches: ['pres'],
     flowersGain() {

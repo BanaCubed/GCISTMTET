@@ -425,7 +425,7 @@ function mainLoop() {
 	adjustPopupTime(trueDiff)
 	updateParticles(trueDiff)
 	ticking = false
-	setTimeout(mainLoop, options.slowMode?100:50/3)
+	setTimeout(mainLoop, options.slowMode?200:50/3)
 }
 
 setInterval(function() {needCanvasUpdate = true}, 500)

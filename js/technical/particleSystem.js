@@ -55,12 +55,12 @@ function updateParticles(diff) {
 		}
         else {
             if (particle.update) run(particle.update, particle)
-            particle.angle += particle.rotation
-            particle.x += particle.xVel
-            particle.y += particle.yVel
+            particle.angle += particle.rotation*diff*30
+            particle.x += particle.xVel*diff*30
+            particle.y += particle.yVel*diff*30
             particle.speed = Math.sqrt(Math.pow(particle.xVel, 2) + Math.pow(particle.yVel, 2))
             particle.dir = atan(-particle.xVel/particle.yVel)
-            particle.yVel += particle.gravity
+            particle.yVel += particle.gravity*diff*30
         }
 	}
 }

@@ -300,7 +300,10 @@ addLayer("info-tab", {
                     You have <h2 style="color: var(--ghop);">${formatWhole(player.hop.points)}</h2> Grasshoppers<br>
                     You are Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.rank)}</h2><br>
                     You are at Stage <h2 style="color: var(--rank);">${formatWhole(player.hop.coloTier.add(1))}</h2><br>`) + (!hasMilestone('hop', 8)?'':`
-                    You are in League <h2 style="color: var(--leag);">${formatWhole(player.hop.leg.add(1))}</h2><br>`)
+                    You are in League <h2 style="color: var(--leag);">${formatWhole(player.hop.leg.add(1))}</h2><br>`) + (!tmp.forest.layerShown?'':`
+                        <br><h2 style="color: var(--lood);">The Forest</h2><br>
+                    You have <h2 style="color: var(--wood);">${formatWhole(player.forest.points)}</h2> Wood<br>
+                    You are Naturality <h2 style="color: var(--wood);">${formatWhole(tmp.forest.level)}</h2><br>`)
                 }]
             ],
             color: 'cyan',

@@ -111,6 +111,31 @@ function buttonsHeightFunction() {
 	return ((buttons*60)+10) + 'px'
 }
 
+function activityParticle(particle, prestige=false) {
+	makeParticles({
+		fadeInTime: 0,
+		fadeOutTime: 1,
+		angle: 0,
+		speed: prestige?2.25:3.5,
+		x: window.innerWidth-(Math.random()*80)-30,
+		y: window.innerHeight+50,
+		width: prestige?75:50,
+		height: prestige?75:50,
+		image: particle,
+		time: prestige?4:2,
+		rotation: Math.random()-0.5,
+	}, 1)
+}
+
+let ps = {
+	grass: 0,
+	perks: 0,
+	pres: 0,
+	plat: 0,
+	crys: 0,
+	wood: 0,
+}
+
 function buyMaxBuyable(layer, id) {
 	if (!player[layer].unlocked) return
 	if (!tmp[layer].buyables[id].unlocked) return
@@ -119,6 +144,12 @@ function buyMaxBuyable(layer, id) {
 
 	run(layers[layer].buyables[id].buyMax, layers[layer].buyables[id])
 	updateBuyableTemp(layer)
+	if(layer=='field' && id<20 && ps.grass<2) { activityParticle('resources/field-icon.webp'); ps.grass++; setTimeout(() => { ps.grass-- }, 500+(Math.random()*200)); }
+	if(layer=='field' && id>20 && ps.perks<2) { activityParticle('resources/perks-icon.webp'); ps.perks++; setTimeout(() => { ps.perks-- }, 500+(Math.random()*200)); }
+	if(layer=='pres' && id<20 && ps.pres<2) { activityParticle('resources/city-icon.webp'); ps.pres++; setTimeout(() => { ps.pres-- }, 500+(Math.random()*200)); }
+	if(layer=='pres' && id>20 && ps.plat<2) { activityParticle('resources/plat-icon.webp'); ps.plat++; setTimeout(() => { ps.plat-- }, 500+(Math.random()*200)); }
+	if(layer=='crys' && ps.crys<2) { activityParticle('resources/cave-icon.webp'); ps.crys++; setTimeout(() => { ps.crys-- }, 500+(Math.random()*200)); }
+	if(layer=='forest' && ps.wood<2) { activityParticle('resources/forest-icon.webp'); ps.wood++; setTimeout(() => { ps.wood-- }, 500+(Math.random()*200)); }
 }
 
 function buyBuyable(layer, id) {
@@ -128,6 +159,10 @@ function buyBuyable(layer, id) {
 
 	run(layers[layer].buyables[id].buy, layers[layer].buyables[id])
 	updateBuyableTemp(layer)
+	if(layer=='field') { activityParticle('resources/field-icon.webp') }
+	if(layer=='pres') { activityParticle('resources/city-icon.webp') }
+	if(layer=='crys') { activityParticle('resources/cave-icon.webp') }
+	if(layer=='forest') { activityParticle('resources/forest-icon.webp') }
 }
 
 function clickClickable(layer, id) {

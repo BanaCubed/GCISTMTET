@@ -38,6 +38,10 @@ function getClickableState(layer, id) {
 	return (player[layer].clickables[id])
 }
 
+function hasFlauto(id) {
+	return player.crys.flautomation.includes(id.toString())
+}
+
 function setClickableState(layer, id, state) {
 	player[layer].clickables[id] = state
 }

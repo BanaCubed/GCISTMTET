@@ -66,7 +66,7 @@ addLayer('forest', {
                 ${formatWhole(player.forest.totalExp.sub(tmp.forest.expForLevel))}/${formatWhole(tmp.forest.expToLevel)} FP<br>
                 (${format(tmp.forest.expOnCut)}/chop)` + (tmp.forest.autoCut.gt(0)?` | (${format(tmp.forest.expOnCut.mul(tmp.forest.autoCut))}/sec)`:'')
             },
-            fillStyle: { 'background-color': 'var(--wood)', },
+            fillStyle: { 'background-image': 'url(resources/wood.webp)', },
             unlocked(){return tmp.forest.layerShown},
         },
     },
@@ -91,38 +91,77 @@ addLayer('forest', {
         12: {
             title: 'Upgrade Armor',
             display() {
-                return `placeholder text`
+                return `Upgrade armor for ${tmp.forest.clickables[12].formatCost}<br>Upgrading armor doubles HP<br>${format(tmp.forest.clickables[12].progress)}% resources<br>Currently x${formatWhole(player.forest.arm.pow_base(2))} HP`
             },
-            canClick() { return player.forest.wood.gte(1) },
+            canClick() { return player.forest.points.gte(tmp.forest.clickables[12].cost[0]) && player.forest.arm==tmp.forest.clickables[12].stage },
             onClick() {
-                let cuts = player.forest.wood.min(tmp.forest.multiCut);
-                player.forest.wood = player.forest.wood.sub(tmp.forest.multiCut).max(0);
-                player.forest.points = player.forest.points.add(tmp.forest.woodOnCut.mul(cuts));
-                player.forest.totalExp = player.forest.totalExp.add(tmp.forest.expOnCut.mul(cuts));
+                player.forest.points = player.forest.points.sub(tmp.forest.clickables[12].cost[0]);
+
+                player.forest.arm = tmp.forest.clickables[12].stage.add(1);
             },
             style: {
                 width: '300px',
                 height: '90px',
                 'min-height': '90px',
             },
+            cost() {
+                let costs = [
+                    [new Decimal(1e7)],
+                    [new Decimal(1e11)],
+                    [Decimal.dInf],
+                ]
+                return costs[player.forest.arm.floor().toNumber()]
+            },
+            stage(){return player.forest.arm},
+            formatCost() {
+                if(player.forest.arm.lt(0.5)) { return formatWhole(1e7) + ' Wood' }
+                if(player.forest.wea.lt(1.5)) { return formatWhole('1e11') + ' Wood' }
+                if(player.forest.arm.lt(2.5)) { return formatWhole('1e303') + ' Wood' }
+            },
+            progress() {
+                if(player.forest.arm.lt(0.5)) { return player.forest.points.div(1e5).min(100).max(0) }
+                if(player.forest.wea.lt(1.5)) { return player.forest.points.div(1e9).min(100).max(0) }
+                if(player.forest.arm.lt(2.5)) { return new Decimal(0) }
+            },
+            names: ['N/A', 'Stool', 'Plank', 'placeholder'],
+            bgCol: "var(--ghop)",
         },
         13: {
             title: 'Upgrade Weapon',
             display() {
-                return `placeholder text`
+                return `Upgrade weapon for ${tmp.forest.clickables[13].formatCost}<br>Upgrading weapon doubles DMG<br>${format(tmp.forest.clickables[13].progress)}% resources<br>Currently x${formatWhole(player.forest.wea.pow_base(2))} DMG`
             },
-            canClick() { return player.forest.wood.gte(1) },
+            canClick() { return player.forest.points.gte(tmp.forest.clickables[13].cost[0]) && player.forest.wea==tmp.forest.clickables[13].stage },
             onClick() {
-                let cuts = player.forest.wood.min(tmp.forest.multiCut);
-                player.forest.wood = player.forest.wood.sub(tmp.forest.multiCut).max(0);
-                player.forest.points = player.forest.points.add(tmp.forest.woodOnCut.mul(cuts));
-                player.forest.totalExp = player.forest.totalExp.add(tmp.forest.expOnCut.mul(cuts));
+                player.forest.points = player.forest.points.sub(tmp.forest.clickables[13].cost[0]);
+
+                player.forest.wea = tmp.forest.clickables[13].stage.add(1);
             },
             style: {
                 width: '300px',
                 height: '90px',
                 'min-height': '90px',
             },
+            cost() {
+                let costs = [
+                    [new Decimal(1e8)],
+                    [new Decimal(1e12)],
+                    [Decimal.dInf],
+                ]
+                return costs[player.forest.wea.floor().toNumber()]
+            },
+            stage(){return player.forest.wea},
+            formatCost() {
+                if(player.forest.wea.lt(0.5)) { return formatWhole(1e8) + ' Wood' }
+                if(player.forest.wea.lt(1.5)) { return formatWhole('1e12') + ' Wood' }
+                if(player.forest.wea.lt(2.5)) { return formatWhole('1e303') + ' Wood' }
+            },
+            progress() {
+                if(player.forest.wea.lt(0.5)) { return player.forest.points.div(1e6).min(100).max(0) }
+                if(player.forest.wea.lt(1.5)) { return player.forest.points.div(1e10).min(100).max(0) }
+            },
+            names: ['N/A', 'Pointy Stick', 'Wooden Mallet', 'placeholder'],
+            bgCol: "var(--ghop)",
         },
     },
     buyables: {
@@ -194,6 +233,7 @@ addLayer('forest', {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
         if(tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return }
         let keep = []
+        if(tmp[layer].realm != 0) { keep.push('arm', 'wea') }
         layerDataReset(this.layer, keep)
     },
     level() { return player.forest.totalExp.floor().div(50).max(0).add(1).log(2.5).pow(1.25).floor() },
@@ -237,6 +277,8 @@ addLayer('forest', {
     },
     autoCut() {
         let cuts = Decimal.dZero;
+        if(player.crys.flautomation.includes('63')) { cuts = cuts.add(100); }
+        cuts = cuts.add(tmp.hop.clickables[26].effect);
         return cuts;
     },
 })

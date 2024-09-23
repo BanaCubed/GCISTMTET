@@ -369,6 +369,7 @@ addLayer('pres', {
     },
     onPrestige(gain) {
         player.pres.done = true
+        activityParticle('resources/city-icon.webp', true);
     },
     tier() { return player.pres.totalTp.floor().div(1500).max(0).add(1).log(1.5).pow(0.5).floor() },
     tpForLevel(x = tmp.pres.tier) { return x.pow(2).pow_base(1.5).sub(1).mul(1500).ceil() },
@@ -382,7 +383,7 @@ addLayer('pres', {
         gain = gain.mul(tmp.pres.buyables[28].effect);
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[1]);
-        if(hasMilestone('hop', 1)) { gain = gain.mul(tmp.hop.milestones[1].effect); }
+        if(hasMilestone('hop', 1)) { gain = gain.mul(hasMilestone('hop', 10)?tmp.hop.milestones[2].effect:tmp.hop.milestones[1].effect); }
         return gain;
     },
     platOnCut() {

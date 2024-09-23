@@ -19,7 +19,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.103,
 	name: "Grasshoppers",
-	build: 32,
+	build: 33,
 }
 
 let changelog = 
@@ -30,6 +30,12 @@ let changelog =
 			- Added <span style="color: var(--flow)">Flowers</span><br>
 			- Added <span style="color: var(--rank)">Ranks</span><br>
 			- Added <span style="color: var(--rank)">The Colosseum</span><br>
+			- Added <span style="color: var(--rank)">Stages</span><br>
+			- Added <span style="color: var(--leag)">Leagues</span><br>
+			- Added <span style="color: var(--wood)">Wood</span><br>
+			- Added <span style="color: var(--wood)">Naturality</span><br>
+			- Added <span style="color: var(--lood)">The Cabin</span><br>
+			- Added <span style="color: var(--rank)">Sacrifice/Sacrifice Rank</span><br>
 			- Added <span style="color: var(--ghop)">Misc Features</span><br>
 			- Revamped <span style="color: var(--ghop)">The Control Panel</span><br>
 			- Removed <span style="color: var(--auto)">Automation</span><br>
