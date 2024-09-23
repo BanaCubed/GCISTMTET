@@ -526,9 +526,9 @@ addLayer('hop', {
             hidden() { return false; },
         },
         12: {
-            requirementDescription: 'Stage 280',
+            requirementDescription: 'Stage 270',
             effectDescription() { return `placeholder` },
-            done() { return player.hop.coloTier.gte(239) },
+            done() { return player.hop.coloTier.gte(269) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             hidden() { return false; },
