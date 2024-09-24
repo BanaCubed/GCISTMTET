@@ -47,7 +47,7 @@ addLayer('hop', {
                 if(player.hop.opp.lte(0)) { // Colosseum Progression
                     player.hop.coloTier = player.hop.coloTier.add(tmp.hop.stageSkip.min(Decimal.sub(tmp.hop.highestOneShot, player.hop.coloTier)).max(1));
                     player.hop.opp = layers.hop.oppStats()[0];
-                    activityParticle('resources/colo-success-icon.webp');
+                    activityParticle('resources/colo-success-icon.webp', false, true);
                 } else {
                     if(hasMilestone('leag', 4)) { player.hop.sacs = player.hop.sacs.add(tmp.hop.oppStats[1].div(tmp.hop.arm.add(1).max(1)).min(player.hop.active).div(20).max(0)); }
                     if(player.hop.done && player.hop.active.gte(1) && !hasFlauto('72')) { activityParticle('resources/colosseum-icon.webp'); }
@@ -221,7 +221,7 @@ addLayer('hop', {
         },
     },
     leagueRequirement() {
-        return player.hop.leg.pow(1.6).mul(35).add(100).ceil();
+        return player.hop.leg.pow(1.6).mul(35).add(99).ceil();
     },
     bars: {
         level: {
@@ -578,8 +578,8 @@ addLayer('hop', {
     sacForRank(x = tmp.hop.sacRank) { return x.add(1).pow(5/4).pow_base(1.5).sub(1).mul(10).ceil() },
     sacRankEffect() { return tmp.hop.sacRank.pow(0.66).pow_base(1.15) },
     branches: ['crys'],
-    insects: ['Amoeba', 'Ant', 'Flower', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'Soldier', 'T-Rex', 'Cultist', 'Megalodon', 'Army'],
-    insectMods: ['Weak', 'Common', 'Average', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Crystal', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
+    insects: ['Amoeba', 'Ant', 'Flower', 'Brush', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'Soldier', 'T-Rex', 'Cultist', 'Megalodon', 'Army'],
+    insectMods: ['Weak', 'Common', 'Average', 'Shovel', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Crystal', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         let insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
@@ -708,7 +708,7 @@ addLayer('leag', {
                 player.hop.opp = new Decimal(10);
                 player.hop.coloTimer = tmp.hop.tickLength;
                 player.hop.leg = player.hop.leg.add(1);
-                activityParticle('resources/league-icon.webp', true);
+                activityParticle('resources/league-icon.webp', true, true);
             },
             style: {
                 width: '300px',

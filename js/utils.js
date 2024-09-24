@@ -111,12 +111,13 @@ function buttonsHeightFunction() {
 	return ((buttons*60)+10) + 'px'
 }
 
-function activityParticle(particle, prestige=false) {
+function activityParticle(particle, prestige=false, priority=false) {
+	if(options.slowMode) { return; }
 	makeParticles({
 		fadeInTime: 0,
 		fadeOutTime: 1,
 		angle: 0,
-		speed: prestige?2.25:3.5,
+		speed: prestige?(Math.random()/3+2.15):(Math.random()/2+3.25),
 		x: window.innerWidth-(Math.random()*80)-30,
 		y: window.innerHeight+50,
 		width: prestige?75:50,
@@ -124,7 +125,10 @@ function activityParticle(particle, prestige=false) {
 		image: particle,
 		time: prestige?4:2,
 		rotation: Math.random()-0.5,
-	}, 1)
+		style: {
+			'z-index': prestige?'2':'1' + (priority?'0':''),
+		},
+	}, 1);
 }
 
 let ps = {

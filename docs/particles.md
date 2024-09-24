@@ -45,7 +45,7 @@ All distances are in pixels and angles are in degrees, with 0 being up and going
 - xVel, yVel: Set initially based on other properties, then used to update movement.
 
 - layer: When changing tabs, if leaving the `layer` tab, this particle will be erased.
-- You can add other features to particles, but you must impliment their effects yourself.
+- You can add other features to particles, but you must implement their effects yourself.
 
 Function features: These stay as functions and are for more advanced things. They are optional.
 
