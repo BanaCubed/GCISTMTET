@@ -42,6 +42,11 @@
 	background-color: hsl(330, 53%, 37.1%);
 }
 
+#toggle-forest-autoW {
+	border-color: var(--lood);
+	background-color: hsl(15, 45%, 34.75%);
+}
+
 .crys.milestone {
 	border-width: 5px; border-style: solid; border-color: #0f0f0f;
 }
@@ -103,6 +108,7 @@ html, body {
 	--leag: hsl(270, 90%, 55%);
 	--wood: hsl(15, 60%, 25%);
 	--lood: hsl(15, 60%, 70%);
+	--evo: hsl(130, 100%, 25%);
 }
 
 td {

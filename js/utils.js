@@ -108,6 +108,7 @@ function buttonsHeightFunction() {
 	if(tmp.crys.layerShown) { buttons++; }
 	if(tmp.hop.layerShown) { buttons++; }
 	if(tmp.forest.layerShown) { buttons++; }
+	if(tmp.evo.layerShown) { buttons++; }
 	return ((buttons*60)+10) + 'px'
 }
 
@@ -118,7 +119,7 @@ function activityParticle(particle, prestige=false, priority=false) {
 		fadeOutTime: 1,
 		angle: 0,
 		speed: prestige?(Math.random()/3+2.15):(Math.random()/2+3.25),
-		x: window.innerWidth-(Math.random()*80)-30,
+		x: (window.innerWidth)-(Math.random()*(80+(window.innerWidth*0.2)))-30,
 		y: window.innerHeight+50,
 		width: prestige?75:50,
 		height: prestige?75:50,
@@ -126,7 +127,7 @@ function activityParticle(particle, prestige=false, priority=false) {
 		time: prestige?4:2,
 		rotation: Math.random()-0.5,
 		style: {
-			'z-index': prestige?'2':'1' + (priority?'0':''),
+			'z-index': prestige?'102':'101' + (priority?'0':''),
 		},
 	}, 1);
 }

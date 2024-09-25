@@ -62,7 +62,17 @@ addLayer('hop', {
             player.hop.bestEnlist = player.hop.bestEnlist.max(player.hop.active);
             if(hasFlauto('71')) {
                 player.hop.sacs = player.hop.sacs.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+            } if(hasFlauto('83')) {
+                player.hop.armor = player.hop.armor.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+                player.hop.groves = player.hop.groves.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+            } if(hasFlauto('91')) {
+                player.hop.lumbs = player.hop.lumbs.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+                player.hop.lawns = player.hop.lawns.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+            } if(hasFlauto('101')) {
+                player.hop.crys = player.hop.crys.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
+                player.hop.breed = player.hop.breed.add(Decimal.div(player.hop.points, 100).mul(player.hop.autoEnlistPortion).mul(diff));
             }
+
             if(hasFlauto('72')) {
                 player.hop.autoEnlistPortion = 250/tmp.hop.tickLength
             } else if (hasFlauto('61')) {
@@ -77,6 +87,8 @@ addLayer('hop', {
     stageSkip() {
         let gain = Decimal.dOne;
         if(hasFlauto('81')) { gain = gain.add(9) }
+        if(hasFlauto('92')) { gain = gain.add(40) }
+        if(hasFlauto('102')) { gain = gain.add(50) }
         return gain;
     },
     automate() {
@@ -221,7 +233,7 @@ addLayer('hop', {
         },
     },
     leagueRequirement() {
-        return player.hop.leg.pow(1.6).mul(35).add(99).ceil();
+        return player.hop.leg.pow(1.4).mul(35).add(99).ceil();
     },
     bars: {
         level: {
@@ -536,25 +548,25 @@ addLayer('hop', {
             hidden() { return false; },
         },
         12: {
-            requirementDescription: 'Stage 270',
+            requirementDescription: 'Stage 200',
             effectDescription() { return `Unlock the ability to disable combat ticking` },
-            done() { return player.hop.coloTier.gte(269) },
+            done() { return player.hop.coloTier.gte(199) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             hidden() { return false; },
         },
         13: {
-            requirementDescription: 'Stage 330',
+            requirementDescription: 'Stage 250',
             effectDescription() { return `Make the compounding stage boost also apply to PP` },
-            done() { return player.hop.coloTier.gte(329) },
+            done() { return player.hop.coloTier.gte(249) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             hidden() { return false; },
         },
         14: {
-            requirementDescription: 'Stage 360',
+            requirementDescription: 'Stage 300',
             effectDescription() { return `Make the compounding stage boost also apply to Platinum at a reduced rate` },
-            done() { return player.hop.coloTier.gte(329) },
+            done() { return player.hop.coloTier.gte(299) },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             hidden() { return false; },
@@ -578,8 +590,8 @@ addLayer('hop', {
     sacForRank(x = tmp.hop.sacRank) { return x.add(1).pow(5/4).pow_base(1.5).sub(1).mul(10).ceil() },
     sacRankEffect() { return tmp.hop.sacRank.pow(0.66).pow_base(1.15) },
     branches: ['crys'],
-    insects: ['Amoeba', 'Ant', 'Flower', 'Brush', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Kitten', 'Dog', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'Soldier', 'T-Rex', 'Cultist', 'Megalodon', 'Army'],
-    insectMods: ['Weak', 'Common', 'Average', 'Shovel', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Crystal', 'Powered', 'Master', 'Gifted', 'Magic', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
+    insects: ['Amoeba', 'Ant', 'Flower', 'Brush', 'Worm', 'Aphid', 'Beetle', 'Mantis', 'Butterfly', 'Bee', 'Wasp', 'Chair', 'Sparrow', 'Duck', 'Pigeon', 'Frog', 'Fish', 'Dog', 'Wolf', 'Horse', 'Eagle', 'Elephant', 'Hippo', 'Rhino', 'Human', 'Tank', 'Shark', 'Soldier', 'T-Rex', 'Cultist', 'Megalodon', 'Army'],
+    insectMods: ['Weak', 'Common', 'Average', 'Shovel', 'Funny', 'Cool', 'Adept', 'Strong', 'Toasted', 'Buff', 'Veteran', 'Psycho', 'Crystal', 'Powered', 'Master', 'Gifted', 'Magic', 'Shiny', 'Legend', 'Ultra', 'Demonic', 'Hyper', 'Heavenly', 'Giga', 'Godly', 'Omega', 'Aleph', 'Omni', 'God of'],
     insectModsPlusPlusPlus: ['+', '++', '+++'],
     opponentName() {
         let insect = this.insects[player.hop.coloTier.mod(this.insects.length).toNumber()]
@@ -603,10 +615,7 @@ addLayer('hop', {
             dmg = dmg.mul(player.hop.coloTier.sub(130).div(50).min(1).pow_base(5))
         }
         if(player.hop.coloTier.gte(300)) {
-            dmg = dmg.mul(player.hop.coloTier.sub(300).div(50).pow_base(5))
-        }
-        if(player.hop.coloTier.gte(400)) {
-            dmg = dmg.mul(player.hop.coloTier.sub(400).div(5).pow_base(5))
+            dmg = dmg.mul(player.hop.coloTier.sub(300).div(5).pow_base(10))
         }
         return [
             player.hop.coloTier.pow_base(1.2).mul(10).floor(),
@@ -679,14 +688,14 @@ addLayer('leag', {
         5: {
             requirementDescription: 'League 5',
             effectDescription() { return `Make the compounding stage boost also apply to wood at a reduced rate` },
-            done() { return player.hop.leg.gte(3) },
+            done() { return player.hop.leg.gte(4) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
         },
         6: {
-            requirementDescription: 'League 5, Stage 330',
-            effectDescription() { return `Unlock Evolution (unfinished)` },
-            done() { return player.hop.leg.gte(4) && player.hop.coloTier.gte(329) },
+            requirementDescription: 'League 5, Stage 270',
+            effectDescription() { return `Unlock Evolution` },
+            done() { return player.hop.leg.gte(4) && player.hop.coloTier.gte(269) },
             style: { 'width': '500px', 'border-width': '0', 'box-shadow': 'inset 0 0 0 4px rgba(0,0,0,0.125)' },
             unlocked() { return hasMilestone(this.layer, this.id-2) },
         },
@@ -735,7 +744,7 @@ addLayer('leag', {
             bgCol: 'var(--rank)'
         },
     },
-    leagues: ['Dirt', 'Wooden', 'Stone', 'Tin', 'Copper', 'Iron', 'Titanium', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Topaz', 'Amethyst', 'Emerald', 'Sapphire', 'Amber', 'Ruby', 'Diamond', 'Alpha', 'Beta', "Gamma", 'Omega', 'Final'],
+    leagues: ['Dirt', 'Grass', 'Wooden', 'Stone', 'Coal', 'Tin', 'Copper', 'Iron', 'Titanium', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Topaz', 'Amethyst', 'Emerald', 'Sapphire', 'Amber', 'Ruby', 'Diamond', 'Alpha', 'Beta', "Gamma", 'Omega', 'Gods', 'Final'],
     leagueName() {
         return this.leagues[player.hop.leg.floor().min(this.leagues.length).toNumber()]
     },

@@ -5,7 +5,7 @@ let modInfo = {
 	pointsName: "grass",
 	modFiles: [
 		"tree.js",
-		"layers/field/field.js", "layers/field/city.js", "layers/field/cult.js", "layers/field/cave.js",
+		"layers/field/field.js", "layers/field/city.js", "layers/field/cult.js", "layers/field/cave.js", "layers/field/lab.js",
 		"layers/forest/forest.js",
 	],
 
@@ -19,7 +19,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.103,
 	name: "Grasshoppers",
-	build: 36,
+	build: 37,
 }
 
 let changelog = 

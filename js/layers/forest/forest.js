@@ -1,5 +1,5 @@
 addLayer('forest', {
-    row: 0,
+    row: 3,
     realm: 2,
     startData() { return {
         unlocked: true,
@@ -9,6 +9,7 @@ addLayer('forest', {
         points: new Decimal(0),
         arm: new Decimal(0),
         wea: new Decimal(0),
+        autoW: true,
     }},
     update(diff) {
         player.forest.points = player.forest.points.add(tmp.forest.autoCut.mul(tmp.forest.woodOnCut).mul(diff));
@@ -18,7 +19,7 @@ addLayer('forest', {
         if(player.forest.growTime.lt(0)) { player.forest.wood = player.forest.wood.add(player.forest.growTime.floor().mul(-1).mul(tmp.forest.woodPerGrow)).min(tmp.forest.maxWood); player.forest.growTime = player.forest.growTime.add(player.forest.growTime.floor().mul(-1)); }
     },
     automate() {
-        if(hasFlauto('82')) {
+        if(hasFlauto('82') && player.forest.autoW) {
             buyMaxBuyable('forest', 11);
             buyMaxBuyable('forest', 12);
             buyMaxBuyable('forest', 13);
@@ -27,7 +28,7 @@ addLayer('forest', {
         }
     },
     color: 'var(--wood)',
-    layerShown() { return hasMilestone('leag', 3) },
+    layerShown() { return hasMilestone('leag', 3) || player.evo.done },
     image: 'resources/forest-icon.webp',
     nodeStyle: {
         'background-size': 'contain',
@@ -240,7 +241,6 @@ addLayer('forest', {
     },
     doReset(layer) {
         if(tmp[layer].row <= tmp[this.layer].row) { return }
-        if(tmp[layer].realm != tmp[this.layer].realm && tmp[layer].realm != 0) { return }
         let keep = []
         if(tmp[layer].realm != 0) { keep.push('arm', 'wea') }
         layerDataReset(this.layer, keep)

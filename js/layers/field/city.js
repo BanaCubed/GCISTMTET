@@ -315,7 +315,7 @@ addLayer('pres', {
             display() {
                 return `Increases grass gain by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(500),
+            purchaseLimit: new Decimal(500000),
             bgCol: 'var(--plat)',
             unlocked(){return tmp.crys.milestones[1].upgs[1]>=1},
         },
@@ -329,7 +329,7 @@ addLayer('pres', {
             display() {
                 return `Increases experience by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(500),
+            purchaseLimit: new Decimal(500000),
             bgCol: 'var(--plat)',
             unlocked(){return tmp.crys.milestones[1].upgs[1]>=2},
         },
@@ -343,7 +343,7 @@ addLayer('pres', {
             display() {
                 return `Increases tier progress by +100% per level<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(500),
+            purchaseLimit: new Decimal(500000),
             bgCol: 'var(--plat)',
             unlocked(){return tmp.crys.milestones[1].upgs[1]>=3},
         },
@@ -357,7 +357,7 @@ addLayer('pres', {
             display() {
                 return `Increases flowers gain by +10% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
-            purchaseLimit: new Decimal(500),
+            purchaseLimit: new Decimal(999),
             bgCol: 'var(--plat)',
             unlocked(){return tmp.crys.milestones[1].upgs[1]>=4},
         },

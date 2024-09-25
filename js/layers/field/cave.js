@@ -136,7 +136,9 @@ addLayer('crys', {
                 ['clickable-tree', [
                     [61, 62, 63],
                     [71, 72, 73],
-                    [81, 82],
+                    [83, 81, 82],
+                    [91, 92],
+                    [101, 102],
                 ]],
                 'blank',
             ],
@@ -144,7 +146,7 @@ addLayer('crys', {
                 'border-color': 'var(--flow)',
                 'background-color': 'var(--flow)',
             },
-            unlocked(){return hasMilestone('hop', 11)},
+            unlocked(){return hasMilestone('hop', 11) || player.evo.done},
             color: 'var(--flow)',
         },
     },
@@ -239,7 +241,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Crystals` },
             effectDescription() { return `
                 Highest crystals obtained since last<br>
-                ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxCrys)} Crystals<br><br>
+                ${obfuscate('evolution', !tmp.evo.layerShown)} reset is ${formatWhole(player.crys.maxCrys)} Crystals<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} Grasshoppers` },
             done(){return false},
             effect() { return [
@@ -253,7 +255,7 @@ addLayer('crys', {
             requirementDescription() { return `Best Grasshoppers` },
             effectDescription() { return `
                 Highest grasshoppers obtained since last<br>
-                ${obfuscate('evolution', true)} reset is ${formatWhole(player.crys.maxHop)} Grasshoppers<br><br>
+                ${obfuscate('evolution', !tmp.evo.layerShown)} reset is ${formatWhole(player.crys.maxHop)} Grasshoppers<br><br>
                 Effect: x${format(tmp[this.layer].milestones[this.id].effect[0])} DMG, x${format(tmp[this.layer].milestones[this.id].effect[1])} HP` },
             done(){return false},
             effect() { return [
@@ -679,7 +681,7 @@ addLayer('crys', {
             onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
             cost: new Decimal(5e12),
             display() {
-                return `Wow, I sure to wonder what this one does<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+                return `Wow, I sure do wonder what this one does<br><br>Cost: ${formatWhole(this.cost)} Flowers`
             },
             bgCol: "var(--flow)",
             bought(){return player.crys.flautomation.includes(this.id)},
@@ -688,6 +690,88 @@ addLayer('crys', {
                 height: '160px',
             },
             branches: [73],
+        },
+        83: {
+            title: 'Neverending Grasshoppers III',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('71') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e13),
+            display() {
+                return `Auto-Enlist also assigns the same amount to armorers and grovetenders<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [71],
+        },
+        
+        91: {
+            title: 'Neverending Grasshoppers IV',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('83') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e14),
+            display() {
+                return `Auto-Enlist also assigns the same amount to lawnmowers and lumberjacks<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [83],
+        },
+        92: {
+            title: 'Omega Combat II',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('81') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e13),
+            display() {
+                return `Increment up to 50 stages at once<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [81],
+        },
+        
+        101: {
+            title: 'Neverending Grasshoppers V',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('91') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(1e16),
+            display() {
+                return `Auto-Enlist also assigns the same amount to crystallizers and breeders<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [91],
+        },
+        102: {
+            title: 'Omega Combat III',
+            canClick() { return player.crys.flowers.gte(this.cost) && !player.crys.flautomation.includes(this.id) && hasFlauto('92') },
+            onClick() { player.crys.flowers = player.crys.flowers.sub(this.cost); player.crys.flautomation.push(this.id); },
+            cost: new Decimal(5e15),
+            display() {
+                return `Increment up to 100 stages at once<br><br>Cost: ${formatWhole(this.cost)} Flowers`
+            },
+            bgCol: "var(--flow)",
+            bought(){return player.crys.flautomation.includes(this.id)},
+            style: {
+                width: '160px',
+                height: '160px',
+            },
+            branches: [92],
         },
 
     },

@@ -304,7 +304,9 @@ addLayer("info-tab", {
                         <br><h2 style="color: var(--lood);">The Forest</h2><br>
                     You have <h2 style="color: var(--wood);">${formatWhole(player.forest.points)}</h2> Wood<br>
                     You are Naturality <h2 style="color: var(--wood);">${formatWhole(tmp.forest.level)}</h2><br>
-                    You are Sacrifice Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.sacRank)}</h2><br>`) + 
+                    You are Sacrifice Rank <h2 style="color: var(--rank);">${formatWhole(tmp.hop.sacRank)}</h2><br>`) + (!player.evo.done?'':`
+                        <br><h2 style="color: var(--evo);">The Lab</h2><br>
+                    You have <h2 style="color: var(--evo);">${formatWhole(player.evo.points)}</h2> Grassmasters<br>`) + 
                     '<br>'
                 }]
             ],
@@ -360,14 +362,14 @@ addLayer("options-tab", {
                 'blank',
                 ['row', [
                     ['row', [
-                        function(){return player.crys.flautomation.includes('21')?['row', [
+                        function(){return hasFlauto('21')?['row', [
                             ['raw-html', 'Grass'],
                             'blank',
                             ['toggle', ['field', 'autoG']],
                         ]]:'blank'},
                     ]], 'blank', 'blank', 'blank',
                     ['row', [
-                        function(){return player.crys.flautomation.includes('21')?['row', [
+                        function(){return hasFlauto('21')?['row', [
                             ['raw-html', 'Perks'],
                             'blank',
                             ['toggle', ['field', 'autoP', 'var(--level)']],
@@ -377,14 +379,14 @@ addLayer("options-tab", {
                 'blank',
                 ['row', [
                     ['row', [
-                        function(){return player.crys.flautomation.includes('22')?['row', [
+                        function(){return hasFlauto('22')?['row', [
                             ['raw-html', 'Prestige'],
                             'blank',
                             ['toggle', ['pres', 'autoPr', 'var(--pres)']],
                         ]]:'blank'},
                     ]], 'blank', 'blank', 'blank',
                     ['row', [
-                        function(){return player.crys.flautomation.includes('23')?['row', [
+                        function(){return hasFlauto('23')?['row', [
                             ['raw-html', 'Platinum'],
                             'blank',
                             ['toggle', ['pres', 'autoPl', 'var(--plat)']],
@@ -394,10 +396,17 @@ addLayer("options-tab", {
                 'blank',
                 ['row', [
                     ['row', [
-                        function(){return player.crys.flautomation.includes('51')?['row', [
+                        function(){return hasFlauto('51')?['row', [
                             ['raw-html', 'Crystal'],
                             'blank',
                             ['toggle', ['crys', 'autoC', 'var(--crys)']],
+                        ]]:'blank'},
+                    ]], 'blank', 'blank', 'blank',
+                    ['row', [
+                        function(){return hasFlauto('82')?['row', [
+                            ['raw-html', 'Wood'],
+                            'blank',
+                            ['toggle', ['forest', 'autoW', 'var(--wood)']],
                         ]]:'blank'},
                     ]],
                 ]],
