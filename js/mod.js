@@ -17,14 +17,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: 0.103,
-	name: "Grasshoppers",
+	num: 0.11,
+	name: "Evolution",
 	build: 37,
 }
 
 let changelog = 
 	`<h1>Changelog:</h1><br><br>
 	<span style="text-align: left; position: absolute; left: 100px;">
+		<h3>v0.11</h3><br>
+			- Added <span style="color: var(--evo)">Evolution/Grassmasters</span><br>
+			Endgame N/A<br><br>
 		<h2>v0.1</h2><br>
 			- Added <span style="color: var(--ghop)">Grasshoppers</span><br>
 			- Added <span style="color: var(--flow)">Flowers</span><br>
@@ -39,7 +42,7 @@ let changelog =
 			- Added <span style="color: var(--ghop)">Misc Features</span><br>
 			- Revamped <span style="color: var(--ghop)">The Control Panel</span><br>
 			- Removed <span style="color: var(--auto)">Automation</span><br>
-			Endgame <span style="color: var(--leag)">League 3</span>, <span style="color: var(--level)">Level 420</span><br><br>
+			Endgame <span style="color: var(--leag)">League 5</span>, <span style="color: var(--level)">Level 1,000+</span><br><br>
 		<h3>v0.0.3</h3><br>
 			- Added <span style="color: var(--crys)">Crystallize</span><br>
 			- Added <span style="color: var(--acomp)">Accomplishments</span><br>
@@ -56,7 +59,7 @@ let changelog =
 			- Added <span style="color: var(--grass)">The Field</span><br>
 			- Added <span style="color: var(--level)">Levels</span><br>
 			- Added <span style="color: var(--level)">Perks</span><br>
-			Endgame <span style="color: var(--level)">Level 31</span>
+			Endgame <span style="color: var(--level)">Level 31</span><br><br>
 	</span>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
