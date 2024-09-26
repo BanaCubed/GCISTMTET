@@ -15,6 +15,7 @@ function getStartOptions() {
 		hideMaxed: false,
 		science: false,
 		slowMode: false,
+		long: false,
 	}
 }
 

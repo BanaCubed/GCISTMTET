@@ -65,8 +65,8 @@ function format(decimal, precision = 2, small) {
     }
     else if (decimal.gte("1e1000000")) return exponentialFormat(decimal, 0, false)
     else if (decimal.gte("1e10000")) return exponentialFormat(decimal, 0)
-    else if (decimal.gte('9.99e305') || (options.science && decimal.gte(1e9))) return exponentialFormat(decimal, precision)
-    else if (decimal.gte(1e6) && !options.science) return standardFormat(decimal, precision)
+    else if (decimal.gte('9.99e305') || (options.science && decimal.gte(options.long?1e15:1e9))) return exponentialFormat(decimal, precision)
+    else if (decimal.gte(1e6) && !options.science && (!options.long || decimal.gte(1e15))) return standardFormat(decimal, precision)
     else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
     else if (decimal.gte(0.0001) || !small) return regularFormat(decimal, precision)
     else if (decimal.eq(0)) return (0).toFixed(precision)

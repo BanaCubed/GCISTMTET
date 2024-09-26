@@ -104,7 +104,8 @@ addLayer('forest', {
                 return `Upgrade armor for ${tmp.forest.clickables[12].formatCost}<br>Upgrading armor doubles HP<br>${format(tmp.forest.clickables[12].progress)}% resources<br>Currently x${formatWhole(player.forest.arm.pow_base(2))} HP`
             },
             canClick() { return player.forest.points.gte(tmp.forest.clickables[12].cost[0]) && player.forest.arm==tmp.forest.clickables[12].stage },
-            onClick() {
+            onClick() { 
+                if(player.forest.arm!=tmp.forest.clickables[12].stage) { return }
                 player.forest.points = player.forest.points.sub(tmp.forest.clickables[12].cost[0]);
 
                 player.forest.arm = tmp.forest.clickables[12].stage.add(1);
@@ -118,6 +119,7 @@ addLayer('forest', {
                 let costs = [
                     [new Decimal(1e7)],
                     [new Decimal(1e11)],
+                    [new Decimal(1e18)],
                     [Decimal.dInf],
                 ]
                 return costs[player.forest.arm.floor().toNumber()]
@@ -125,15 +127,17 @@ addLayer('forest', {
             stage(){return player.forest.arm},
             formatCost() {
                 if(player.forest.arm.lt(0.5)) { return formatWhole(1e7) + ' Wood' }
-                if(player.forest.wea.lt(1.5)) { return formatWhole('1e11') + ' Wood' }
-                if(player.forest.arm.lt(2.5)) { return formatWhole('1e303') + ' Wood' }
+                if(player.forest.arm.lt(1.5)) { return formatWhole('1e11') + ' Wood' }
+                if(player.forest.arm.lt(2.5)) { return formatWhole('1e18') + ' Wood' }
+                if(player.forest.arm.lt(3.5)) { return formatWhole('1eeeeeee9') + ' Wood' }
             },
             progress() {
                 if(player.forest.arm.lt(0.5)) { return player.forest.points.div(1e5).min(100).max(0) }
-                if(player.forest.wea.lt(1.5)) { return player.forest.points.div(1e9).min(100).max(0) }
-                if(player.forest.arm.lt(2.5)) { return new Decimal(0) }
+                if(player.forest.arm.lt(1.5)) { return player.forest.points.div(1e9).min(100).max(0) }
+                if(player.forest.arm.lt(2.5)) { return player.forest.points.div(1e16).min(100).max(0) }
+                if(player.forest.arm.lt(3.5)) { return new Decimal(0) }
             },
-            names: ['N/A', 'Stool', 'Plank', 'placeholder'],
+            names: ['N/A', 'Stool', 'Plank', 'Wooden Decoy', 'placeholder'],
             bgCol: "var(--ghop)",
         },
         13: {
@@ -143,6 +147,7 @@ addLayer('forest', {
             },
             canClick() { return player.forest.points.gte(tmp.forest.clickables[13].cost[0]) && player.forest.wea==tmp.forest.clickables[13].stage },
             onClick() {
+                if(player.forest.wea!=tmp.forest.clickables[13].stage) { return }
                 player.forest.points = player.forest.points.sub(tmp.forest.clickables[13].cost[0]);
 
                 player.forest.wea = tmp.forest.clickables[13].stage.add(1);
@@ -156,6 +161,7 @@ addLayer('forest', {
                 let costs = [
                     [new Decimal(1e8)],
                     [new Decimal(1e12)],
+                    [new Decimal(1e19)],
                     [Decimal.dInf],
                 ]
                 return costs[player.forest.wea.floor().toNumber()]
@@ -164,13 +170,16 @@ addLayer('forest', {
             formatCost() {
                 if(player.forest.wea.lt(0.5)) { return formatWhole(1e8) + ' Wood' }
                 if(player.forest.wea.lt(1.5)) { return formatWhole('1e12') + ' Wood' }
-                if(player.forest.wea.lt(2.5)) { return formatWhole('1e303') + ' Wood' }
+                if(player.forest.wea.lt(2.5)) { return formatWhole('1e19') + ' Wood' }
+                if(player.forest.wea.lt(3.5)) { return formatWhole('1eeeeeee9') + ' Wood' }
             },
             progress() {
                 if(player.forest.wea.lt(0.5)) { return player.forest.points.div(1e6).min(100).max(0) }
                 if(player.forest.wea.lt(1.5)) { return player.forest.points.div(1e10).min(100).max(0) }
+                if(player.forest.wea.lt(2.5)) { return player.forest.points.div(1e17).min(100).max(0) }
+                if(player.forest.wea.lt(3.5)) { return new Decimal(0) }
             },
-            names: ['N/A', 'Pointy Stick', 'Wooden Mallet', 'placeholder'],
+            names: ['N/A', 'Pointy Stick', 'Wooden Mallet', 'Wooden Sword', 'placeholder'],
             bgCol: "var(--ghop)",
         },
     },

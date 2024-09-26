@@ -795,6 +795,7 @@ addLayer('crys', {
         gain = gain.mul(tmp.pres.buyables[19].effect);
         gain = gain.mul(tmp.crys.milestones[3].effect[1]);
         gain = gain.mul(tmp.hop.clickables[22].effect);
+        gain = gain.mul(tmp.evo.buyables[13].effect)
         return gain;
     },
 });

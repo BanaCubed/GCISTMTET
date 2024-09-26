@@ -441,7 +441,7 @@ addLayer('hop', {
                 'min-height': '60px',
             },
             effect() {
-                return player.hop.lumbs.div(1e9).max(1).log(10).pow(2).mul(30);
+                return player.hop.lumbs.div(1e9).max(1).log(10).pow(3).mul(50);
             },
             unlocked(){return hasFlauto('63')}
         },
@@ -632,7 +632,8 @@ addLayer('hop', {
         if(hasMilestone('hop', 1)) { dmg = dmg.mul(tmp.crys.milestones[4].effect[0]); }
         if(hasMilestone('hop', 6)) { dmg = dmg.mul(tmp.crys.milestones[5].effect[0]); }
         if(hasMilestone('leag', 0)) { dmg = dmg.mul(tmp.leag.milestones[0].effect); }
-        dmg = dmg.mul(player.forest.wea.pow_base(2))
+        dmg = dmg.mul(player.forest.wea.pow_base(2));
+        dmg = dmg.mul(tmp.evo.buyables[11].effect);
         return dmg.floor();
     },
     arm() {
@@ -644,6 +645,7 @@ addLayer('hop', {
         dmg = dmg.mul(tmp.hop.sacRankEffect);
         dmg = dmg.mul(player.forest.arm.pow_base(2))
         if(hasFlauto('72')) { dmg = dmg.mul(10); }
+        dmg = dmg.mul(tmp.evo.buyables[12].effect);
         return dmg.sub(1);
     },
 })

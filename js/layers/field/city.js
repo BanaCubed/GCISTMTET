@@ -60,6 +60,8 @@ addLayer('pres', {
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[2].effect[0]);
         if(hasMilestone('hop', 13)) { gain = gain.mul(tmp.hop.milestones[2].effect) }
+        gain = gain.mul(tmp.evo.buyables[12].effect);
+        gain = gain.mul(tmp.evo.buyables[22].effect);
         return gain.floor();
     },
     baseResource: 'Levels',
@@ -385,6 +387,7 @@ addLayer('pres', {
         gain = gain.mul(tmp.crys.buyables[14].effect);
         gain = gain.mul(tmp.crys.milestones[0].effect[1]);
         if(hasMilestone('hop', 1)) { gain = gain.mul(hasMilestone('hop', 10)?tmp.hop.milestones[2].effect:tmp.hop.milestones[1].effect); }
+        gain = gain.mul(tmp.evo.buyables[22].effect);
         return gain;
     },
     platOnCut() {
