@@ -210,7 +210,7 @@ addLayer('field', {
             buy() { if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost)}; setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
             buyMax() { let max = player[this.layer].points.floor().div(1000).max(0.1).log(1.17).add(1).max(0).floor().min(this.purchaseLimit()); if(max.lte(getBuyableAmount(this.layer, this.id))){return}if(!player.crys.flautomation.includes('11')){player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1))).max(0);} setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).max(max).min(this.purchaseLimit())) },
             display() {
-                return `Increases experience gain by +100% per level<br>Every 25 doubles experience gain<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect, 1)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit())}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+                return `Increases experience gain by +100% per level<br>Every 25 doubles experience gain<br><br>Currently: x${formatWhole(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit())}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
             purchaseLimit() {return Decimal.add(300, tmp.field.buyables[19].effect)},
         },

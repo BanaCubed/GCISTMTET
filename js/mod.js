@@ -19,7 +19,7 @@ let modInfo = {
 let VERSION = {
 	num: 0.11,
 	name: "Evolution",
-	build: 38,
+	build: 39,
 }
 
 let changelog = 
@@ -29,7 +29,7 @@ let changelog =
 			- Added <span style="color: var(--evo)">Evolution/Grassmasters</span><br>
 			Endgame N/A<br><br>
 		<h2>v0.1</h2><br>
-			- Added <span style="color: var(--ghop)">Grasshoppers</span><br>
+			- Added <span style="color: var(--ghop)">Indoctrination/Grasshoppers</span><br>
 			- Added <span style="color: var(--flow)">Flowers</span><br>
 			- Added <span style="color: var(--rank)">Ranks</span><br>
 			- Added <span style="color: var(--rank)">The Colosseum</span><br>

@@ -1,5 +1,11 @@
 // ************ Big Feature related ************
 
+function enlistedThing() {
+	const above500 = player.hop.goal.sub(1).lte(player.hop.coloTier)?tmp.hop.leagueRequirement.gte(500):player.hop.goal.gte(501)
+	if(!above500){return player.hop.active.div(layers.hop.oppStats((player.hop.goal.sub(1).lte(player.hop.coloTier)?tmp.hop.leagueRequirement.sub(1):player.hop.goal.sub(2)), true).div(tmp.hop.dmg).ceil())}
+	return player.hop.active.log(10).div(layers.hop.oppStats((player.hop.goal.sub(1).lte(player.hop.coloTier)?tmp.hop.leagueRequirement.sub(1):player.hop.goal.sub(2)), true).div(tmp.hop.dmg).ceil().log(10))
+}
+
 function respecBuyables(layer) {
 	if (!layers[layer].buyables) return
 	if (!layers[layer].buyables.respec) return

@@ -63,7 +63,12 @@ addLayer('evo', {
         'Advanced Tree': {
             content: [
                 ['raw-html', function(){return `You have <h2  class="overlayThing" id="points" style="color: var(--evo); text-shadow: var(--evo) 0px 0px 10px;">${formatWhole(player.evo.points.max(0))}</h2> Grassmasters`}],
-                ['raw-html', '<br>This tree will have upgrades similar to "HP boost DMG at a reduced rate", and has either scaling or one max purchase<br>Flowers III will be its own tree/Automation Tree'],
+                'blank',
+                ['clickable-tree', [
+                    [201],
+                    [211, 212],
+                ]],
+                'blank',
             ],
             color: 'var(--evo)',
             unlocked(){return player.evo.done},
@@ -85,7 +90,7 @@ addLayer('evo', {
             title: 'Combatant I',
             cost(x) { return new Decimal(2) },
             effect(x) { return x.div(20).add(1) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
             buyMax() { 
                 let max = player[this.layer].points.div(2).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
@@ -99,7 +104,7 @@ addLayer('evo', {
             title: 'Collective I',
             cost(x) { return new Decimal(3) },
             effect(x) { return x.pow_base(1.5) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
             buyMax() { let max = player[this.layer].points.div(3).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
             display() {
@@ -112,7 +117,7 @@ addLayer('evo', {
             title: 'Pointless Flower Boost',
             cost(x) { return new Decimal(10) },
             effect(x) { return x.pow_base(5) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
             buyMax() { let max = player[this.layer].points.div(10).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
             display() {
@@ -126,10 +131,10 @@ addLayer('evo', {
             title: 'Combatant II',
             cost(x) { return new Decimal(5) },
             effect(x) { return x.div(20).add(1) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
             buyMax() { 
-                let max = player[this.layer].points.div(2).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
+                let max = player[this.layer].points.div(5).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases grasshopper HP by +5% per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
@@ -141,15 +146,57 @@ addLayer('evo', {
             title: 'Collective II',
             cost(x) { return new Decimal(15) },
             effect(x) { return x.pow_base(1.5) },
-            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
             buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
-            buyMax() { let max = player[this.layer].points.div(3).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
+            buyMax() { let max = player[this.layer].points.div(15).floor().min(this.purchaseLimit.sub(getBuyableAmount(this.layer, this.id))); player[this.layer].points = player[this.layer].points.sub(this.cost(max.sub(1)).mul(max)).max(0); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(max).min(this.purchaseLimit)) },
             display() {
                 return `Increases grass, EXP, PP, and TP gain by +25% compounding per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
             },
             purchaseLimit: new Decimal(40),
             unlocked(){return getBuyableAmount(this.layer, 12).gte(tmp[this.layer].buyables[12].purchaseLimit)},
             branches: [12],
+        },
+
+        // Advanced Tree
+        201: {
+            title: 'The Start',
+            cost(x) { return new Decimal(25) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
+            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { this.buy() },
+            display() {
+                return `Overrides combat tick enabler if the enemy can be oneshot<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1),
+            unlocked(){return true},
+        },
+
+        211: {
+            title: 'Healthy Damage',
+            cost(x) { return new Decimal(50) },
+            effect() { return tmp.hop.arm.max(1).pow(0.45) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
+            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)) },
+            buyMax() { this.buy() },
+            display() {
+                return `HP boosts DMG at a reduced rate<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1),
+            unlocked(){return getBuyableAmount(this.layer, 201).gte(tmp[this.layer].buyables[201].purchaseLimit)},
+            branches: [201],
+        },
+        212: {
+            title: 'Staged',
+            cost(x) { return new Decimal(150) },
+            canAfford() { return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)&&getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)&&tmp[this.layer].buyables[this.id].unlocked },
+            buy() { player[this.layer].points = player[this.layer].points.sub(tmp[this.layer].buyables[this.id].cost); setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1)); player.hop.coloTier=player.hop.coloTier.max(49) },
+            buyMax() { this.buy() },
+            display() {
+                return `Start an evolution/league at stage 50<br>Also disables stage milestone popups<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`
+            },
+            purchaseLimit: new Decimal(1),
+            unlocked(){return getBuyableAmount(this.layer, 201).gte(tmp[this.layer].buyables[201].purchaseLimit)},
+            branches: [201],
         },
 
     },
@@ -159,5 +206,9 @@ addLayer('evo', {
         13: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
         21: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
         22: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
+
+        201: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
+        211: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
+        212: { title() { return tmp[this.layer].buyables[this.id].title }, canClick() { return tmp[this.layer].buyables[this.id].canAfford }, onClick() { buyBuyable(this.layer, this.id) }, onHold() { buyMaxBuyable(this.layer, this.id); }, display() { return run(tmp[this.layer].buyables[this.id].display, tmp[this.layer].buyables[this.id]) }, bought(){return getBuyableAmount(this.layer, this.id).gte(tmp[this.layer].buyables[this.id].purchaseLimit)}, style: { width: '160px', height: '160px', }, unlocked() { return tmp[this.layer].buyables[this.id].unlocked }, branches() { return tmp[this.layer].buyables[this.id].branches }, },
     }
 })

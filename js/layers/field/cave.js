@@ -131,7 +131,7 @@ addLayer('crys', {
                 ['raw-html', function () { return `You have <h2  class="overlayThing" id="points" style="color: var(--flow); text-shadow: var(--flow) 0px 0px 10px;">${formatWhole(player.crys.flowers.max(0))}</h2> Flowers`; }],
                 ['raw-html', function () { return tmp.crys.flowersGain.gt(0) ? `(${format(tmp.crys.flowersGain)}/sec)` : ''; }],
                 'blank',
-                ['raw-html', function () { return `Flower upgrades are still kept on all resets before ${obfuscate('interplanetary', true)}` }],
+                ['raw-html', function () { return `Every OoM of Flowers starting at 1e13 increases DMG by +20% compounding, currently x${format(tmp.crys.flowersEffect)}<br><br>Flower upgrades are still kept on all resets before ${obfuscate('interplanetary', true)}` }],
                 'blank',
                 ['clickable-tree', [
                     [61, 62, 63],
@@ -149,6 +149,9 @@ addLayer('crys', {
             unlocked(){return hasMilestone('hop', 11) || player.evo.done},
             color: 'var(--flow)',
         },
+    },
+    flowersEffect() {
+        return player.crys.flowers.max(1e13).log(10).sub(13).max(0).pow_base(1.2)
     },
     tooltip() { return `<h2>THE CAVE</h2><br>${formatWhole(player.crys.points)} Crystals<br>${formatWhole(player.crys.flowers)} Flowers`; },
     milestones: {
@@ -304,7 +307,7 @@ addLayer('crys', {
             display() {
                 return `Increases platinum gain by +1% compounding per level<br><br>Currently: x${format(tmp[this.layer].buyables[this.id].effect)}<br><br>Owned: ${formatWhole(getBuyableAmount(this.layer, this.id))}/${formatWhole(this.purchaseLimit)}<br>Cost: ${formatWhole(tmp[this.layer].buyables[this.id].cost)}`;
             },
-            purchaseLimit: new Decimal(1000),
+            purchaseLimit: new Decimal(10000),
         },
         14: {
             title: 'Crystal TEXPP',
